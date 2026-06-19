@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 100">
+  <rect width="240" height="100" fill="#fff"/>
+  <circle cx="70" cy="50" r="40" fill="#E31937"/>
+  <text x="70" y="60" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="22" font-weight="900" fill="#fff">jetts</text>
+  <text x="170" y="54" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="28" font-weight="900" fill="#E31937">JETTS</text>
+  <text x="170" y="76" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#333">24HR FITNESS</text>
+</svg>

@@ -1,0 +1,113 @@
+/* Lucide icons — https://lucide.dev/icons */
+
+.feature-card__icon {
+  font-size: unset;
+}
+.feature-card__icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--blue-bright);
+}
+
+.btn-login svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+.wheel-panel__icon {
+  width: clamp(28px, 5vw, 36px);
+  height: clamp(28px, 5vw, 36px);
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+.activity-promo__visual {
+  font-size: unset;
+}
+.activity-promo__visual svg {
+  width: 80px;
+  height: 80px;
+  stroke: var(--blue-bright);
+}
+
+.home-hero__checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding-left: 0;
+}
+.home-hero__checks li::before {
+  display: none;
+}
+.home-hero__checks svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--gold);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.contact-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.contact-card__heading-icon {
+  width: 20px;
+  height: 20px;
+  stroke: var(--blue-bright);
+  flex-shrink: 0;
+}
+.contact-card a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.site-footer__contact-list svg {
+  stroke: var(--gold-light);
+  fill: none;
+}
+
+.review-slider__nav svg {
+  stroke: currentColor;
+  fill: none;
+}
+.review-card__stars svg {
+  fill: var(--gold);
+  stroke: var(--gold);
+}
+.review-card__quote-icon {
+  fill: none;
+}
+.highlights__play svg {
+  fill: none;
+  stroke: #fff;
+}
+.promo-hero__features svg,
+.promo-stat__icon svg,
+.promo-trust__icon svg,
+.promo-steps__icon svg,
+.promo-steps__arrow svg {
+  fill: none;
+}
+.promo-agent__visual svg {
+  fill: none;
+}
+.promo-hero__all-prizes svg,
+.promo-hero__all-prizes-arrow {
+  fill: none;
+}
+.promo-panel__foot--prizes svg,
+.promo-panel__title--icon svg {
+  fill: none;
+}
+.promo-panel__close svg {
+  fill: none;
+}
+.review-card__avatar svg,
+.winners-list__avatar svg {
+  fill: none;
+  stroke: #fff;
+}

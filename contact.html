@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="./" />
+  <title>BoyInsure | ติดต่อเรา</title>
+  <link rel="stylesheet" href="assets/css/fonts.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="stylesheet" href="assets/css/icons.css" />
+</head>
+<body data-page="contact">
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="index.html" class="navbar__brand"><span class="navbar__name">BoyInsure</span></a>
+      <ul class="navbar__menu" id="navbarMenu">
+        <li><a href="index.html" data-nav="home">หน้าแรก</a></li>
+        <li><a href="promotions.html" data-nav="promotions">โปรโมชั่นและของรางวัล</a></li>
+        <li><a href="insurance.html" data-nav="insurance">แบบประกันของเรา</a></li>
+        <li><a href="about.html" data-nav="about">เกี่ยวกับ BOYINSURE</a></li>
+        <li><a href="articles.html" data-nav="articles">บทความ</a></li>
+      </ul>
+      <a href="contact.html" class="btn-login"><i data-lucide="message-circle" aria-hidden="true"></i> สอบถาม</a>
+      <button class="navbar__toggle" id="navToggle" aria-label="เมนู" aria-expanded="false"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <main class="page-main">
+    <section class="page-hero page-hero--photo page-hero--contact">
+      <div class="page-hero__inner">
+        <span class="page-hero__eyebrow">Contact</span>
+        <h1>ติดต่อเรา</h1>
+        <p class="page-hero__lead">ปรึกษาแผนประกันฟรี ไม่มีค่าใช้จ่าย ไม่บังคับซื้อ — ตอบแชทไว ดูแลใกล้ชิด</p>
+      </div>
+    </section>
+
+    <section class="site-section site-section--alt">
+      <div class="container">
+        <div class="contact-grid">
+          <div>
+            <div class="contact-card" style="margin-bottom:20px;">
+              <h3><i data-lucide="phone" class="contact-card__heading-icon" aria-hidden="true"></i> โทรศัพท์</h3>
+              <a href="tel:0627878968">062-787-8968</a>
+              <p style="margin-top:12px;font-size:.92rem;color:#5a6b85;">ปรึกษาแผนประกันและสอบถามแบบประกันที่เหมาะกับคุณ</p>
+            </div>
+            <div class="contact-card" style="margin-bottom:20px;">
+              <h3><i data-lucide="message-circle" class="contact-card__heading-icon" aria-hidden="true"></i> แชทสอบถาม</h3>
+              <p>สอบถามรายละเอียดเพิ่มเติมได้ทางแชท — ทีมงานพร้อมตอบคำถาม</p>
+            </div>
+            <div class="contact-card">
+              <h3><i data-lucide="shield-check" class="contact-card__heading-icon" aria-hidden="true"></i> บริการลูกค้า</h3>
+              <p>วิเคราะห์และเปรียบเทียบแผนประกันให้ฟรี ดูแลเคลมจนจบทุกเคส</p>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <h3>ส่งข้อความหาเรา</h3>
+            <form class="contact-form" id="contactForm" action="api/contact.php" method="post">
+              <label for="name">ชื่อ-นามสกุล</label>
+              <input type="text" id="name" name="name" required placeholder="กรอกชื่อของคุณ" />
+
+              <label for="phone">เบอร์โทรศัพท์</label>
+              <input type="tel" id="phone" name="phone" required placeholder="08x-xxx-xxxx" />
+
+              <label for="interest">สนใจ</label>
+              <select id="interest" name="interest">
+                <option value="">-- เลือก --</option>
+                <option>สอบถามแบบประกัน / วางแผนความคุ้มครอง</option>
+                <option>ประกันชีวิต / สุขภาพ</option>
+                <option>ประกันออมเงิน / บำนาญ</option>
+                <option>โปรโมชั่นและของรางวัล</option>
+                <option>สมัครเป็นตัวแทนประกัน</option>
+                <option>อื่น ๆ</option>
+              </select>
+
+              <label for="message">ข้อความ</label>
+              <textarea id="message" name="message" placeholder="บอกเราว่าคุณสนใจอะไร"></textarea>
+
+              <button type="submit" class="btn btn--primary" style="width:100%;">ส่งข้อความ</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section">
+      <div class="container">
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-card__icon" aria-hidden="true"><i data-lucide="graduation-cap"></i></div>
+            <h3>มีอบรมก่อนเริ่มงาน</h3>
+            <p>เตรียมความพร้อมและแนะแนวการสอบใบอนุญาต</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-card__icon" aria-hidden="true"><i data-lucide="users"></i></div>
+            <h3>ทีมดูแลใกล้ชิด</h3>
+            <p>ไม่ต้องเริ่มคนเดียว มีทีมซัพพอร์ตทุกขั้นตอน</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-card__icon" aria-hidden="true"><i data-lucide="badge-check"></i></div>
+            <h3>ปรึกษาฟรี</h3>
+            <p>สอบถามได้ไม่มีค่าใช้จ่าย ไม่บังคับสมัคร</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="siteFooter" aria-label="ส่วนท้ายเว็บไซต์"></footer>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>

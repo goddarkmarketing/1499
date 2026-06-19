@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="./" />
+  <title>BoyInsure | ประกันชีวิตและประกันภัย</title>
+  <link rel="stylesheet" href="assets/css/fonts.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="stylesheet" href="assets/css/icons.css" />
+</head>
+<body data-page="home">
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__name">BoyInsure</span>
+      </a>
+      <ul class="navbar__menu" id="navbarMenu">
+        <li><a href="index.html" data-nav="home">หน้าแรก</a></li>
+        <li><a href="promotions.html" data-nav="promotions">โปรโมชั่นและของรางวัล</a></li>
+        <li><a href="insurance.html" data-nav="insurance">แบบประกันของเรา</a></li>
+        <li><a href="about.html" data-nav="about">เกี่ยวกับ BOYINSURE</a></li>
+        <li><a href="articles.html" data-nav="articles">บทความ</a></li>
+      </ul>
+      <a href="contact.html" class="btn-login">
+        <i data-lucide="message-circle" aria-hidden="true"></i>
+        สอบถาม
+      </a>
+      <button class="navbar__toggle" id="navToggle" aria-label="เมนู" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="page-main">
+    <section class="home-hero">
+      <div class="home-hero__slides" id="homeHeroSlides" aria-hidden="true">
+        <img class="home-hero__slide is-active" src="assets/img/home-hero-bg.png" alt="" width="2241" height="702" loading="eager" />
+        <img class="home-hero__slide" src="assets/img/home-hero-2.png" alt="" width="1024" height="320" loading="lazy" />
+      </div>
+      <div class="home-hero__shade" aria-hidden="true"></div>
+      <div class="home-hero__dots" id="homeHeroDots" role="tablist" aria-label="เลือกภาพ Hero"></div>
+      <div class="home-hero__inner">
+        <div class="home-hero__content">
+          <span class="home-hero__badge">BoyInsure ประกันภัย</span>
+          <h1>คุ้มครอง<br/><em>ทุกช่วงชีวิต</em> ด้วยใจ</h1>
+          <p class="home-hero__text">
+            BoyInsure ให้ความคุ้มครองที่ครอบคลุมและเชื่อถือได้ สำหรับคุณและครอบครัว
+            วิเคราะห์และเปรียบเทียบแผนประกันให้ก่อนตัดสินใจ เข้าใจง่าย ปรับตามงบประมาณ
+          </p>
+          <ul class="home-hero__checks">
+            <li><i data-lucide="circle-check-big" aria-hidden="true"></i><span>คุ้มครองครอบครัวทุกช่วงชีวิต</span></li>
+            <li><i data-lucide="circle-check-big" aria-hidden="true"></i><span>วิเคราะห์แผนก่อนเสนอขายทุกครั้ง</span></li>
+            <li><i data-lucide="circle-check-big" aria-hidden="true"></i><span>ดูแลเคลมและติดตามต่อเนื่อง</span></li>
+          </ul>
+          <div class="home-hero__actions">
+            <a href="contact.html" class="btn btn--primary">ปรึกษาฟรี</a>
+            <a href="insurance.html" class="btn btn--outline-dark">ดูแบบประกัน</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section site-section--alt">
+      <div class="container">
+        <div class="section-head">
+          <h2>ทำไมต้อง BoyInsure</h2>
+          <p>มากกว่าแค่ประกันภัย — คือคู่คิดด้านการวางแผนความคุ้มครองที่เข้าใจคุณและครอบครัว</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-card__icon" aria-hidden="true"><i data-lucide="heart-handshake"></i></div>
+            <h3>ดูแลใส่ใจ</h3>
+            <p>ทีมผู้เชี่ยวชาญพร้อมให้คำปรึกษาและดูแลคุณตลอดอายุกรมธรรม์ ด้วยความเอาใจใส่</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-card__icon" aria-hidden="true"><i data-lucide="clipboard-list"></i></div>
+            <h3>วิเคราะห์ก่อนเสนอขาย</h3>
+            <p>เปรียบเทียบแผนให้ก่อนตัดสินใจ เข้าใจง่าย ไม่บังคับซื้อ เคารพการตัดสินใจของลูกค้า</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-card__icon" aria-hidden="true"><i data-lucide="shield-check"></i></div>
+            <h3>คุ้มครองครบถ้วน</h3>
+            <p>แผนประกันครอบคลุมทั้งชีวิต สุขภาพ ออมเงิน และทรัพย์สิน จากบริษัทประกันชั้นนำ</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-card__icon" aria-hidden="true"><i data-lucide="calculator"></i></div>
+            <h3>เครื่องมือวางแผน</h3>
+            <p>มีแพลตฟอร์มช่วยคำนวณเบี้ยประกันและจัดทำใบเสนอราคาได้สะดวก รวดเร็ว</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-card__icon" aria-hidden="true"><i data-lucide="phone"></i></div>
+            <h3>ตอบแชทไว ดูแลใกล้ชิด</h3>
+            <p>ทีมงานพร้อมให้คำปรึกษาและช่วยเหลือเมื่อคุณต้องการ ดูแลเคลมจนจบทุกเคส</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-card__icon" aria-hidden="true"><i data-lucide="badge-check"></i></div>
+            <h3>มืออาชีพที่ไว้วางใจ</h3>
+            <p>ศูนย์ไทยประกันชีวิต ส่งต่อเข้าสังกัดบริษัทประกันชีวิตชั้นนำอย่างถูกต้อง</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section site-section--alt">
+      <div class="container">
+        <div class="section-head">
+          <h2>แบบประกันของเรา</h2>
+          <p>ครอบคลุมทุกความต้องการ — เลือกแผนที่เหมาะกับชีวิตและงบประมาณของคุณ</p>
+        </div>
+        <div class="product-grid">
+          <a href="insurance-plan.html?plan=health" class="product-item">
+            <div class="product-item__media">
+              <img src="assets/img/products/health.jpg" alt="ประกันสุขภาพ" width="640" height="400" loading="lazy" />
+            </div>
+            <div class="product-item__body">
+              <h3>ประกันสุขภาพ</h3>
+              <p>ครอบคลุมค่ารักษาพยาบาล ลดภาระค่าใช้จ่ายเมื่อเจ็บป่วย</p>
+            </div>
+          </a>
+          <a href="insurance-plan.html?plan=life" class="product-item">
+            <div class="product-item__media">
+              <img src="assets/img/products/life.jpg" alt="ประกันชีวิต" width="640" height="400" loading="lazy" />
+            </div>
+            <div class="product-item__body">
+              <h3>ประกันชีวิต</h3>
+              <p>สร้างความมั่นคงและดูแลคนที่คุณรักในอนาคต</p>
+            </div>
+          </a>
+          <a href="insurance-plan.html?plan=savings-fund" class="product-item">
+            <div class="product-item__media">
+              <img src="assets/img/products/savings.jpg" alt="ประกันสะสมทรัพย์" width="640" height="400" loading="lazy" />
+            </div>
+            <div class="product-item__body">
+              <h3>ประกันสะสมทรัพย์</h3>
+              <p>ออมเงินพร้อมรับความคุ้มครองชีวิต</p>
+            </div>
+          </a>
+          <a href="insurance-plan.html?plan=critical-illness" class="product-item">
+            <div class="product-item__media">
+              <img src="assets/img/products/critical.jpg" alt="ประกันโรคร้ายแรง" width="640" height="400" loading="lazy" />
+            </div>
+            <div class="product-item__body">
+              <h3>ประกันโรคร้ายแรง</h3>
+              <p>รับเงินก้อนเมื่อเจอโรคหนัก เช่น มะเร็ง หัวใจ</p>
+            </div>
+          </a>
+        </div>
+        <p style="text-align:center;margin-top:32px;">
+          <a href="insurance.html" class="btn btn--outline-dark">ดูแบบประกันทั้งหมด</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="site-section site-section--alt">
+      <div class="container">
+        <div class="section-head">
+          <h2>เสียงจากลูกค้าที่ประทับใจ</h2>
+          <p>ประสบการณ์จริงจากลูกค้า BoyInsure ที่วางใจให้เราดูแลด้านความคุ้มครอง</p>
+        </div>
+        <div class="review-slider" id="reviewSlider">
+          <button type="button" class="review-slider__nav review-slider__nav--prev" aria-label="รีวิวก่อนหน้า">
+            <i data-lucide="chevron-left" aria-hidden="true"></i>
+          </button>
+          <div class="review-slider__viewport">
+            <div class="review-slider__track">
+              <article class="review-card">
+                <div class="review-card__stars" aria-label="5 ดาว">
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                </div>
+                <blockquote class="review-card__quote">
+                  <i data-lucide="quote" class="review-card__quote-icon" aria-hidden="true"></i>
+                  ทีม BoyInsure อธิบายแผนประกันสุขภาพให้เข้าใจง่ายมาก เปรียบเทียบหลายบริษัทให้เลือกจนมั่นใจ ตอนต้องเคลมก็ช่วยติดตามจนจบ ประทับใจมากครับ
+                </blockquote>
+                <footer class="review-card__author">
+                  <span class="review-card__avatar" aria-hidden="true"><i data-lucide="user"></i></span>
+                  <div>
+                    <strong>คุณสมชาย ใจดี</strong>
+                    <span>ลูกค้าประกันสุขภาพ · กรุงเทพฯ</span>
+                  </div>
+                </footer>
+              </article>
+              <article class="review-card">
+                <div class="review-card__stars" aria-label="5 ดาว">
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                </div>
+                <blockquote class="review-card__quote">
+                  <i data-lucide="quote" class="review-card__quote-icon" aria-hidden="true"></i>
+                  อยากมีประกันชีวิตแต่กลัวเบี้ยแพง ที่นี่ช่วยวางแผนให้ตรงงบจริง ๆ ไม่บังคับซื้อแผนใหญ่ ตอบแชทไวทุกครั้งที่สงสัย รู้สึกอุ่นใจที่มีคนดูแล
+                </blockquote>
+                <footer class="review-card__author">
+                  <span class="review-card__avatar" aria-hidden="true"><i data-lucide="user"></i></span>
+                  <div>
+                    <strong>คุณมาลี รักครอบครัว</strong>
+                    <span>ลูกค้าประกันชีวิต · ชลบุรี</span>
+                  </div>
+                </footer>
+              </article>
+              <article class="review-card">
+                <div class="review-card__stars" aria-label="5 ดาว">
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                </div>
+                <blockquote class="review-card__quote">
+                  <i data-lucide="quote" class="review-card__quote-icon" aria-hidden="true"></i>
+                  ทำประกันสะสมทรัพย์ผ่าน BoyInsure ได้ทั้งออมและคุ้มครอง ทีมอธิบายผลประโยชน์ชัดเจน มีการติดตามหลังทำสัญญา ไม่ทิ้งลูกค้าหลังขาย
+                </blockquote>
+                <footer class="review-card__author">
+                  <span class="review-card__avatar" aria-hidden="true"><i data-lucide="user"></i></span>
+                  <div>
+                    <strong>คุณวิชัย มั่นคง</strong>
+                    <span>ลูกค้าประกันสะสมทรัพย์ · เชียงใหม่</span>
+                  </div>
+                </footer>
+              </article>
+              <article class="review-card">
+                <div class="review-card__stars" aria-label="5 ดาว">
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                </div>
+                <blockquote class="review-card__quote">
+                  <i data-lucide="quote" class="review-card__quote-icon" aria-hidden="true"></i>
+                  วางแผนประกันทั้งครอบครัวที่นี่ ช่วยจัดสรรงบให้เหมาะกับแต่ละคน ทั้งพ่อแม่ลูก ได้แผนที่ครบและไม่เกินงบที่วางไว้ บริการเป็นกันเองมาก
+                </blockquote>
+                <footer class="review-card__author">
+                  <span class="review-card__avatar" aria-hidden="true"><i data-lucide="user"></i></span>
+                  <div>
+                    <strong>คุณนภา สุขสันต์</strong>
+                    <span>ลูกค้าครอบครัว · นนทบุรี</span>
+                  </div>
+                </footer>
+              </article>
+              <article class="review-card">
+                <div class="review-card__stars" aria-label="5 ดาว">
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                  <i data-lucide="star" aria-hidden="true"></i>
+                </div>
+                <blockquote class="review-card__quote">
+                  <i data-lucide="quote" class="review-card__quote-icon" aria-hidden="true"></i>
+                  สนใจประกันโรคร้ายแรงเพราะมีประวัติในครอบครัว ได้คำปรึกษาละเอียด ไม่กดดัน อธิบายข้อดีข้อจำกัดของแต่ละแผนจนตัดสินใจได้ด้วยตัวเอง
+                </blockquote>
+                <footer class="review-card__author">
+                  <span class="review-card__avatar" aria-hidden="true"><i data-lucide="user"></i></span>
+                  <div>
+                    <strong>คุณประเสริฐ สบายใจ</strong>
+                    <span>ลูกค้าประกันโรคร้ายแรง · ขอนแก่น</span>
+                  </div>
+                </footer>
+              </article>
+            </div>
+          </div>
+          <button type="button" class="review-slider__nav review-slider__nav--next" aria-label="รีวิวถัดไป">
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+          <div class="review-slider__dots" role="tablist" aria-label="เลือกรีวิว"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section site-section--dark">
+      <div class="container">
+        <div class="section-head section-head--compact">
+          <h2>บริการวางแผนประกัน</h2>
+          <p>เราเชื่อว่าทุกคนสมควรได้รับการปกป้องที่ดีที่สุด ในราคาที่เข้าถึงได้</p>
+        </div>
+        <form class="plan-form" action="#" method="post" onsubmit="event.preventDefault(); alert('ขอบคุณครับ ทีมงานจะติดต่อกลับโดยเร็วที่สุด');">
+          <div class="plan-form__grid">
+            <div class="plan-form__field">
+              <label for="plan-firstname">ชื่อจริง<span class="plan-form__req">*</span></label>
+              <input type="text" id="plan-firstname" name="firstname" required />
+            </div>
+            <div class="plan-form__field">
+              <label for="plan-lastname">นามสกุล<span class="plan-form__req">*</span></label>
+              <input type="text" id="plan-lastname" name="lastname" required />
+            </div>
+            <div class="plan-form__field">
+              <label for="plan-birthdate">วันเกิด<span class="plan-form__req">*</span></label>
+              <input type="date" id="plan-birthdate" name="birthdate" required />
+            </div>
+            <div class="plan-form__field">
+              <label for="plan-phone">หมายเลขโทรศัพท์<span class="plan-form__req">*</span></label>
+              <input type="tel" id="plan-phone" name="phone" required placeholder="08x-xxx-xxxx" />
+            </div>
+            <div class="plan-form__field">
+              <label for="plan-email">อีเมล<span class="plan-form__req">*</span></label>
+              <input type="email" id="plan-email" name="email" required placeholder="example@email.com" />
+            </div>
+            <div class="plan-form__field">
+              <label for="plan-province">จังหวัด<span class="plan-form__req">*</span></label>
+              <select id="plan-province" name="province" required>
+                <option value="">-- เลือกจังหวัด --</option>
+                <option>กรุงเทพมหานคร</option>
+                <option>กระบี่</option>
+                <option>กาญจนบุรี</option>
+                <option>กาฬสินธุ์</option>
+                <option>กำแพงเพชร</option>
+                <option>ขอนแก่น</option>
+                <option>จันทบุรี</option>
+                <option>ฉะเชิงเทรา</option>
+                <option>ชลบุรี</option>
+                <option>ชัยนาท</option>
+                <option>ชัยภูมิ</option>
+                <option>ชุมพร</option>
+                <option>เชียงราย</option>
+                <option>เชียงใหม่</option>
+                <option>ตรัง</option>
+                <option>ตราด</option>
+                <option>ตาก</option>
+                <option>นครนายก</option>
+                <option>นครปฐม</option>
+                <option>นครพนม</option>
+                <option>นครราชสีมา</option>
+                <option>นครศรีธรรมราช</option>
+                <option>นครสวรรค์</option>
+                <option>นนทบุรี</option>
+                <option>นราธิวาส</option>
+                <option>น่าน</option>
+                <option>บึงกาฬ</option>
+                <option>บุรีรัมย์</option>
+                <option>ปทุมธานี</option>
+                <option>ประจวบคีรีขันธ์</option>
+                <option>ปราจีนบุรี</option>
+                <option>ปัตตานี</option>
+                <option>พระนครศรีอยุธยา</option>
+                <option>พะเยา</option>
+                <option>พังงา</option>
+                <option>พัทลุง</option>
+                <option>พิจิตร</option>
+                <option>พิษณุโลก</option>
+                <option>เพชรบุรี</option>
+                <option>เพชรบูรณ์</option>
+                <option>แพร่</option>
+                <option>ภูเก็ต</option>
+                <option>มหาสารคาม</option>
+                <option>มุกดาหาร</option>
+                <option>แม่ฮ่องสอน</option>
+                <option>ยโสธร</option>
+                <option>ยะลา</option>
+                <option>ร้อยเอ็ด</option>
+                <option>ระนอง</option>
+                <option>ระยอง</option>
+                <option>ราชบุรี</option>
+                <option>ลพบุรี</option>
+                <option>ลำปาง</option>
+                <option>ลำพูน</option>
+                <option>ศรีสะเกษ</option>
+                <option>สกลนคร</option>
+                <option>สงขลา</option>
+                <option>สตูล</option>
+                <option>สมุทรปราการ</option>
+                <option>สมุทรสงคราม</option>
+                <option>สมุทรสาคร</option>
+                <option>สระแก้ว</option>
+                <option>สระบุรี</option>
+                <option>สิงห์บุรี</option>
+                <option>สุโขทัย</option>
+                <option>สุพรรณบุรี</option>
+                <option>สุราษฎร์ธานี</option>
+                <option>สุรินทร์</option>
+                <option>หนองคาย</option>
+                <option>หนองบัวลำภู</option>
+                <option>อ่างทอง</option>
+                <option>อำนาจเจริญ</option>
+                <option>อุดรธานี</option>
+                <option>อุตรดิตถ์</option>
+                <option>อุทัยธานี</option>
+                <option>อุบลราชธานี</option>
+              </select>
+            </div>
+            <div class="plan-form__field">
+              <label for="plan-callback-date">วันที่สะดวกให้ติดต่อกลับ</label>
+              <select id="plan-callback-date" name="callback_date">
+                <option value="">-- เลือกวันที่ --</option>
+                <option>วันนี้</option>
+                <option>พรุ่งนี้</option>
+                <option>ภายใน 3 วัน</option>
+                <option>ภายใน 7 วัน</option>
+                <option>สะดวกให้โทรมาถาม</option>
+              </select>
+            </div>
+            <div class="plan-form__field">
+              <label for="plan-callback-time">ช่วงเวลาสะดวกให้ติดต่อกลับ</label>
+              <select id="plan-callback-time" name="callback_time">
+                <option value="">-- เลือกช่วงเวลา --</option>
+                <option>09:00 – 12:00 น.</option>
+                <option>12:00 – 15:00 น.</option>
+                <option>15:00 – 18:00 น.</option>
+                <option>18:00 – 20:00 น.</option>
+                <option>สะดวกเวลาไหนก็ได้</option>
+              </select>
+            </div>
+          </div>
+          <div class="plan-form__actions">
+            <label class="plan-form__consent">
+              <input type="checkbox" id="plan-consent" name="consent" required />
+              <span class="plan-form__consent-box">
+                ข้าพเจ้ายินยอมให้ BoyInsure และบริษัทในเครือ เก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคลของข้าพเจ้า
+                เพื่อติดต่อกลับ ให้คำปรึกษา และเสนอแผนประกันภัย ตาม
+                <a href="contact.html">นโยบายข้อมูลส่วนบุคคล</a>
+                <a href="contact.html">(อ่านเพิ่มเติม)</a>
+              </span>
+            </label>
+            <button type="submit" class="btn btn--submit plan-form__submit">ส่งข้อมูล</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="site-section site-section--alt">
+      <div class="container">
+        <div class="stories-head">
+          <h2>บทความล่าสุด</h2>
+          <a href="articles.html" class="stories-head__btn">ดูบทความทั้งหมด</a>
+        </div>
+        <div class="article-card-grid article-card-grid--home" id="homeArticleGrid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="site-section site-section--alt" id="boyinsureHighlights">
+      <div class="container">
+        <div class="highlights" id="highlightsBlock">
+          <div class="highlights__content">
+            <h2 class="highlights__heading">ไฮไลท์ BoyInsure</h2>
+            <div class="highlights__profile">
+              <span class="highlights__avatar" id="highlightAvatar" aria-hidden="true">B</span>
+              <div>
+                <strong class="highlights__name" id="highlightName">BoyInsure</strong>
+                <span class="highlights__location" id="highlightTagline">ศูนย์ไทยประกันชีวิต</span>
+              </div>
+            </div>
+            <div class="highlights__tags" id="highlightTags" aria-label="จุดเด่นหลัก">
+              <span>วิเคราะห์แผน</span>
+              <span>เปรียบเทียบเบี้ย</span>
+              <span>ไม่บังคับซื้อ</span>
+            </div>
+            <h3 class="highlights__title" id="highlightTitle">วางแผนความคุ้มครองอย่างมืออาชีพ</h3>
+            <p class="highlights__text" id="highlightText">BoyInsure ช่วยวิเคราะห์และเปรียบเทียบแผนประกันจากบริษัทชั้นนำ อธิบายให้เข้าใจง่ายก่อนตัดสินใจ ไม่บังคับซื้อ และดูแลต่อเนื่องตลอดอายุกรมธรรม์ เพื่อให้คุณและครอบครัวอุ่นใจในทุกช่วงชีวิต</p>
+          </div>
+          <div class="highlights__clips">
+            <figure class="highlights__media">
+              <div class="highlights__player" id="highlightMainPlayer">
+                <img id="highlightImage" src="assets/img/products/life.jpg" alt="BoyInsure วางแผนประกันครอบครัว" width="360" height="640" loading="lazy" />
+                <button type="button" class="highlights__play-overlay" id="highlightMainPlay" hidden aria-label="เล่นคลิป BoyInsure">
+                  <i data-lucide="play" aria-hidden="true"></i>
+                </button>
+                <iframe
+                  id="highlightMainVideo"
+                  class="highlights__fb"
+                  title="BoyInsure วางแผนประกันครอบครัว"
+                  width="300"
+                  height="533"
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  allowfullscreen
+                  loading="lazy"
+                  hidden
+                ></iframe>
+              </div>
+            </figure>
+            <div class="highlights__video" id="highlightThumbWrap">
+              <img id="highlightThumb" src="assets/img/products/health.jpg" alt="" width="320" height="320" loading="lazy" />
+              <button type="button" class="highlights__play-overlay highlights__play-overlay--thumb" id="highlightThumbPlay" hidden aria-label="เล่นคลิป BoyInsure">
+                <i data-lucide="play" aria-hidden="true"></i>
+              </button>
+              <iframe
+                id="highlightThumbVideo"
+                class="highlights__fb highlights__fb--thumb"
+                title="BoyInsure highlight clip"
+                width="220"
+                height="391"
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                allowfullscreen
+                loading="lazy"
+                hidden
+              ></iframe>
+              <a href="about.html" class="highlights__thumb-link" id="highlightThumbLink">
+                <span class="highlights__play" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+              </a>
+            </div>
+          </div>
+          <aside class="highlights__aside">
+            <p class="highlights__caption" id="highlightCaption">ทีม BoyInsure ดูแลเคลมประกันสุขภาพจนจบทุกขั้นตอน</p>
+            <button type="button" class="highlights__more" id="highlightMoreBtn">ดูไฮไลท์เพิ่มเติม</button>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section site-section--alt">
+      <div class="container">
+        <div class="promo-agent__banner">
+          <div class="promo-agent__body">
+            <h2>สนใจสมัครตัวแทนประกันกับ BOYINSURE?</h2>
+            <ul>
+              <li>รายได้ดี โอกาสเติบโต</li>
+              <li>อบรมฟรี พร้อมระบบสนับสนุน</li>
+              <li>ทีมงานดูแลใกล้ชิดทั่วประเทศ</li>
+            </ul>
+            <div class="promo-agent__actions">
+              <a href="contact.html" class="btn btn--gold">สมัครตัวแทน</a>
+              <a href="tel:0627878968" class="btn btn--outline btn--outline-dark">ปรึกษาฟรี</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-banner">
+      <div class="container">
+        <h2>พร้อมวางแผนความคุ้มครองแล้วหรือยัง?</h2>
+        <p>ปรึกษาผู้เชี่ยวชาญ BoyInsure ฟรี ไม่มีค่าใช้จ่าย ไม่บังคับซื้อ</p>
+        <div class="cta-banner__actions">
+          <a href="tel:0627878968" class="btn btn--gold">โทร 062-787-8968</a>
+          <a href="contact.html" class="btn btn--outline">สอบถามทางแชท</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="siteFooter" aria-label="ส่วนท้ายเว็บไซต์"></footer>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>

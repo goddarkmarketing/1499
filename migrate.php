@@ -1,0 +1,102 @@
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/includes/bootstrap.php';
+
+header('Content-Type: text/html; charset=utf-8');
+
+function db_column_exists(string $table, string $column): bool {
+    $stmt = db()->prepare(
+        'SELECT COUNT(*) FROM information_schema.COLUMNS
+         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?'
+    );
+    $stmt->execute([$table, $column]);
+    return (int) $stmt->fetchColumn() > 0;
+}
+
+function db_table_exists(string $table): bool {
+    $stmt = db()->prepare(
+        'SELECT COUNT(*) FROM information_schema.TABLES
+         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?'
+    );
+    $stmt->execute([$table]);
+    return (int) $stmt->fetchColumn() > 0;
+}
+
+$steps = [];
+try {
+    $pdo = db();
+
+    if (!db_table_exists('games')) {
+        $pdo->exec(
+            "CREATE TABLE games (
+              id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+              code VARCHAR(40) NOT NULL UNIQUE,
+              name VARCHAR(120) NOT NULL,
+              type ENUM('wheel','scratch','quiz','other') NOT NULL DEFAULT 'wheel',
+              description TEXT NULL,
+              status ENUM('active','inactive') NOT NULL DEFAULT 'active',
+              sort_order SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+              created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB"
+        );
+        $steps[] = 'สร้างตาราง games';
+    }
+
+    $pdo->exec(
+        "INSERT IGNORE INTO games (id, code, name, type, description, status, sort_order) VALUES
+        (1, 'lucky_wheel', 'วงล้อโชคดี', 'wheel', 'เกมหมุนวงล้อลุ้นรางวัลสำหรับลูกค้า BoyInsure', 'active', 1)"
+    );
+    $steps[] = 'เพิ่มเกมวงล้อโชคดี (ถ้ายังไม่มี)';
+
+    if (!db_column_exists('prizes', 'game_id')) {
+        $pdo->exec('ALTER TABLE prizes ADD COLUMN game_id INT UNSIGNED NULL AFTER id, ADD KEY idx_prizes_game (game_id)');
+        $steps[] = 'เพิ่มคอลัมน์ prizes.game_id';
+    }
+    $pdo->exec('UPDATE prizes SET game_id = 1 WHERE game_id IS NULL');
+    $steps[] = 'อัปเดตของรางวัลให้ผูกกับวงล้อโชคดี';
+
+    if (!db_column_exists('spin_logs', 'game_id')) {
+        $pdo->exec(
+            'ALTER TABLE spin_logs
+             ADD COLUMN game_id INT UNSIGNED NULL AFTER member_id,
+             ADD KEY idx_spin_game (game_id),
+             ADD KEY idx_spin_created (created_at)'
+        );
+        $steps[] = 'เพิ่มคอลัมน์ spin_logs.game_id';
+    }
+    $pdo->exec('UPDATE spin_logs SET game_id = 1 WHERE game_id IS NULL');
+    $steps[] = 'อัปเดตประวัติการเล่นให้ผูกกับวงล้อโชคดี';
+
+    $ok = true;
+} catch (Throwable $e) {
+    $ok = false;
+    $error = $e->getMessage();
+}
+?>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>อัปเดตฐานข้อมูล — เกมหลายประเภท</title>
+  <style>
+    body { font-family: sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; }
+    .ok { color: #166534; } .err { color: #991b1b; }
+    li { margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <h1>อัปเดตระบบเกมหลายประเภท</h1>
+<?php if ($ok): ?>
+  <p class="ok">✓ อัปเดตสำเร็จ</p>
+  <ul>
+    <?php foreach ($steps as $s): ?><li><?= htmlspecialchars($s) ?></li><?php endforeach; ?>
+  </ul>
+  <p><a href="admin/plays.php">ไปหน้าประวัติการเล่น</a> · <a href="admin/games.php">จัดการเกม</a></p>
+<?php else: ?>
+  <p class="err">✗ <?= htmlspecialchars($error ?? 'unknown error') ?></p>
+<?php endif; ?>
+</body>
+</html>

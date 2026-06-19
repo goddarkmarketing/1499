@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="./" />
+  <title>BoyInsure | รายละเอียดแผนประกัน</title>
+  <link rel="stylesheet" href="assets/css/fonts.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="stylesheet" href="assets/css/icons.css" />
+</head>
+<body data-page="insurance">
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="index.html" class="navbar__brand"><span class="navbar__name">BoyInsure</span></a>
+      <ul class="navbar__menu" id="navbarMenu">
+        <li><a href="index.html" data-nav="home">หน้าแรก</a></li>
+        <li><a href="promotions.html" data-nav="promotions">โปรโมชั่นและของรางวัล</a></li>
+        <li><a href="insurance.html" data-nav="insurance">แบบประกันของเรา</a></li>
+        <li><a href="about.html" data-nav="about">เกี่ยวกับ BOYINSURE</a></li>
+        <li><a href="articles.html" data-nav="articles">บทความ</a></li>
+      </ul>
+      <a href="contact.html" class="btn-login"><i data-lucide="message-circle" aria-hidden="true"></i> สอบถาม</a>
+      <button class="navbar__toggle" id="navToggle" aria-label="เมนู" aria-expanded="false"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <main class="page-main">
+    <section class="site-section site-section--alt">
+      <div class="container">
+        <div class="plan-detail" id="planDetail" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="siteFooter" aria-label="ส่วนท้ายเว็บไซต์"></footer>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>

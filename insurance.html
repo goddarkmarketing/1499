@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="./" />
+  <title>BoyInsure | แบบประกันของเรา</title>
+  <link rel="stylesheet" href="assets/css/fonts.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="stylesheet" href="assets/css/icons.css" />
+</head>
+<body data-page="insurance">
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="index.html" class="navbar__brand"><span class="navbar__name">BoyInsure</span></a>
+      <ul class="navbar__menu" id="navbarMenu">
+        <li><a href="index.html" data-nav="home">หน้าแรก</a></li>
+        <li><a href="promotions.html" data-nav="promotions">โปรโมชั่นและของรางวัล</a></li>
+        <li><a href="insurance.html" data-nav="insurance">แบบประกันของเรา</a></li>
+        <li><a href="about.html" data-nav="about">เกี่ยวกับ BOYINSURE</a></li>
+        <li><a href="articles.html" data-nav="articles">บทความ</a></li>
+      </ul>
+      <a href="contact.html" class="btn-login"><i data-lucide="message-circle" aria-hidden="true"></i> สอบถาม</a>
+      <button class="navbar__toggle" id="navToggle" aria-label="เมนู" aria-expanded="false"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <main class="page-main">
+    <section class="page-hero page-hero--photo page-hero--insurance">
+      <div class="page-hero__inner">
+        <span class="page-hero__eyebrow">Insurance</span>
+        <h1>แบบประกันของเรา</h1>
+        <p class="page-hero__lead">เครื่องมือช่วยวางแผนและดูแลลูกค้า — ครอบคลุมประกันชีวิต สุขภาพ ออมเงิน และความคุ้มครองจากบริษัทชั้นนำ</p>
+      </div>
+    </section>
+
+    <section class="site-section site-section--alt insurance-catalog">
+      <div class="container">
+        <div class="insurance-catalog__layout">
+          <aside class="insurance-sidebar" aria-label="หมวดหมู่ประกัน">
+            <p class="insurance-sidebar__eyebrow">เลือกหมวดหมู่</p>
+            <nav class="insurance-sidebar__nav" id="insuranceCategoryNav" aria-label="หมวดหมู่แบบประกัน"></nav>
+            <div class="insurance-sidebar__help">
+              <i data-lucide="message-circle" aria-hidden="true"></i>
+              <div>
+                <strong>ไม่แน่ใจว่าเลือกแบบไหน?</strong>
+                <p>ทีม BoyInsure ช่วยวิเคราะห์และเปรียบเทียบให้ฟรี</p>
+                <a href="contact.html" class="insurance-sidebar__link">ปรึกษาผู้เชี่ยวชาญ</a>
+              </div>
+            </div>
+          </aside>
+
+          <div class="insurance-catalog__main">
+            <header class="insurance-catalog__head" id="insuranceCategoryHead"></header>
+            <div class="insurance-plan-grid" id="insurancePlanGrid" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-banner">
+      <div class="container">
+        <h2>สนใจแบบประกันใด?</h2>
+        <p>ปรึกษาทีม BoyInsure เพื่อวางแผนที่เหมาะกับคุณและลูกค้า</p>
+        <div class="cta-banner__actions">
+          <a href="contact.html" class="btn btn--gold">สอบถาม</a>
+          <a href="tel:0627878968" class="btn btn--outline">โทร 062-787-8968</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="siteFooter" aria-label="ส่วนท้ายเว็บไซต์"></footer>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>

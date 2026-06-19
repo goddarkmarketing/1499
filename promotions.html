@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="./" />
+  <title>BoyInsure | โปรโมชั่นและของรางวัล</title>
+  <link rel="stylesheet" href="assets/css/fonts.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="stylesheet" href="assets/css/icons.css" />
+</head>
+<body data-page="promotions">
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__name">BoyInsure</span>
+      </a>
+      <ul class="navbar__menu" id="navbarMenu">
+        <li><a href="index.html" data-nav="home">หน้าแรก</a></li>
+        <li><a href="promotions.html" data-nav="promotions">โปรโมชั่นและของรางวัล</a></li>
+        <li><a href="insurance.html" data-nav="insurance">แบบประกันของเรา</a></li>
+        <li><a href="about.html" data-nav="about">เกี่ยวกับ BOYINSURE</a></li>
+        <li><a href="articles.html" data-nav="articles">บทความ</a></li>
+      </ul>
+      <a href="#login" class="btn-login" id="headerLoginBtn">
+        <i data-lucide="log-in" aria-hidden="true"></i>
+        เข้าสู่ระบบ
+      </a>
+      <button class="navbar__toggle" id="navToggle" aria-label="เมนู" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="page-main promo-page">
+
+    <section class="hero promo-hero" id="home">
+      <div class="hero__bg"></div>
+      <div class="hero__confetti" id="heroConfetti" aria-hidden="true"></div>
+
+      <div class="hero__inner promo-hero__inner">
+        <div class="promo-hero__grid">
+          <div class="promo-hero__wheel">
+            <div class="wheel-showcase">
+              <div class="wheel-stage">
+                <div class="wheel-wrap wheel-game">
+                  <img class="wheel-game__pin" id="wheelPin" src="assets/img/wheel-pointer.svg" alt="" />
+                  <div class="wheel-rotator" id="wheelRotator">
+                    <canvas id="wheelCanvas" class="wheel-canvas" aria-label="วงล้อของรางวัล"></canvas>
+                    <div class="wheel-lights" id="wheelLights" aria-hidden="true"></div>
+                  </div>
+                  <button class="wheel-game__btn" id="spinBtn" type="button" aria-label="หมุนวงล้อ">
+                    SPIN
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="promo-hero__content">
+            <span class="promo-hero__badge">
+              <i data-lucide="gift" aria-hidden="true"></i>
+              กิจกรรมพิเศษสำหรับลูกค้า BOYINSURE
+            </span>
+            <h1 class="promo-hero__title">หมุนวงล้อ<br/>รับของรางวัลมากมาย</h1>
+            <p class="promo-hero__lead">
+              ลูกค้า BoyInsure ที่ทำประกันใหม่หรือแนะนำเพื่อน รับสิทธิ์หมุนวงล้อลุ้นวอเชอร์และของรางวัลจากพาร์ทเนอร์ชั้นนำ
+            </p>
+            <ul class="promo-hero__features">
+              <li><i data-lucide="shield-check" aria-hidden="true"></i> มั่นใจ ปลอดภัย</li>
+              <li><i data-lucide="sparkles" aria-hidden="true"></i> ของรางวัลหลากหลาย</li>
+              <li><i data-lucide="eye" aria-hidden="true"></i> โปร่งใส ตรวจสอบได้</li>
+            </ul>
+            <div class="promo-countdown" id="promoCountdown" aria-label="นับถอยหลังกิจกรรม">
+              <div class="promo-countdown__item">
+                <strong id="countdownDays">00</strong>
+                <span>วัน</span>
+              </div>
+              <div class="promo-countdown__item">
+                <strong id="countdownHours">00</strong>
+                <span>ชั่วโมง</span>
+              </div>
+              <div class="promo-countdown__item">
+                <strong id="countdownMinutes">00</strong>
+                <span>นาที</span>
+              </div>
+              <div class="promo-countdown__item">
+                <strong id="countdownSeconds">00</strong>
+                <span>วินาที</span>
+              </div>
+            </div>
+            <div class="promo-hero__prize-bar">
+              <a href="#" class="promo-hero__all-prizes" id="viewAllPrizesBtn" role="button">
+                <i data-lucide="gift" aria-hidden="true"></i>
+                <span>ดูของรางวัลทั้งหมด</span>
+                <i data-lucide="chevron-right" class="promo-hero__all-prizes-arrow" aria-hidden="true"></i>
+              </a>
+              <div class="promo-prize-marquee" aria-hidden="true">
+                <div class="promo-prize-marquee__track" id="prizeMarqueeTrack"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="promo-dashboard">
+      <div class="container">
+        <div class="promo-dashboard__status wheel-panel__status" id="wheelPanelStatus">
+          <p class="wheel-panel__status-text" id="wheelStatusGuest">
+            เข้าสู่ระบบเพื่อรับสิทธิ์เข้าร่วมกิจกรรมวงล้อของรางวัล
+          </p>
+          <p class="wheel-panel__status-text" id="wheelStatusHasSpins" hidden>
+            วันนี้ คุณมีสิทธิ์หมุนวงล้อ <strong id="spinsLeft">2</strong> ครั้ง
+          </p>
+          <p class="wheel-panel__status-text" id="wheelStatusNoSpins" hidden>
+            วันนี้ คุณใช้สิทธิ์หมุนวงล้อครบแล้ว
+          </p>
+        </div>
+
+        <div class="promo-dashboard__stats">
+          <article class="promo-stat">
+            <span class="promo-stat__icon" aria-hidden="true"><i data-lucide="compass"></i></span>
+            <div>
+              <strong class="promo-stat__value" id="dashSpinsLeft">2</strong>
+              <span class="promo-stat__label">สิทธิ์คงเหลือ (ครั้ง)</span>
+            </div>
+          </article>
+          <article class="promo-stat">
+            <span class="promo-stat__icon" aria-hidden="true"><i data-lucide="coins"></i></span>
+            <div>
+              <strong class="promo-stat__value" id="dashPoints">12,500</strong>
+              <span class="promo-stat__label">สะสมคะแนน</span>
+            </div>
+          </article>
+          <article class="promo-stat">
+            <span class="promo-stat__icon" aria-hidden="true"><i data-lucide="gift"></i></span>
+            <div>
+              <strong class="promo-stat__value" id="dashPrizesWon">0</strong>
+              <span class="promo-stat__label">ของรางวัลที่ได้รับ (รายการ)</span>
+            </div>
+          </article>
+          <article class="promo-stat">
+            <span class="promo-stat__icon" aria-hidden="true"><i data-lucide="crown"></i></span>
+            <div>
+              <strong class="promo-stat__value" id="dashMemberLevel">สมาชิก</strong>
+              <span class="promo-stat__label">ระดับสมาชิก</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="wheel-panel__actions promo-dashboard__actions">
+          <button class="wheel-panel__btn" id="myRewardsBtn" type="button">
+            <i data-lucide="gift" class="wheel-panel__icon" aria-hidden="true"></i>
+            <span>รางวัลของฉัน</span>
+          </button>
+          <button class="wheel-panel__btn" id="termsBtn" type="button">
+            <i data-lucide="file-text" class="wheel-panel__icon" aria-hidden="true"></i>
+            <span>เงื่อนไขกิจกรรม</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="promo-prizes" id="privileges">
+      <div class="container">
+        <div class="promo-prizes__grid">
+          <article class="promo-panel">
+            <header class="promo-panel__head">
+              <h2 class="promo-panel__title">รายการของรางวัล</h2>
+              <a href="#" class="promo-panel__link js-open-all-prizes">ดูทั้งหมด</a>
+            </header>
+            <div class="prize-table">
+              <div class="prize-table__cols" aria-hidden="true">
+                <span>รางวัล</span>
+                <span>จำนวน</span>
+              </div>
+              <div class="prize-list" id="prizesGrid"></div>
+            </div>
+            <footer class="promo-panel__foot promo-panel__foot--prizes">
+              <i data-lucide="gift" aria-hidden="true"></i>
+              <span>ของรางวัลรวมมากกว่า 300 รางวัล</span>
+            </footer>
+          </article>
+
+          <article class="promo-panel">
+            <header class="promo-panel__head">
+              <h2 class="promo-panel__title promo-panel__title--icon">
+                <i data-lucide="trophy" aria-hidden="true"></i>
+                ผู้ได้รับรางวัลล่าสุด
+              </h2>
+              <a href="#" class="promo-panel__link js-open-all-winners">ดูทั้งหมด</a>
+            </header>
+            <ul class="winners-list" id="winnersList"></ul>
+            <footer class="promo-panel__foot promo-panel__foot--note">
+              * ประกาศรายชื่อผู้โชคดีทุกวัน เวลา 10.00 น.
+            </footer>
+          </article>
+        </div>
+
+        <div class="prize-compare" id="prizeCompare" hidden>
+          <h2 class="promo-section-title promo-section-title--center">เปรียบเทียบของรางวัลที่ได้</h2>
+          <div class="prize-compare__table-wrap" id="prizeCompareGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="promo-steps site-section site-section--alt">
+      <div class="container">
+        <div class="promo-steps__card">
+          <h2 class="promo-steps__title">วิธีรับสิทธิ์หมุนวงล้อ</h2>
+          <ol class="promo-steps__flow">
+            <li class="promo-steps__item">
+              <div class="promo-steps__visual">
+                <span class="promo-steps__num">1</span>
+                <span class="promo-steps__icon" aria-hidden="true"><i data-lucide="shield-check"></i></span>
+              </div>
+              <strong>ซื้อประกัน</strong>
+              <p>ซื้อหรือแนะนำผลิตภัณฑ์ประกันตามเงื่อนไข</p>
+            </li>
+            <li class="promo-steps__arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></li>
+            <li class="promo-steps__item">
+              <div class="promo-steps__visual">
+                <span class="promo-steps__num">2</span>
+                <span class="promo-steps__icon" aria-hidden="true"><i data-lucide="clipboard-list"></i></span>
+              </div>
+              <strong>รับสิทธิ์เข้าระบบ</strong>
+              <p>เจ้าหน้าที่บันทึกสิทธิ์เข้าสู่ระบบ</p>
+            </li>
+            <li class="promo-steps__arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></li>
+            <li class="promo-steps__item">
+              <div class="promo-steps__visual">
+                <span class="promo-steps__num">3</span>
+                <span class="promo-steps__icon" aria-hidden="true"><i data-lucide="disc-3"></i></span>
+              </div>
+              <strong>หมุนวงล้อ</strong>
+              <p>ใช้สิทธิ์หมุนวงล้อตามจำนวนที่ได้รับ</p>
+            </li>
+            <li class="promo-steps__arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></li>
+            <li class="promo-steps__item">
+              <div class="promo-steps__visual">
+                <span class="promo-steps__num">4</span>
+                <span class="promo-steps__icon" aria-hidden="true"><i data-lucide="gift"></i></span>
+              </div>
+              <strong>รับของรางวัล</strong>
+              <p>เจ้าหน้าที่ติดต่อยืนยันสิทธิ์จัดส่งของรางวัลให้คุณ</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="promo-agent">
+      <div class="container">
+        <div class="promo-agent__banner">
+          <div class="promo-agent__body">
+            <h2>สนใจสมัครตัวแทนประกันกับ BOYINSURE?</h2>
+            <ul>
+              <li>รายได้ดี โอกาสเติบโต</li>
+              <li>อบรมฟรี พร้อมระบบสนับสนุน</li>
+              <li>ทีมงานดูแลใกล้ชิดทั่วประเทศ</li>
+            </ul>
+            <div class="promo-agent__actions">
+              <a href="contact.html" class="btn btn--gold">สมัครตัวแทน</a>
+              <a href="tel:0627878968" class="btn btn--outline btn--outline-dark">ปรึกษาฟรี</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section site-section--alt">
+      <div class="container">
+        <div class="section-head">
+          <h2>ทำไมต้องเลือก BOYINSURE</h2>
+        </div>
+        <div class="promo-trust">
+          <article class="promo-trust__card">
+            <span class="promo-trust__icon" aria-hidden="true"><i data-lucide="users"></i></span>
+            <strong>1,000+ ราย</strong>
+            <span>ลูกค้าที่ไว้วางใจ</span>
+          </article>
+          <article class="promo-trust__card">
+            <span class="promo-trust__icon" aria-hidden="true"><i data-lucide="award"></i></span>
+            <strong>10+ ปี</strong>
+            <span>ประสบการณ์ด้านประกัน</span>
+          </article>
+          <article class="promo-trust__card">
+            <span class="promo-trust__icon" aria-hidden="true"><i data-lucide="badge-check"></i></span>
+            <strong>ถูกต้องตามกฎหมาย</strong>
+            <span>ศูนย์ไทยประกันชีวิต</span>
+          </article>
+          <article class="promo-trust__card">
+            <span class="promo-trust__icon" aria-hidden="true"><i data-lucide="map-pin"></i></span>
+            <strong>ดูแลทั่วประเทศ</strong>
+            <span>ทีมซัพพอร์ตพร้อมดูแล</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="result-overlay" id="allPrizesOverlay" hidden>
+    <div class="result-modal result-modal--prizes" role="dialog" aria-modal="true" aria-labelledby="allPrizesTitle">
+      <article class="promo-panel promo-panel--modal">
+        <header class="promo-panel__head">
+          <h2 class="promo-panel__title" id="allPrizesTitle">รายการของรางวัล</h2>
+          <button type="button" class="promo-panel__close" id="closeAllPrizes" aria-label="ปิด">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </header>
+        <div class="prize-table prize-table--modal">
+          <div class="prize-table__cols" aria-hidden="true">
+            <span>รางวัล</span>
+            <span>จำนวน</span>
+          </div>
+          <div class="prize-list" id="allPrizesList"></div>
+        </div>
+        <footer class="promo-panel__foot promo-panel__foot--prizes">
+          <i data-lucide="gift" aria-hidden="true"></i>
+          <span>ของรางวัลรวมมากกว่า 300 รางวัล</span>
+        </footer>
+      </article>
+    </div>
+  </div>
+
+  <div class="result-overlay" id="allWinnersOverlay" hidden>
+    <div class="result-modal result-modal--winners" role="dialog" aria-modal="true" aria-labelledby="allWinnersTitle">
+      <article class="promo-panel promo-panel--modal">
+        <header class="promo-panel__head">
+          <h2 class="promo-panel__title promo-panel__title--icon" id="allWinnersTitle">
+            <i data-lucide="trophy" aria-hidden="true"></i>
+            ผู้ได้รับรางวัลล่าสุด
+          </h2>
+          <button type="button" class="promo-panel__close" id="closeAllWinners" aria-label="ปิด">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </header>
+        <ul class="winners-list winners-list--modal" id="allWinnersList"></ul>
+        <footer class="promo-panel__foot promo-panel__foot--note">
+          * ประกาศรายชื่อผู้โชคดีทุกวัน เวลา 10.00 น.
+        </footer>
+      </article>
+    </div>
+  </div>
+
+  <div class="result-overlay" id="loginOverlay" hidden>
+    <div class="result-modal result-modal--auth">
+      <p class="result-modal__label">เข้าร่วมกิจกรรม</p>
+      <p class="auth-modal__message">เข้าสู่ระบบหรือสมัครสมาชิกเพื่อหมุนวงล้อ</p>
+      <form id="memberLoginForm" class="auth-modal__form" hidden>
+        <label for="loginPhone">เบอร์โทรศัพท์</label>
+        <input type="tel" id="loginPhone" required placeholder="08x-xxx-xxxx" />
+        <button type="submit" class="btn-close-result">เข้าสู่ระบบ</button>
+      </form>
+      <form id="memberRegisterForm" class="auth-modal__form">
+        <label for="registerName">ชื่อ-นามสกุล</label>
+        <input type="text" id="registerName" required placeholder="กรอกชื่อของคุณ" />
+        <label for="registerPhone">เบอร์โทรศัพท์</label>
+        <input type="tel" id="registerPhone" required placeholder="08x-xxx-xxxx" />
+        <button type="submit" class="btn-close-result">สมัครและเข้าร่วม</button>
+      </form>
+      <div class="auth-modal__actions">
+        <button type="button" class="auth-modal__btn auth-modal__btn--outline" id="loginModalToggle">มีบัญชีแล้ว? เข้าสู่ระบบ</button>
+      </div>
+      <button type="button" class="auth-modal__close" id="closeLogin">ปิด</button>
+    </div>
+  </div>
+
+  <div class="result-overlay" id="resultOverlay" hidden>
+    <div class="result-modal result-modal--win">
+      <p class="result-modal__label">ยินดีด้วย!</p>
+      <div class="result-modal__logo-ring">
+        <img id="resultPrizeLogo" class="result-modal__logo" src="" alt="" />
+      </div>
+      <p class="result-modal__prize" id="resultPrize"></p>
+      <p class="result-modal__detail" id="resultPrizeDetail"></p>
+      <button class="btn-close-result" id="closeResult" type="button">ตกลง</button>
+    </div>
+  </div>
+
+  <div class="result-overlay" id="rewardsOverlay" hidden>
+    <div class="result-modal result-modal--list">
+      <p class="result-modal__label">รางวัลของฉัน</p>
+      <ul class="rewards-list" id="rewardsList"></ul>
+      <p class="rewards-empty" id="rewardsEmpty" hidden>ยังไม่มีรางวัล — หมุนวงล้อเพื่อลุ้นรับของรางวัล BoyInsure</p>
+      <button class="btn-close-result" id="closeRewards">ปิด</button>
+    </div>
+  </div>
+
+  <div class="result-overlay" id="termsOverlay" hidden>
+    <div class="result-modal result-modal--terms">
+      <p class="result-modal__label">ข้อกำหนดและเงื่อนไข</p>
+      <div class="terms-body">
+        <p class="terms-body__title">ข้อกำหนดและเงื่อนไขการรับสิทธิ์ของรางวัลจากกิจกรรมหมุนวงล้อ</p>
+        <ol class="terms-body__list">
+          <li>ของรางวัลที่ปรากฏในกิจกรรมหมุนวงล้อ เป็น สิทธิ์ในการรับวอเชอร์หรือของรางวัล ภายใต้ข้อกำหนดและเงื่อนไขที่บริษัทกำหนด โดย ยังไม่สามารถใช้สิทธิ์หรือรับของรางวัลได้ทันที</li>
+          <li>สิทธิ์ดังกล่าวสงวนไว้สำหรับ ลูกค้าที่ซื้อกรมธรรม์ใหม่กับทาง บอย อินชัวร์ เท่านั้น โดยกรมธรรม์ต้องได้รับการอนุมัติจากบริษัทประกันภัยที่เกี่ยวข้องตามหลักเกณฑ์และเงื่อนไขของบริษัทประกันภัยนั้น ๆ</li>
+          <li>
+            ลูกค้าจะได้รับสิทธิ์ในการรับวอเชอร์หรือของรางวัล เมื่อมีคุณสมบัติครบถ้วนดังต่อไปนี้
+            <ul>
+              <li>กรมธรรม์ได้รับการอนุมัติเรียบร้อยแล้ว</li>
+              <li>ลูกค้าได้ลงนามรับกรมธรรม์เรียบร้อยแล้ว</li>
+              <li>พ้นระยะเวลา 30 วัน นับจากวันที่กรมธรรม์ได้รับการอนุมัติหรือมีผลบังคับใช้ตามที่บริษัทกำหนด</li>
+              <li>ไม่มีการยกเลิก เปลี่ยนแปลง หรือดำเนินการใด ๆ ที่ส่งผลให้กรมธรรม์สิ้นสุดลงก่อนครบกำหนดตามเงื่อนไขของกิจกรรม</li>
+            </ul>
+          </li>
+          <li>บริษัทจะดำเนินการตรวจสอบคุณสมบัติและยืนยันสิทธิ์ของลูกค้า โดยจะจัดส่งวอเชอร์หรือแจ้งวิธีการรับของรางวัลภายใน 7 วัน นับจากวันที่ลูกค้ามีคุณสมบัติครบถ้วนตามเงื่อนไขที่กำหนด</li>
+          <li>ในกรณีที่ลูกค้ายกเลิกกรมธรรม์ หรือกรมธรรม์ถูกยกเลิกด้วยเหตุใด ๆ ก่อนครบกำหนดตามเงื่อนไขของกิจกรรม บริษัทขอสงวนสิทธิ์ในการยกเลิกสิทธิ์การรับหรือการใช้วอเชอร์และของรางวัลดังกล่าว โดยลูกค้าไม่สามารถเรียกร้องค่าเสียหายหรือค่าชดเชยใด ๆ จากบริษัทได้</li>
+          <li>บริษัทขอสงวนสิทธิ์ในการตรวจสอบ ยืนยันคุณสมบัติ ตีความ และพิจารณาการให้สิทธิ์ตามเงื่อนไขของกิจกรรม โดยคำตัดสินของบริษัทถือเป็นที่สุด ภายใต้ขอบเขตที่กฎหมายที่เกี่ยวข้องกำหนด</li>
+          <li>การเข้าร่วมกิจกรรมนี้ถือว่าผู้เข้าร่วมได้อ่าน ทำความเข้าใจ และยอมรับข้อกำหนดและเงื่อนไขทั้งหมดของกิจกรรมเรียบร้อยแล้ว</li>
+        </ol>
+      </div>
+      <button class="btn-close-result" id="closeTerms">ปิด</button>
+    </div>
+  </div>
+
+  <footer class="site-footer" id="siteFooter" aria-label="ส่วนท้ายเว็บไซต์"></footer>
+
+  <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+
+  <div class="dev-mode" id="devModePanel" title="สำหรับพัฒนาเท่านั้น">
+    <label class="dev-mode__toggle">
+      <input type="checkbox" id="devModeToggle" checked />
+      <span class="dev-mode__track" aria-hidden="true"><span class="dev-mode__thumb"></span></span>
+      <span class="dev-mode__text">โหมดทดลอง</span>
+    </label>
+  </div>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

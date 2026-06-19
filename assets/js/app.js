@@ -1,0 +1,1364 @@
+(() => {
+  'use strict';
+
+  const assetRoot = (() => {
+    const link = document.createElement('a');
+    link.href = 'assets/';
+    return link.href;
+  })();
+
+  function asset(path) {
+    const link = document.createElement('a');
+    link.href = assetRoot + path.replace(/^\/+/, '');
+    return link.href;
+  }
+
+  function prizeIcon(group) {
+    return `img/icon/Group ${group}.png`;
+  }
+
+  const PRIZES = [
+    {
+      name: 'บัตรโลตัส',
+      short: 'โลตัส',
+      detail: 'บัตรของขวัญมูลค่า 500 บาท ใช้ได้ทุกสาขา Lotus’s ทั่วประเทศ',
+      color: '#fff9e6',
+      logo: prizeIcon(1),
+    },
+    {
+      name: 'บัตรน้ำมันปตท.',
+      short: 'ปตท.',
+      detail: 'บัตรเติมน้ำมันมูลค่า 500 บาท ใช้ได้ที่ ปตท. และ ฟิตกอล',
+      color: '#e8f4fd',
+      logo: prizeIcon(2),
+    },
+    {
+      name: 'Voucher ตรวจสุขภาพ\nเครือโรงพยาบาลกรุงเทพ',
+      short: 'รพ.กรุงเทพ',
+      detail: 'ตรวจสุขภาพพื้นฐาน ครอบคลุมเลือด ปัสสาวะ และ X-Ray ที่เครือโรงพยาบาลกรุงเทพ',
+      color: '#fde8f0',
+      logo: prizeIcon(3),
+    },
+    {
+      name: 'Voucher Super sport',
+      short: 'Supersports',
+      detail: 'Voucher มูลค่า 1,000 บาท ใช้ซื้อสินค้ากีฬาและเครื่องแต่งกายที่ Supersports',
+      color: '#fff0e8',
+      logo: prizeIcon(4),
+    },
+    {
+      name: 'Voucher ทันตกรรม',
+      short: 'ทันตกรรม',
+      detail: 'ฟอกสีฟัน หรือขูดหินปูน 1 ครั้ง ที่คลินิกทันตกรรมพันธมิตร',
+      color: '#e8f8ff',
+      logo: prizeIcon(5),
+    },
+    {
+      name: 'Voucher โบท็อกซ์ฟิลเลอร์',
+      short: 'โบท็อกซ์',
+      detail: 'Voucher โบท็อกซ์หรือฟิลเลอร์ 1 จุด ที่คลินิกความงามพันธมิตร',
+      color: '#fdf0ff',
+      logo: prizeIcon(6),
+    },
+    {
+      name: 'Voucher Jett Fitness',
+      short: 'Jett Fitness',
+      detail: 'สมาชิกฟิตเนส 1 เดือน ใช้ได้ทุกสาขา Jetts Fitness 24 ชม.',
+      color: '#fff5e8',
+      logo: prizeIcon(7),
+    },
+    {
+      name: 'Voucher Big C',
+      short: 'Big C',
+      detail: 'Voucher มูลค่า 500 บาท ใช้ซื้อสินค้าทุกประเภทที่ Big C',
+      color: '#e8fdf0',
+      logo: prizeIcon(11),
+    },
+    {
+      name: 'Voucher โอ้กะจู๋',
+      short: 'โอ้กะจู๋',
+      detail: 'Voucher อาหารออร์แกนิกมูลค่า 500 บาท ใช้ได้ที่ร้านโอ้กะจู๋',
+      color: '#f0ffe8',
+      logo: prizeIcon(12),
+    },
+    {
+      name: 'ประกันรถยนต์ ชั้น 1',
+      short: 'ประกันรถ',
+      detail: 'ประกันรถยนต์ชั้น 1 คุ้มครองรถ ผู้ขับ และบุคคลภายนอก ตามเงื่อนไขกรมธรรม์',
+      color: '#e8eeff',
+      logo: prizeIcon(13),
+    },
+    {
+      name: 'ประกันอุบัติเหตุ 400,000',
+      short: 'อุบัติเหตุ',
+      detail: 'ความคุ้มครองสูงสุด 400,000 บาท กรณีเสียชีวิตหรือทุพพลภาพถาวรจากอุบัติเหตุ',
+      color: '#fff8e8',
+      logo: prizeIcon(8),
+    },
+    {
+      name: 'ประกันอัคคีภัย ที่อยู่อาศัย',
+      short: 'อัคคีภัย',
+      detail: 'คุ้มครองบ้านและทรัพย์สินจากไฟไหม้ ฟ้าผ่า และภัยธรรมชาติ ตามเงื่อนไขกรมธรรม์',
+      color: '#ffe8e8',
+      logo: prizeIcon(9),
+    },
+    {
+      name: 'Voucher ติดตั้ง โซล่าร์เซลล์',
+      short: 'โซล่าร์',
+      detail: 'ส่วนลดติดตั้งระบบโซล่าร์เซลล์สำหรับบ้าน มูลค่า 5,000 บาท',
+      color: '#fffde8',
+      logo: prizeIcon(10),
+    },
+  ];
+
+  /* 12 ช่องวงล้อ (เรียงตามเข็มนาฬิกาจากด้านบน) */
+  const WHEEL_SEGMENTS = 12;
+  const DEG_PER_SEG = 360 / WHEEL_SEGMENTS;
+  const WHEEL_OFFSET = 0;
+
+  /* lotus, ptt, hospital, supersports, dental, botox, jett, ohkajhu, car, accident, fire, solar */
+  const WHEEL_TO_PRIZE = [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12];
+
+  const DEFAULT_SPINS = 2;
+
+  const PRIZE_CATALOG_DISPLAY = [
+    { prizeIndex: 0, label: "บัตร Lotus's มูลค่า 500 บาท", qty: 100 },
+    { prizeIndex: 1, label: 'บัตร PTT Station มูลค่า 500 บาท', qty: 100 },
+    { prizeIndex: 8, label: 'ประกันอุบัติเหตุส่วนบุคคล 400,000 บาท', qty: 20 },
+    { prizeIndex: 9, label: 'ประกันรถยนต์ ชั้น 1', qty: 10 },
+    { prizeIndex: 3, label: 'Voucher Supersports มูลค่า 500 บาท', qty: 50 },
+  ];
+
+  const PRIZE_STOCK_BY_INDEX = {
+    0: 100, 1: 100, 2: 30, 3: 50, 4: 25, 5: 20, 6: 30, 7: 40,
+    8: 20, 9: 10, 10: 15, 11: 12,
+  };
+
+  const ALL_WINNERS = [
+    { name: 'คุณสมชาย ข.', location: 'เชียงราย', prize: "บัตร Lotus's 500 บาท", time: 'เมื่อ 10 นาทีที่แล้ว', type: 'voucher' },
+    { name: 'คุณมาลี ว.', location: 'กรุงเทพฯ', prize: 'บัตร PTT Station 500 บาท', time: 'เมื่อ 25 นาทีที่แล้ว', type: 'voucher' },
+    { name: 'คุณณัฐ ส.', location: 'เชียงใหม่', prize: 'ประกันอุบัติเหตุส่วนบุคคล', time: 'เมื่อ 45 นาทีที่แล้ว', type: 'insurance' },
+    { name: 'คุณพิม พ.', location: 'นนทบุรี', prize: 'ประกันรถยนต์ ชั้น 1', time: 'เมื่อ 1 ชั่วโมงที่แล้ว', type: 'insurance' },
+    { name: 'คุณวิชัย ก.', location: 'ขอนแก่น', prize: 'Voucher Supersports 500 บาท', time: 'เมื่อ 2 ชั่วโมงที่แล้ว', type: 'voucher' },
+    { name: 'คุณอรุณ ท.', location: 'ภูเก็ต', prize: 'Voucher Big C 500 บาท', time: 'เมื่อ 3 ชั่วโมงที่แล้ว', type: 'voucher' },
+    { name: 'คุณจิตรา น.', location: 'สงขลา', prize: 'Voucher ตรวจสุขภาพ', time: 'เมื่อ 4 ชั่วโมงที่แล้ว', type: 'voucher' },
+    { name: 'คุณธนา ล.', location: 'นครราชสีมา', prize: 'ประกันอัคคีภัย ที่อยู่อาศัย', time: 'เมื่อ 5 ชั่วโมงที่แล้ว', type: 'insurance' },
+    { name: 'คุณแพรว ร.', location: 'อุดรธานี', prize: 'Voucher Jett Fitness', time: 'เมื่อ 6 ชั่วโมงที่แล้ว', type: 'voucher' },
+    { name: 'คุณกิตติ ช.', location: 'ระยอง', prize: 'Voucher ทันตกรรม', time: 'เมื่อ 8 ชั่วโมงที่แล้ว', type: 'voucher' },
+  ];
+
+  const RECENT_WINNERS = ALL_WINNERS.slice(0, 5);
+
+  const PROMO_END = new Date('2026-06-27T23:59:59');
+
+  const wheelCanvas = document.getElementById('wheelCanvas');
+  const wheelCtx = wheelCanvas?.getContext('2d');
+  const wheelRotator = document.getElementById('wheelRotator');
+  const wheelPin = document.getElementById('wheelPin');
+  const wheelLights = document.getElementById('wheelLights');
+  const spinBtn = document.getElementById('spinBtn');
+  const spinsLeftEl = document.getElementById('spinsLeft');
+  const wheelPanelStatus = document.getElementById('wheelPanelStatus');
+  const wheelStatusGuest = document.getElementById('wheelStatusGuest');
+  const wheelStatusHasSpins = document.getElementById('wheelStatusHasSpins');
+  const wheelStatusNoSpins = document.getElementById('wheelStatusNoSpins');
+  const myRewardsBtn = document.getElementById('myRewardsBtn');
+  const termsBtn = document.getElementById('termsBtn');
+  const rewardsOverlay = document.getElementById('rewardsOverlay');
+  const rewardsList = document.getElementById('rewardsList');
+  const rewardsEmpty = document.getElementById('rewardsEmpty');
+  const closeRewards = document.getElementById('closeRewards');
+  const termsOverlay = document.getElementById('termsOverlay');
+  const closeTerms = document.getElementById('closeTerms');
+  const prizesGrid = document.getElementById('prizesGrid');
+  const allPrizesOverlay = document.getElementById('allPrizesOverlay');
+  const allPrizesList = document.getElementById('allPrizesList');
+  const closeAllPrizes = document.getElementById('closeAllPrizes');
+  const allWinnersOverlay = document.getElementById('allWinnersOverlay');
+  const allWinnersList = document.getElementById('allWinnersList');
+  const closeAllWinners = document.getElementById('closeAllWinners');
+  const prizeCompare = document.getElementById('prizeCompare');
+  const prizeCompareGrid = document.getElementById('prizeCompareGrid');
+  const resultOverlay = document.getElementById('resultOverlay');
+  const loginOverlay = document.getElementById('loginOverlay');
+  const closeLogin = document.getElementById('closeLogin');
+  const headerLoginBtn = document.getElementById('headerLoginBtn');
+  const resultPrizeLogo = document.getElementById('resultPrizeLogo');
+  const resultPrize = document.getElementById('resultPrize');
+  const resultPrizeDetail = document.getElementById('resultPrizeDetail');
+  const closeResult = document.getElementById('closeResult');
+  const confettiCanvas = document.getElementById('confettiCanvas');
+  const confettiCtx = confettiCanvas.getContext('2d');
+  const heroConfetti = document.getElementById('heroConfetti');
+  const devModeToggle = document.getElementById('devModeToggle');
+  const dashSpinsLeft = document.getElementById('dashSpinsLeft');
+  const dashPoints = document.getElementById('dashPoints');
+  const dashPrizesWon = document.getElementById('dashPrizesWon');
+  const dashMemberLevel = document.getElementById('dashMemberLevel');
+  const winnersList = document.getElementById('winnersList');
+
+  const DEV_MODE_KEY = 'boyinsure_dev_mode';
+
+  function loadDevMode() {
+    const stored = localStorage.getItem(DEV_MODE_KEY);
+    return stored === null ? true : stored === '1';
+  }
+
+  let devMode = loadDevMode();
+  let isLoggedIn = false;
+  let memberProfile = null;
+  let spinsLeft = DEFAULT_SPINS;
+  let isSpinning = false;
+
+  function applyMemberSession(member, rewards = []) {
+    if (!member) return;
+    memberProfile = member;
+    isLoggedIn = true;
+    spinsLeft = member.spins_remaining ?? spinsLeft;
+    if (dashMemberLevel) dashMemberLevel.textContent = member.tier_name || 'ทั่วไป';
+    wonPrizes.length = 0;
+    rewards.forEach((r) => {
+      wonPrizes.push({
+        name: r.name,
+        detail: r.detail || '',
+        logo: r.logo_path ? asset(r.logo_path.replace(/^assets\//, '')) : '',
+        color: r.color || '#fff',
+      });
+    });
+    updateSpinsDisplay();
+  }
+
+  async function restoreMemberSession() {
+    if (!window.BoyInsureAPI || devMode) return;
+    try {
+      const data = await BoyInsureAPI.me();
+      if (data.logged_in && data.member) {
+        applyMemberSession(data.member, data.rewards || []);
+      }
+    } catch (_) {
+      /* API unavailable — fallback to dev/local mode */
+    }
+  }
+
+  function segmentFromPrizeIndex(prizeIndex) {
+    const seg = WHEEL_TO_PRIZE.indexOf(prizeIndex);
+    return seg >= 0 ? seg : Math.floor(Math.random() * WHEEL_SEGMENTS);
+  }
+
+  function prizeIndexFromApiPrize(apiPrize) {
+    let idx = PRIZES.findIndex((p) => p.short === apiPrize.short_name);
+    if (idx < 0) idx = PRIZES.findIndex((p) => p.name === apiPrize.name);
+    return idx >= 0 ? idx : 0;
+  }
+  let rotation = 0;
+  let lightInterval = null;
+  let spinAnimationId = null;
+  const wonPrizes = [];
+  const sessionWins = [];
+
+  const tickSound = new Audio(asset('audio/tick.mp3'));
+  tickSound.loop = true;
+
+  function playTickSound() {
+    tickSound.currentTime = 0;
+    tickSound.play().catch(() => {});
+  }
+
+  function stopTickSound() {
+    tickSound.pause();
+    tickSound.currentTime = 0;
+  }
+
+  const LIGHT_COUNT = 24;
+  const BLUE_RIM_OUTER = 0.968;
+  const BLUE_RIM_INNER = 0.878;
+  const LIGHT_RIM_RATIO = (BLUE_RIM_OUTER + BLUE_RIM_INNER) / 2;
+
+  const WHEEL_LAYOUT = {
+    outerR: 0.48,
+    blueOuterR: 0.968,
+    blueInnerR: 0.878,
+    segOuterR: 0.855,
+    segInnerR: 0.18,
+    hubR: 0.14,
+  };
+
+  const SEGMENT_BLUE = '#c8e6fc';
+  const SEGMENT_WHITE = '#ffffff';
+  const SEGMENT_TEXT = '#0a2d6e';
+
+  const segmentData = WHEEL_TO_PRIZE.map(i => ({
+    label: PRIZES[i].short,
+    prizeIndex: i,
+  }));
+
+  const prizeLogoCache = {};
+
+  function getPrizeLogo(prizeIndex) {
+    if (!prizeLogoCache[prizeIndex]) {
+      const img = new Image();
+      const redraw = () => drawWheel();
+      img.addEventListener('load', redraw);
+      img.addEventListener('error', redraw);
+      img.src = asset(PRIZES[prizeIndex].logo);
+      prizeLogoCache[prizeIndex] = img;
+    }
+    return prizeLogoCache[prizeIndex];
+  }
+
+  function preloadWheelLogos() {
+    WHEEL_TO_PRIZE.forEach(i => getPrizeLogo(i));
+  }
+
+  function drawSegmentIcon(ctx, logo, maxW, maxH) {
+    if (!logo.complete || logo.naturalWidth <= 0) return 0;
+
+    const aspect = logo.naturalWidth / logo.naturalHeight;
+    let drawW = maxW;
+    let drawH = maxW / aspect;
+
+    if (drawH > maxH) {
+      drawH = maxH;
+      drawW = maxH * aspect;
+    }
+
+    ctx.drawImage(logo, -drawW / 2, -drawH / 2, drawW, drawH);
+    return drawH;
+  }
+
+  function drawSegmentLabel(ctx, label, size, y) {
+    const fontSize = Math.max(9, size * 0.024);
+    const maxWidth = size * 0.095;
+    ctx.fillStyle = SEGMENT_TEXT;
+    ctx.font = `700 ${fontSize}px "Better Together", sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    if (ctx.measureText(label).width <= maxWidth) {
+      ctx.fillText(label, 0, y);
+      return;
+    }
+
+    ctx.save();
+    ctx.translate(0, y);
+    wrapCanvasText(ctx, label, maxWidth, fontSize * 1.08);
+    ctx.restore();
+  }
+
+  function getWheelHost() {
+    return wheelRotator?.closest('.wheel-wrap') || wheelRotator;
+  }
+
+  function getWheelSize() {
+    const host = getWheelHost();
+    if (!host) return 0;
+    const size = host.clientWidth;
+    return size > 0 ? size : 0;
+  }
+
+  function getWheelMetrics() {
+    const host = getWheelHost();
+    const wrapW = host?.clientWidth || 0;
+    const wrapH = host?.clientHeight || wrapW;
+    const size = getWheelSize();
+    const cx = wrapW / 2;
+    const cy = wrapH / 2;
+    const outerR = size * WHEEL_LAYOUT.outerR;
+    const r = outerR * LIGHT_RIM_RATIO;
+
+    return { cx, cy, r, dot: outerR * 0.032, size };
+  }
+
+  function drawWheel() {
+    if (!wheelCanvas || !wheelCtx || !wheelRotator) return;
+    const size = getWheelSize();
+    if (!size) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    wheelCanvas.width = Math.round(size * dpr);
+    wheelCanvas.height = Math.round(size * dpr);
+    wheelCanvas.style.width = `${size}px`;
+    wheelCanvas.style.height = `${size}px`;
+
+    const ctx = wheelCtx;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, size, size);
+
+    const cx = size / 2;
+    const cy = size / 2;
+    const outerR = size * WHEEL_LAYOUT.outerR;
+    const blueOuterR = outerR * WHEEL_LAYOUT.blueOuterR;
+    const blueInnerR = outerR * WHEEL_LAYOUT.blueInnerR;
+    const segOuterR = outerR * WHEEL_LAYOUT.segOuterR;
+    const segInnerR = outerR * WHEEL_LAYOUT.segInnerR;
+
+    for (let i = 0; i < WHEEL_SEGMENTS; i++) {
+      const start = (i / WHEEL_SEGMENTS) * Math.PI * 2 - Math.PI / 2;
+      const end = ((i + 1) / WHEEL_SEGMENTS) * Math.PI * 2 - Math.PI / 2;
+      const seg = segmentData[i];
+
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(start) * segInnerR, cy + Math.sin(start) * segInnerR);
+      ctx.arc(cx, cy, segOuterR, start, end);
+      ctx.arc(cx, cy, segInnerR, end, start, true);
+      ctx.closePath();
+      const isBlue = i % 2 === 0;
+      ctx.fillStyle = isBlue ? SEGMENT_BLUE : SEGMENT_WHITE;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.35)';
+      ctx.lineWidth = Math.max(1, size * 0.002);
+      ctx.stroke();
+
+      const mid = (start + end) / 2;
+      const segSpan = segOuterR - segInnerR;
+      const iconR = segInnerR + segSpan * 0.70;
+      const labelR = segInnerR + segSpan * 0.54;
+      const maxLogoW = size * 0.14;
+      const maxLogoH = size * 0.068;
+      const logo = getPrizeLogo(seg.prizeIndex);
+      const rot = mid + Math.PI / 2;
+
+      ctx.save();
+      ctx.translate(cx + Math.cos(mid) * iconR, cy + Math.sin(mid) * iconR);
+      ctx.rotate(rot);
+      drawSegmentIcon(ctx, logo, maxLogoW, maxLogoH);
+      ctx.restore();
+
+      ctx.save();
+      ctx.translate(cx + Math.cos(mid) * labelR, cy + Math.sin(mid) * labelR);
+      ctx.rotate(rot);
+      drawSegmentLabel(ctx, seg.label, size, 0);
+      ctx.restore();
+    }
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, blueOuterR, 0, Math.PI * 2);
+    ctx.arc(cx, cy, blueInnerR, 0, Math.PI * 2, true);
+    ctx.fillStyle = '#1a4fa0';
+    ctx.fill();
+
+    for (let i = 0; i < LIGHT_COUNT; i++) {
+      const angle = (i / LIGHT_COUNT) * Math.PI * 2 - Math.PI / 2;
+      const lx = cx + Math.cos(angle) * (blueOuterR + blueInnerR) / 2;
+      const ly = cy + Math.sin(angle) * (blueOuterR + blueInnerR) / 2;
+      const dotR = size * 0.012;
+      ctx.beginPath();
+      ctx.arc(lx, ly, dotR, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.6)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+  }
+
+  function wrapCanvasText(ctx, text, maxWidth, lineHeight) {
+    const words = text.split(/\s+/);
+    const lines = [];
+    let line = words[0] || '';
+
+    for (let i = 1; i < words.length; i++) {
+      const test = `${line} ${words[i]}`;
+      if (ctx.measureText(test).width > maxWidth) {
+        lines.push(line);
+        line = words[i];
+      } else {
+        line = test;
+      }
+    }
+    lines.push(line);
+
+    const offsetY = -((lines.length - 1) * lineHeight) / 2;
+    lines.forEach((ln, idx) => {
+      ctx.fillText(ln, 0, offsetY + idx * lineHeight);
+    });
+  }
+
+  function prizeIndexFromSegment(seg) {
+    return WHEEL_TO_PRIZE[seg];
+  }
+
+  /* มุมกึ่งกลางช่องบนวงล้อ (องศาจากด้านบน ตามเข็มนาฬิกา) */
+  function segmentCenterAngle(seg) {
+    return seg * DEG_PER_SEG + DEG_PER_SEG / 2 + WHEEL_OFFSET;
+  }
+
+  /* องศาหมุนเพื่อให้กึ่งกลางช่องมาตรงตัวชี้ด้านบน */
+  function rotationForSegmentCenter(seg) {
+    return (360 - segmentCenterAngle(seg) + 360) % 360;
+  }
+
+  function applyWheelRotation(deg, animate = false) {
+    if (!wheelRotator) return;
+    wheelRotator.style.transition = animate ? '' : 'none';
+    wheelRotator.style.transform = `rotate(${deg}deg)`;
+  }
+
+  function buildLights(intervalMs = 160) {
+    if (!wheelLights || !wheelRotator) return;
+    if (lightInterval) clearInterval(lightInterval);
+    wheelLights.innerHTML = '';
+
+    if (!getWheelSize()) return;
+
+    const { cx, cy, r, dot } = getWheelMetrics();
+
+    for (let i = 0; i < LIGHT_COUNT; i++) {
+      const el = document.createElement('span');
+      el.className = 'wheel-light';
+      el.style.setProperty('--i', i);
+      const angle = (i / LIGHT_COUNT) * 2 * Math.PI - Math.PI / 2;
+      el.style.left = `${cx + Math.cos(angle) * r}px`;
+      el.style.top = `${cy + Math.sin(angle) * r}px`;
+      el.style.width = `${dot}px`;
+      el.style.height = `${dot}px`;
+      el.innerHTML = '<span class="wheel-light__core"></span>';
+      wheelLights.appendChild(el);
+    }
+
+    let step = 0;
+    const chaseLen = 5;
+    const tick = () => {
+      wheelLights.querySelectorAll('.wheel-light').forEach((el, i) => {
+        const dist = (i - step + LIGHT_COUNT) % LIGHT_COUNT;
+        el.classList.toggle('wheel-light--on', dist < chaseLen);
+      });
+    };
+    tick();
+    lightInterval = setInterval(() => {
+      step = (step + 1) % LIGHT_COUNT;
+      tick();
+    }, intervalMs);
+  }
+
+  function restartLightAnimation() {
+    buildLights(isSpinning ? 100 : 160);
+  }
+
+  function buildHeroConfetti() {
+    if (!heroConfetti) return;
+    const colors = ['#f5d060', '#d4af37', '#fff', '#ffcc00', '#f5a060'];
+    for (let i = 0; i < 30; i++) {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = `${Math.random() * 100}%`;
+      el.style.top = `${Math.random() * 100}%`;
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.animationDuration = `${6 + Math.random() * 8}s`;
+      el.style.animationDelay = `${Math.random() * 8}s`;
+      el.style.width = `${4 + Math.random() * 8}px`;
+      el.style.height = `${4 + Math.random() * 8}px`;
+      heroConfetti.appendChild(el);
+    }
+  }
+
+  function getPrizeTag(index) {
+    return [9, 10, 11].includes(index) ? 'ประกันภัย' : 'VOUCHER';
+  }
+
+  function buildPrizeCatalogCardHTML(p) {
+    return `
+      <div class="prize-catalog-card__logo-ring">
+        <img src="${asset(p.logo)}" alt="${p.short}" class="prize-catalog-card__logo" loading="lazy" />
+      </div>
+      <p class="prize-catalog-card__title">${p.short}</p>
+    `;
+  }
+
+  function addPrizeWonHighlight(index) {
+    document.querySelector(`.prize-list__item[data-index="${index}"], .prize-catalog-card[data-index="${index}"]`)
+      ?.classList.add('prize-list__item--won', 'prize-catalog-card--won');
+  }
+
+  function clearPrizeWonHighlight() {
+    document.querySelectorAll('.prize-list__item, .prize-catalog-card').forEach(c => {
+      c.classList.remove('prize-list__item--won', 'prize-catalog-card--won');
+    });
+  }
+
+  function hidePrizeCompare() {
+    if (prizeCompare) prizeCompare.hidden = true;
+    if (prizeCompareGrid) prizeCompareGrid.innerHTML = '';
+  }
+
+  function renderPrizeCompare() {
+    if (!prizeCompare || !prizeCompareGrid || sessionWins.length === 0) return;
+
+    const compareRows = [
+      { label: '', type: 'logo' },
+      { label: 'ชื่อรางวัล', type: 'short' },
+      { label: 'รายละเอียด', type: 'detail' },
+      { label: 'ประเภท', type: 'tag' },
+    ];
+
+    const headerCells = sessionWins.map((_, i) =>
+      `<th class="prize-compare__th prize-compare__th--spin">ครั้งที่ ${i + 1}</th>`
+    ).join('');
+
+    const bodyRows = compareRows.map(row => {
+      const cells = sessionWins.map(prizeIndex => {
+        const p = PRIZES[prizeIndex];
+        if (row.type === 'logo') {
+          return `<td class="prize-compare__td prize-compare__td--logo">
+            <div class="prize-compare__logo-ring">
+              <img src="${asset(p.logo)}" alt="${p.short}" loading="lazy" />
+            </div>
+          </td>`;
+        }
+        if (row.type === 'detail') {
+          const detail = p.detail || p.name.replace('\n', ' ');
+          return `<td class="prize-compare__td">${detail}</td>`;
+        }
+        if (row.type === 'tag') {
+          return `<td class="prize-compare__td"><span class="prize-compare__tag">${getPrizeTag(prizeIndex)}</span></td>`;
+        }
+        return `<td class="prize-compare__td prize-compare__td--title">${p.short}</td>`;
+      }).join('');
+      return `<tr><th class="prize-compare__th prize-compare__th--label" scope="row">${row.label}</th>${cells}</tr>`;
+    }).join('');
+
+    prizeCompareGrid.innerHTML = `
+      <table class="prize-compare__table">
+        <thead>
+          <tr>
+            <th class="prize-compare__th prize-compare__th--corner" scope="col">รายการ</th>
+            ${headerCells}
+          </tr>
+        </thead>
+        <tbody>${bodyRows}</tbody>
+      </table>
+    `;
+
+    prizeCompare.hidden = false;
+  }
+
+  /* ไม่แสดงในรายการการ์ดด้านล่าง (แถวละ 6 ใบ) */
+  const CATALOG_EXCLUDE = new Set([12]);
+
+  function getPrizeLabel(index) {
+    const custom = PRIZE_CATALOG_DISPLAY.find((d) => d.prizeIndex === index);
+    if (custom) return custom.label;
+    const p = PRIZES[index];
+    return p ? p.name.replace('\n', ' ') : '';
+  }
+
+  function getPrizeQty(index) {
+    if (PRIZE_STOCK_BY_INDEX[index] != null) return PRIZE_STOCK_BY_INDEX[index];
+    const custom = PRIZE_CATALOG_DISPLAY.find((d) => d.prizeIndex === index);
+    return custom ? custom.qty : 10;
+  }
+
+  function buildPrizeListItem(index) {
+    const p = PRIZES[index];
+    if (!p) return '';
+    const label = getPrizeLabel(index);
+    const qty = getPrizeQty(index);
+    return `
+      <div class="prize-list__item" data-index="${index}">
+        <div class="prize-list__prize">
+          <span class="prize-list__logo">
+            <img src="${asset(p.logo)}" alt="${p.short}" loading="lazy" />
+          </span>
+          <strong class="prize-list__name">${label}</strong>
+        </div>
+        <span class="prize-list__qty">${qty} รางวัล</span>
+      </div>
+    `;
+  }
+
+  function buildAllPrizesList() {
+    if (!allPrizesList) return;
+    allPrizesList.innerHTML = PRIZES
+      .map((_, i) => i)
+      .filter((i) => !CATALOG_EXCLUDE.has(i))
+      .map((i) => buildPrizeListItem(i))
+      .join('');
+  }
+
+  function openAllPrizesModal() {
+    if (!allPrizesOverlay) return;
+    allPrizesOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    if (window.lucide?.createIcons) lucide.createIcons();
+  }
+
+  function closeAllPrizesModal() {
+    if (!allPrizesOverlay) return;
+    allPrizesOverlay.hidden = true;
+    if (!isModalOpen()) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  function buildPrizeGrid() {
+    if (!prizesGrid) return;
+
+    if (prizesGrid.classList.contains('prize-list')) {
+      prizesGrid.innerHTML = '';
+      PRIZE_CATALOG_DISPLAY.forEach(({ prizeIndex, label, qty }) => {
+        const p = PRIZES[prizeIndex];
+        if (!p) return;
+        const item = document.createElement('div');
+        item.className = 'prize-list__item';
+        item.dataset.index = prizeIndex;
+        item.innerHTML = `
+          <div class="prize-list__prize">
+            <span class="prize-list__logo">
+              <img src="${asset(p.logo)}" alt="${p.short}" loading="lazy" />
+            </span>
+            <strong class="prize-list__name">${label}</strong>
+          </div>
+          <span class="prize-list__qty">${qty} รางวัล</span>
+        `;
+        prizesGrid.appendChild(item);
+      });
+      return;
+    }
+
+    const colsPerRow = 6;
+    prizesGrid.innerHTML = '';
+
+    const row1 = document.createElement('div');
+    row1.className = 'prizes-grid__row prizes-grid__row--top';
+    const row2 = document.createElement('div');
+    row2.className = 'prizes-grid__row prizes-grid__row--bottom';
+
+    const catalogItems = PRIZES.map((p, i) => ({ p, i })).filter(({ i }) => !CATALOG_EXCLUDE.has(i));
+
+    catalogItems.forEach(({ p, i }, idx) => {
+      const card = document.createElement('article');
+      card.className = 'prize-catalog-card';
+      card.dataset.index = i;
+      card.style.animationDelay = `${idx * 0.04}s`;
+      card.innerHTML = buildPrizeCatalogCardHTML(p);
+      (idx < colsPerRow ? row1 : row2).appendChild(card);
+    });
+
+    prizesGrid.appendChild(row1);
+    prizesGrid.appendChild(row2);
+  }
+
+  function buildWinnerItemHTML(w) {
+    const prizeClass = w.type === 'insurance' ? 'winners-list__prize-name--insurance' : 'winners-list__prize-name--voucher';
+    return `
+      <li class="winners-list__item">
+        <span class="winners-list__avatar" aria-hidden="true"><i data-lucide="user"></i></span>
+        <div class="winners-list__main">
+          <div class="winners-list__user">
+            <span class="winners-list__name">${w.name}</span>
+            <span class="winners-list__location">${w.location}</span>
+          </div>
+          <p class="winners-list__result">ได้รับ <em class="winners-list__prize-name ${prizeClass}">${w.prize}</em></p>
+        </div>
+        <time class="winners-list__time">${w.time}</time>
+      </li>
+    `;
+  }
+
+  function buildWinnersList() {
+    if (!winnersList) return;
+    winnersList.innerHTML = RECENT_WINNERS.map(buildWinnerItemHTML).join('');
+    if (window.lucide?.createIcons) lucide.createIcons();
+  }
+
+  function buildAllWinnersList() {
+    if (!allWinnersList) return;
+    allWinnersList.innerHTML = ALL_WINNERS.map(buildWinnerItemHTML).join('');
+  }
+
+  function openAllWinnersModal() {
+    if (!allWinnersOverlay) return;
+    allWinnersOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    if (window.lucide?.createIcons) lucide.createIcons();
+  }
+
+  function closeAllWinnersModal() {
+    if (!allWinnersOverlay) return;
+    allWinnersOverlay.hidden = true;
+    if (!isModalOpen()) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  function padCount(n) {
+    return String(Math.max(0, n)).padStart(2, '0');
+  }
+
+  function updateCountdown() {
+    const daysEl = document.getElementById('countdownDays');
+    const hoursEl = document.getElementById('countdownHours');
+    const minutesEl = document.getElementById('countdownMinutes');
+    const secondsEl = document.getElementById('countdownSeconds');
+    if (!daysEl) return;
+
+    const diff = PROMO_END - Date.now();
+    if (diff <= 0) {
+      daysEl.textContent = '00';
+      hoursEl.textContent = '00';
+      minutesEl.textContent = '00';
+      secondsEl.textContent = '00';
+      return;
+    }
+
+    const totalSec = Math.floor(diff / 1000);
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const minutes = Math.floor((totalSec % 3600) / 60);
+    const seconds = totalSec % 60;
+
+    daysEl.textContent = padCount(days);
+    hoursEl.textContent = padCount(hours);
+    minutesEl.textContent = padCount(minutes);
+    secondsEl.textContent = padCount(seconds);
+  }
+
+  function initCountdown() {
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
+
+  function restartPrizeMarquee() {
+    const track = document.getElementById('prizeMarqueeTrack');
+    if (!track || !track.firstElementChild) return;
+    track.style.animation = 'none';
+    void track.offsetWidth;
+    track.style.removeProperty('animation');
+  }
+
+  function initPrizeMarquee() {
+    const track = document.getElementById('prizeMarqueeTrack');
+    if (!track) return;
+
+    const indices = [...new Set(WHEEL_TO_PRIZE)];
+    const items = indices.map((i) => {
+      const p = PRIZES[i];
+      if (!p) return '';
+      return `<span class="promo-prize-marquee__item"><img src="${asset(p.logo)}" alt="${p.short}" loading="lazy" /></span>`;
+    }).join('');
+
+    track.innerHTML = items + items;
+    restartPrizeMarquee();
+  }
+
+  function resumePromoAnimations() {
+    restartPrizeMarquee();
+    restartLightAnimation();
+    updateCountdown();
+  }
+
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) resumePromoAnimations();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && document.getElementById('prizeMarqueeTrack')) {
+      restartPrizeMarquee();
+    }
+  });
+
+  function initViewAllPrizes() {
+    const btn = document.getElementById('viewAllPrizesBtn');
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openAllPrizesModal();
+      });
+    }
+
+    document.querySelectorAll('.js-open-all-prizes').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        openAllPrizesModal();
+      });
+    });
+
+    closeAllPrizes?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeAllPrizesModal();
+    });
+
+    allPrizesOverlay?.addEventListener('click', (e) => {
+      if (e.target === allPrizesOverlay) closeAllPrizesModal();
+    });
+
+    allPrizesOverlay?.querySelector('.result-modal--prizes')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
+
+  function initViewAllWinners() {
+    document.querySelectorAll('.js-open-all-winners').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        openAllWinnersModal();
+      });
+    });
+
+    closeAllWinners?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeAllWinnersModal();
+    });
+
+    allWinnersOverlay?.addEventListener('click', (e) => {
+      if (e.target === allWinnersOverlay) closeAllWinnersModal();
+    });
+
+    allWinnersOverlay?.querySelector('.result-modal--winners')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
+
+  function updateDashboard() {
+    const active = canParticipate();
+    if (dashSpinsLeft) dashSpinsLeft.textContent = active ? spinsLeft : '0';
+    if (dashPrizesWon) dashPrizesWon.textContent = wonPrizes.length;
+    if (dashPoints) dashPoints.textContent = active ? '12,500' : '0';
+    if (dashMemberLevel) dashMemberLevel.textContent = active ? 'Gold' : 'สมาชิก';
+  }
+
+  function canParticipate() {
+    return devMode || isLoggedIn;
+  }
+
+  function updateSpinsDisplay() {
+    if (!canParticipate()) {
+      spinBtn.disabled = isSpinning;
+      if (wheelStatusGuest) wheelStatusGuest.hidden = false;
+      if (wheelStatusHasSpins) wheelStatusHasSpins.hidden = true;
+      if (wheelStatusNoSpins) wheelStatusNoSpins.hidden = true;
+      if (wheelPanelStatus) wheelPanelStatus.classList.remove('wheel-panel__status--empty');
+      updateDashboard();
+      return;
+    }
+
+    const hasSpins = spinsLeft > 0;
+    spinsLeftEl.textContent = spinsLeft;
+    spinsLeftEl.classList.remove('bump');
+    void spinsLeftEl.offsetWidth;
+    spinsLeftEl.classList.add('bump');
+
+    const canSpin = hasSpins && !isSpinning;
+    spinBtn.disabled = !canSpin;
+
+    if (wheelStatusGuest) wheelStatusGuest.hidden = true;
+    if (wheelStatusHasSpins) wheelStatusHasSpins.hidden = !hasSpins;
+    if (wheelStatusNoSpins) wheelStatusNoSpins.hidden = hasSpins;
+    if (wheelPanelStatus) {
+      wheelPanelStatus.classList.toggle('wheel-panel__status--empty', !hasSpins);
+    }
+    updateDashboard();
+  }
+
+  function isModalOpen() {
+    return !loginOverlay.hidden || !resultOverlay.hidden || !rewardsOverlay.hidden || !termsOverlay.hidden || (allPrizesOverlay && !allPrizesOverlay.hidden) || (allWinnersOverlay && !allWinnersOverlay.hidden);
+  }
+
+  function openLoginModal() {
+    loginOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLoginModal() {
+    loginOverlay.hidden = true;
+    if (!isModalOpen()) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  function requireLogin() {
+    if (canParticipate()) return true;
+    openLoginModal();
+    return false;
+  }
+
+  function setDevMode(enabled) {
+    devMode = enabled;
+    localStorage.setItem(DEV_MODE_KEY, enabled ? '1' : '0');
+    if (devModeToggle) devModeToggle.checked = enabled;
+    if (enabled) {
+      closeLoginModal();
+      if (spinsLeft <= 0) spinsLeft = DEFAULT_SPINS;
+    }
+    updateSpinsDisplay();
+  }
+
+  function renderRewardsList() {
+    rewardsList.innerHTML = '';
+    const hasRewards = wonPrizes.length > 0;
+    rewardsEmpty.hidden = hasRewards;
+    rewardsList.hidden = !hasRewards;
+
+    wonPrizes.forEach((item, i) => {
+      const li = document.createElement('li');
+      li.textContent = `${i + 1}. ${item.name.replace('\n', ' ')}`;
+      rewardsList.appendChild(li);
+    });
+  }
+
+  function openRewardsModal() {
+    if (!requireLogin()) return;
+    renderRewardsList();
+    rewardsOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeRewardsModal() {
+    rewardsOverlay.hidden = true;
+    if (!isModalOpen()) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  function openTermsModal() {
+    termsOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeTermsModal() {
+    termsOverlay.hidden = true;
+    if (!isModalOpen()) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  async function spin() {
+    if (!requireLogin()) return;
+    if (isSpinning || spinsLeft <= 0) return;
+
+    wheelPin.classList.remove('bounce');
+    cancelAnimationFrame(spinAnimationId);
+
+    let winSegment = Math.floor(Math.random() * WHEEL_SEGMENTS);
+    let prizeIndex = prizeIndexFromSegment(winSegment);
+    let apiPrize = null;
+
+    if (!devMode && isLoggedIn && window.BoyInsureAPI) {
+      try {
+        spinBtn.disabled = true;
+        const result = await BoyInsureAPI.spin();
+        apiPrize = result.prize;
+        prizeIndex = prizeIndexFromApiPrize(apiPrize);
+        winSegment = segmentFromPrizeIndex(prizeIndex);
+        spinsLeft = result.spins_remaining;
+      } catch (err) {
+        alert(err.message || 'หมุนไม่สำเร็จ');
+        updateSpinsDisplay();
+        spinBtn.disabled = false;
+        return;
+      }
+    } else {
+      spinsLeft--;
+    }
+
+    const targetMod = rotationForSegmentCenter(winSegment);
+    const currentMod = ((rotation % 360) + 360) % 360;
+    const delta = (targetMod - currentMod + 360) % 360;
+    const extraSpins = 3 + Math.floor(Math.random() * 2);
+    const totalRotation = rotation + extraSpins * 360 + delta;
+    const duration = 7000 + Math.random() * 2000;
+
+    isSpinning = true;
+    wheelRotator.classList.add('wheel-rotator--spinning', 'blur');
+    wheelRotator.style.setProperty('--spin-duration', `${duration / 1000}s`);
+    wheelRotator.style.transition = 'none';
+    restartLightAnimation();
+    updateSpinsDisplay();
+    resultOverlay.hidden = true;
+    playTickSound();
+
+    const startRot = rotation;
+    const startTime = performance.now();
+
+    function animate(now) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      rotation = startRot + (totalRotation - startRot) * easeOutCubic(progress);
+      applyWheelRotation(rotation);
+
+      if (progress < 1) {
+        spinAnimationId = requestAnimationFrame(animate);
+      } else {
+        rotation = totalRotation % 360;
+        applyWheelRotation(rotation);
+        wheelRotator.classList.remove('wheel-rotator--spinning', 'blur');
+        stopTickSound();
+        isSpinning = false;
+        restartLightAnimation();
+        updateSpinsDisplay();
+        wheelPin.classList.add('bounce');
+        if (apiPrize) {
+          showResultFromApi(apiPrize, prizeIndex);
+        } else {
+          showResult(prizeIndex);
+        }
+        launchConfetti();
+      }
+    }
+
+    spinAnimationId = requestAnimationFrame(animate);
+  }
+
+  function showResultFromApi(apiPrize, fallbackIndex) {
+    if (resultPrizeLogo && apiPrize.logo) {
+      resultPrizeLogo.src = asset(String(apiPrize.logo).replace(/^assets\//, ''));
+      resultPrizeLogo.alt = apiPrize.short_name;
+    }
+    resultPrize.textContent = String(apiPrize.name).replace('\n', ' ');
+    if (resultPrizeDetail) {
+      resultPrizeDetail.textContent = apiPrize.detail || '';
+      resultPrizeDetail.hidden = !apiPrize.detail;
+    }
+    closeResult.textContent = spinsLeft > 0 ? 'หมุนต่ออีกครั้ง' : 'ตกลง';
+    resultOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    sessionWins.push(fallbackIndex);
+    wonPrizes.push({
+      name: apiPrize.name,
+      detail: apiPrize.detail || '',
+      logo: apiPrize.logo ? asset(String(apiPrize.logo).replace(/^assets\//, '')) : '',
+      color: apiPrize.color || '#fff',
+    });
+    updateDashboard();
+  }
+
+  function showResult(index) {
+    const prize = PRIZES[index];
+    const prizeName = prize.name.replace('\n', ' ');
+
+    if (resultPrizeLogo) {
+      resultPrizeLogo.src = asset(prize.logo);
+      resultPrizeLogo.alt = prize.short;
+    }
+    resultPrize.textContent = prizeName;
+    if (resultPrizeDetail) {
+      resultPrizeDetail.textContent = prize.detail || '';
+      resultPrizeDetail.hidden = !prize.detail;
+    }
+    closeResult.textContent = spinsLeft > 0 ? 'หมุนต่ออีกครั้ง' : 'ตกลง';
+
+    resultOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+
+    sessionWins.push(index);
+    addPrizeWonHighlight(index);
+
+    wonPrizes.push({ index, name: prize.name, short: prize.short });
+    updateDashboard();
+
+    if (spinsLeft === 0) {
+      renderPrizeCompare();
+    }
+  }
+
+  let confettiParticles = [];
+
+  function resizeConfetti() {
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+  }
+
+  function launchConfetti() {
+    const colors = ['#f5d060', '#d4af37', '#ffcc00', '#1a4fa0', '#fff', '#ff6b9d'];
+    confettiParticles = [];
+    const cx = window.innerWidth / 2;
+    for (let i = 0; i < 150; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 4 + Math.random() * 8;
+      confettiParticles.push({
+        x: cx + (Math.random() - 0.5) * 200,
+        y: window.innerHeight * 0.35,
+        w: 5 + Math.random() * 7,
+        h: 4 + Math.random() * 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 4,
+        rot: Math.random() * 360,
+        rotV: (Math.random() - 0.5) * 12,
+        opacity: 1,
+      });
+    }
+    animateConfetti();
+  }
+
+  function animateConfetti() {
+    confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    let alive = false;
+    confettiParticles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.15;
+      p.rot += p.rotV;
+      p.opacity -= 0.006;
+      if (p.opacity > 0) {
+        alive = true;
+        confettiCtx.save();
+        confettiCtx.translate(p.x, p.y);
+        confettiCtx.rotate((p.rot * Math.PI) / 180);
+        confettiCtx.globalAlpha = Math.max(0, p.opacity);
+        confettiCtx.fillStyle = p.color;
+        confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        confettiCtx.restore();
+      }
+    });
+    if (alive) requestAnimationFrame(animateConfetti);
+    else confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  }
+
+  function closeResultModal(autoSpin = false) {
+    resultOverlay.hidden = true;
+
+    if (!isModalOpen()) {
+      document.body.style.overflow = '';
+    }
+
+    if (autoSpin && spinsLeft > 0 && !isSpinning) {
+      requestAnimationFrame(() => spin());
+      return;
+    }
+
+    if (spinsLeft > 0) {
+      document.getElementById('home').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (sessionWins.length > 0 && prizeCompare && !prizeCompare.hidden) {
+      prizeCompare.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      document.getElementById('privileges').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  spinBtn?.addEventListener('click', spin);
+  myRewardsBtn.addEventListener('click', openRewardsModal);
+  termsBtn.addEventListener('click', openTermsModal);
+  closeRewards.addEventListener('click', e => {
+    e.preventDefault();
+    closeRewardsModal();
+  });
+  closeTerms.addEventListener('click', e => {
+    e.preventDefault();
+    closeTermsModal();
+  });
+  rewardsOverlay.addEventListener('click', e => {
+    if (e.target === rewardsOverlay) closeRewardsModal();
+  });
+  termsOverlay.addEventListener('click', e => {
+    if (e.target === termsOverlay) closeTermsModal();
+  });
+  closeResult.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeResultModal(spinsLeft > 0);
+  });
+  resultOverlay.addEventListener('click', e => {
+    if (e.target === resultOverlay) closeResultModal();
+  });
+  resultOverlay.querySelector('.result-modal--win')?.addEventListener('click', e => e.stopPropagation());
+
+  headerLoginBtn?.addEventListener('click', e => {
+    e.preventDefault();
+    openLoginModal();
+  });
+  closeLogin?.addEventListener('click', e => {
+    e.preventDefault();
+    closeLoginModal();
+  });
+  loginOverlay?.addEventListener('click', e => {
+    if (e.target === loginOverlay) closeLoginModal();
+  });
+  loginOverlay?.querySelector('.result-modal--auth')?.addEventListener('click', e => e.stopPropagation());
+
+  const memberLoginForm = document.getElementById('memberLoginForm');
+  const memberRegisterForm = document.getElementById('memberRegisterForm');
+  const loginModalToggle = document.getElementById('loginModalToggle');
+
+  loginModalToggle?.addEventListener('click', () => {
+    const showLogin = memberRegisterForm && !memberRegisterForm.hidden;
+    if (memberLoginForm) memberLoginForm.hidden = !showLogin;
+    if (memberRegisterForm) memberRegisterForm.hidden = showLogin;
+    loginModalToggle.textContent = showLogin ? 'ยังไม่มีบัญชี? สมัครสมาชิก' : 'มีบัญชีแล้ว? เข้าสู่ระบบ';
+  });
+
+  memberRegisterForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!window.BoyInsureAPI) return;
+    try {
+      const data = await BoyInsureAPI.registerMember({
+        name: document.getElementById('registerName')?.value?.trim(),
+        phone: document.getElementById('registerPhone')?.value?.trim(),
+      });
+      applyMemberSession(data.member);
+      closeLoginModal();
+      alert('สมัครสมาชิกสำเร็จ!');
+    } catch (err) {
+      alert(err.message || 'สมัครไม่สำเร็จ');
+    }
+  });
+
+  memberLoginForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!window.BoyInsureAPI) return;
+    try {
+      const data = await BoyInsureAPI.loginMember({
+        phone: document.getElementById('loginPhone')?.value?.trim(),
+      });
+      applyMemberSession(data.member);
+      closeLoginModal();
+    } catch (err) {
+      alert(err.message || 'เข้าสู่ระบบไม่สำเร็จ');
+    }
+  });
+
+  devModeToggle?.addEventListener('change', () => setDevMode(devModeToggle.checked));
+  if (devModeToggle) devModeToggle.checked = devMode;
+
+  window.addEventListener('resize', () => {
+    resizeConfetti();
+    drawWheel();
+    restartLightAnimation();
+  });
+
+  function initWheel() {
+    if (!wheelCanvas || !wheelRotator) return;
+    preloadWheelLogos();
+    const wheelHost = getWheelHost();
+    const paintWheel = () => {
+      drawWheel();
+      restartLightAnimation();
+    };
+    requestAnimationFrame(() => {
+      paintWheel();
+      requestAnimationFrame(paintWheel);
+    });
+    window.setTimeout(paintWheel, 120);
+    window.setTimeout(paintWheel, 400);
+    if (typeof ResizeObserver !== 'undefined' && wheelHost) {
+      const wheelObserver = new ResizeObserver(() => {
+        drawWheel();
+        restartLightAnimation();
+      });
+      wheelObserver.observe(wheelHost);
+    }
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(initWheel);
+  }
+  initWheel();
+  window.addEventListener('load', initWheel);
+
+  resizeConfetti();
+  buildHeroConfetti();
+  buildPrizeGrid();
+  buildAllPrizesList();
+  buildAllWinnersList();
+  buildWinnersList();
+  initCountdown();
+  initPrizeMarquee();
+  initViewAllPrizes();
+  initViewAllWinners();
+  applyWheelRotation(0);
+  updateSpinsDisplay();
+  restoreMemberSession();
+})();
