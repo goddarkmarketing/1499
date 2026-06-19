@@ -995,6 +995,90 @@ function findInsurancePlan(planId) {
   return null;
 }
 
+function initSidebarNavDots(nav) {
+  if (!nav) return null;
+
+  const sidebar = nav.closest('.insurance-sidebar');
+  if (!sidebar) return null;
+
+  let dotsEl = sidebar.querySelector('.insurance-sidebar__dots');
+  if (!dotsEl) {
+    dotsEl = document.createElement('div');
+    dotsEl.className = 'insurance-sidebar__dots';
+    dotsEl.setAttribute('role', 'tablist');
+    dotsEl.setAttribute('aria-label', 'เลื่อนดูหมวดหมู่');
+    nav.insertAdjacentElement('afterend', dotsEl);
+  }
+
+  const mq = window.matchMedia('(max-width: 1024px)');
+
+  function getItems() {
+    return [...nav.querySelectorAll('.insurance-sidebar__item')];
+  }
+
+  function updateActiveDot() {
+    const items = getItems();
+    const dots = [...dotsEl.querySelectorAll('.insurance-sidebar__dot')];
+    if (!dots.length) return;
+
+    const activeBtn = nav.querySelector('.insurance-sidebar__item.is-active');
+    const activeIndex = activeBtn ? items.indexOf(activeBtn) : 0;
+
+    dots.forEach((dot, i) => {
+      const active = i === activeIndex;
+      dot.classList.toggle('is-active', active);
+      dot.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+
+  function refresh() {
+    const items = getItems();
+    const overflow = nav.scrollWidth > nav.clientWidth + 2;
+
+    if (!mq.matches || items.length <= 1 || !overflow) {
+      dotsEl.hidden = true;
+      return;
+    }
+
+    dotsEl.hidden = false;
+
+    if (dotsEl.children.length !== items.length) {
+      dotsEl.innerHTML = items.map((_, i) => `
+        <button
+          type="button"
+          class="insurance-sidebar__dot${i === 0 ? ' is-active' : ''}"
+          role="tab"
+          aria-selected="${i === 0 ? 'true' : 'false'}"
+          aria-label="หมวดที่ ${i + 1}"
+          data-index="${i}"
+        ></button>
+      `).join('');
+
+      dotsEl.querySelectorAll('.insurance-sidebar__dot').forEach((dot) => {
+        dot.addEventListener('click', () => {
+          const item = getItems()[Number(dot.dataset.index)];
+          if (!item) return;
+          item.click();
+          item.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+      });
+    }
+
+    updateActiveDot();
+  }
+
+  if (!nav.dataset.dotsBound) {
+    nav.dataset.dotsBound = '1';
+    nav.addEventListener('scroll', updateActiveDot, { passive: true });
+    window.addEventListener('resize', refresh, { passive: true });
+    mq.addEventListener('change', refresh);
+  }
+
+  refresh();
+
+  return { refresh, updateActiveDot };
+}
+
 function initInsuranceCatalog() {
   const nav = document.getElementById('insuranceCategoryNav');
   const head = document.getElementById('insuranceCategoryHead');
@@ -1018,6 +1102,8 @@ function initInsuranceCatalog() {
       <span>${cat.title}</span>
     </button>
   `).join('');
+
+  const sidebarDots = initSidebarNavDots(nav);
 
   function renderPlans(categoryId) {
     const cat = ACTIVE_INSURANCE_CATEGORIES.find((c) => c.id === categoryId);
@@ -1065,6 +1151,10 @@ function initInsuranceCatalog() {
       btn.setAttribute('aria-current', isActive ? 'true' : 'false');
     });
 
+    sidebarDots?.updateActiveDot();
+    nav.querySelector('.insurance-sidebar__item.is-active')
+      ?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+
     grid.classList.add('is-fading');
     setTimeout(() => {
       renderPlans(categoryId);
@@ -1080,6 +1170,7 @@ function initInsuranceCatalog() {
 
   renderPlans(activeId);
   if (window.lucide?.createIcons) lucide.createIcons();
+  requestAnimationFrame(() => sidebarDots?.refresh());
 }
 
 const ARTICLE_CATEGORIES = [
@@ -1796,6 +1887,8 @@ function initArticlesCatalog() {
     </button>
   `).join('');
 
+  const sidebarDots = initSidebarNavDots(nav);
+
   function renderArticles(categoryId) {
     const cat = ACTIVE_ARTICLE_CATEGORIES.find((c) => c.id === categoryId);
     if (!cat) return;
@@ -1824,6 +1917,10 @@ function initArticlesCatalog() {
       btn.setAttribute('aria-current', isActive ? 'true' : 'false');
     });
 
+    sidebarDots?.updateActiveDot();
+    nav.querySelector('.insurance-sidebar__item.is-active')
+      ?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+
     grid.classList.add('is-fading');
     setTimeout(() => {
       renderArticles(categoryId);
@@ -1839,6 +1936,7 @@ function initArticlesCatalog() {
 
   renderArticles(activeId);
   if (window.lucide?.createIcons) lucide.createIcons();
+  requestAnimationFrame(() => sidebarDots?.refresh());
 }
 
 function initInsurancePlanDetail() {
