@@ -1,5 +1,6 @@
 node_modules/
 _spinthewheel_ref/
+_site/
 .env
 .env.*
 !.env.example

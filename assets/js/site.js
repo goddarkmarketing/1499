@@ -494,6 +494,20 @@ let ACTIVE_HIGHLIGHTS_DATA = HIGHLIGHTS_DATA;
 let ACTIVE_PLAN_PROCESS_STEPS = PLAN_PROCESS_STEPS;
 let SITE_PUBLIC = null;
 
+function isStaticDemoHost() {
+  return location.hostname.endsWith('github.io');
+}
+
+function siteApiUrl(phpPath) {
+  if (!isStaticDemoHost()) return phpPath;
+  const map = {
+    'api/site/public.php': 'static-api/site/public.json',
+    'api/insurance/categories.php': 'static-api/insurance/categories.json',
+    'api/articles/categories.php': 'static-api/articles/categories.json',
+  };
+  return map[phpPath] || phpPath;
+}
+
 function sitePublicSettings() {
   return SITE_PUBLIC?.settings || {
     site_name: 'BoyInsure',
@@ -624,7 +638,7 @@ function initContactFab() {
 
 async function loadSitePublicApi() {
   try {
-    const res = await fetch('api/site/public.php');
+    const res = await fetch(siteApiUrl('api/site/public.php'));
     if (!res.ok) return;
     const data = await res.json();
     if (data.settings || data.content) {
@@ -638,7 +652,7 @@ async function loadSitePublicApi() {
 
 async function loadInsuranceApi() {
   try {
-    const res = await fetch('api/insurance/categories.php');
+    const res = await fetch(siteApiUrl('api/insurance/categories.php'));
     if (!res.ok) return;
     const data = await res.json();
     if (Array.isArray(data.categories) && data.categories.length > 0) {
@@ -1237,7 +1251,7 @@ let ACTIVE_ARTICLE_CATEGORIES = ARTICLE_CATEGORIES;
 
 async function loadArticleCategoriesApi() {
   try {
-    const res = await fetch('api/articles/categories.php');
+    const res = await fetch(siteApiUrl('api/articles/categories.php'));
     if (!res.ok) return;
     const data = await res.json();
     if (Array.isArray(data.categories) && data.categories.length > 0) {
