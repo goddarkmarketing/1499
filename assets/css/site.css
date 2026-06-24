@@ -4018,7 +4018,101 @@ body.has-plan-sticky {
     grid-template-columns: 1fr;
   }
   .home-news-layout__top .article-catalog-card__media {
-    min-height: 320px;
+    min-height: 380px;
+  }
+  #homeNewsWheelCard .article-catalog-card__media {
+    min-height: 400px;
+  }
+  #homeNewsWheelCard .article-catalog-card__body {
+    padding: 18px 16px 20px;
+  }
+  #homeNewsWheelCard .article-catalog-card__badge {
+    left: 16px;
+    top: 16px;
+  }
+  #homeNewsWheelCard .article-catalog-card__title {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+  }
+  #homeNewsWheelCard .home-news-countdown {
+    margin-bottom: 8px;
+  }
+  #homeNewsWheelCard .home-news-countdown__reason {
+    font-size: .76rem;
+    gap: 6px;
+  }
+  #homeNewsWheelCard .home-news-countdown__hint {
+    font-size: .72rem;
+    margin-bottom: 6px;
+  }
+  #homeNewsWheelCard .home-news-countdown__item {
+    min-width: 0;
+    flex: 1 1 calc(25% - 5px);
+    padding: 6px 4px;
+  }
+  #homeNewsWheelCard .home-news-countdown__item strong {
+    font-size: .92rem;
+  }
+  #homeNewsWheelCard .article-catalog-card__excerpt {
+    font-size: .8rem;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+    margin-bottom: 2px;
+  }
+  .home-news-car-card .article-catalog-card__media {
+    min-height: 300px;
+    aspect-ratio: auto;
+  }
+  .home-news-car-card .article-catalog-card__media::after {
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, .98) 0%,
+      rgba(255, 255, 255, .9) 42%,
+      rgba(255, 255, 255, .35) 68%,
+      transparent 100%
+    );
+  }
+  .home-news-car-card .article-catalog-card__body {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+    justify-content: flex-end;
+    padding: 16px 16px 18px;
+  }
+  .home-news-car-card .article-catalog-card__badge {
+    left: 16px;
+    top: 16px;
+  }
+  .home-news-car-card .article-catalog-card__title {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .home-news-car-card .article-catalog-card__excerpt {
+    font-size: .8rem;
+    line-height: 1.45;
+    margin-bottom: 2px;
+  }
+  .home-news-card__actions--compact {
+    width: 100%;
+    max-width: none;
+    gap: 8px;
+  }
+  .home-news-card__actions--compact .home-news-card__btn {
+    min-height: 44px;
+    padding: 9px 8px;
+    font-size: .8rem;
+    gap: 5px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.2;
+    overflow: hidden;
+  }
+  .home-news-card__actions--compact .home-news-card__btn svg {
+    width: 15px;
+    height: 15px;
   }
   .home-news-prizes {
     min-height: 0;
