@@ -11,11 +11,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tierId = $_POST['tier_id'] ?: null;
         $tier = $tierId ? db()->query("SELECT spin_quota FROM member_tiers WHERE id = " . (int) $tierId)->fetch() : null;
         $spins = $tier ? (int) $tier['spin_quota'] : (int) ($_POST['spins_remaining'] ?? 1);
+        $loginId = normalize_login_id($_POST['login_id'] ?? '');
+        $plainPassword = (string) ($_POST['password'] ?? '');
+        if ($loginId === '' || !validate_login_id($loginId)) {
+            flash_set('error', 'กรุณากรอกไอดี 4-32 ตัวอักษร');
+            header('Location: members.php');
+            exit;
+        }
+        if (!validate_member_password($plainPassword)) {
+            flash_set('error', 'กรุณากรอกรหัสผ่านอย่างน้อย 6 ตัวอักษร');
+            header('Location: members.php');
+            exit;
+        }
+        $passwordHash = password_hash($plainPassword, PASSWORD_DEFAULT);
         db()->prepare(
-            'INSERT INTO members (name, phone, email, tier_id, status, spins_remaining, notes) VALUES (?,?,?,?,?,?,?)'
+            'INSERT INTO members (name, phone, login_id, password_hash, email, tier_id, status, spins_remaining, notes) VALUES (?,?,?,?,?,?,?,?,?)'
         )->execute([
             trim($_POST['name']),
-            trim($_POST['phone']),
+            normalize_phone($_POST['phone'] ?? ''),
+            $loginId,
+            $passwordHash,
             trim($_POST['email'] ?? '') ?: null,
             $tierId,
             $_POST['status'] ?? 'active',
@@ -70,6 +85,10 @@ ob_start();
         <div><label>เบอร์โทร</label><input name="phone" required /></div>
       </div>
       <div class="admin-form__row">
+        <div><label>ไอดีเข้าสู่ระบบ</label><input name="login_id" required pattern="[A-Za-z0-9._-]{4,32}" /></div>
+        <div><label>รหัสผ่าน</label><input type="password" name="password" required minlength="6" /></div>
+      </div>
+      <div class="admin-form__row">
         <div><label>อีเมล</label><input type="email" name="email" /></div>
         <div><label>ระดับ</label>
           <select name="tier_id"><option value="">-- เลือก --</option>
@@ -96,11 +115,12 @@ ob_start();
   </div>
   <div class="admin-table-wrap">
     <table class="admin-table">
-      <thead><tr><th>ชื่อ</th><th>เบอร์</th><th>ระดับ</th><th>สิทธิ์หมุน</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+      <thead><tr><th>ชื่อ</th><th>ไอดี</th><th>เบอร์</th><th>ระดับ</th><th>สิทธิ์หมุน</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
       <tbody>
         <?php foreach ($rows as $r): ?>
           <tr>
             <td><?= h($r['name']) ?><br><a href="member-view.php?id=<?= (int) $r['id'] ?>" class="admin-btn admin-btn--ghost admin-btn--sm" style="margin-top:4px;">ดูรายละเอียด</a></td>
+            <td><code><?= h($r['login_id'] ?? '-') ?></code></td>
             <td><?= h($r['phone']) ?></td>
             <td><?= h($r['tier_name'] ?? '-') ?></td>
             <td><?= (int) $r['spins_remaining'] ?></td>
@@ -126,6 +146,7 @@ ob_start();
     <div><label>ชื่อ</label><input name="name" value="<?= h($r['name']) ?>" required /></div>
     <div><label>เบอร์</label><input name="phone" value="<?= h($r['phone']) ?>" required /></div>
   </div>
+  <label>ไอดีเข้าสู่ระบบ</label><input name="login_id" value="<?= h($r['login_id'] ?? '') ?>" readonly />
   <label>อีเมล</label><input name="email" value="<?= h($r['email'] ?? '') ?>" />
   <div class="admin-form__row">
     <div>

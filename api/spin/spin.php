@@ -14,11 +14,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     json_response(['error' => 'Method not allowed'], 405);
 }
 
-$member = $_SESSION['member'] ?? null;
-if (!$member) {
-    json_response(['error' => 'กรุณาเข้าสู่ระบบ'], 401);
+if (empty($_SESSION['wheel_spin_unlocked']) || empty($_SESSION['wheel_registration_id'])) {
+    json_response(['error' => 'กรุณาลงทะเบียนก่อนหมุนวงล้อ'], 401);
 }
 
+$member = $_SESSION['member'] ?? null;
+if (!$member) {
+    json_response(['error' => 'กรุณาลงทะเบียนก่อนหมุนวงล้อ'], 401);
+}
+
+$registrationId = (int) $_SESSION['wheel_registration_id'];
 $memberId = (int) $member['id'];
 $pdo = db();
 $pdo->beginTransaction();
@@ -29,6 +34,12 @@ try {
     $m = $stmt->fetch();
     if (!$m || $m['status'] !== 'active') {
         throw new RuntimeException('บัญชีไม่พร้อมใช้งาน');
+    }
+
+    $stmt = $pdo->prepare('SELECT id FROM wheel_registrations WHERE id = ? AND member_id = ? AND spin_log_id IS NULL LIMIT 1 FOR UPDATE');
+    $stmt->execute([$registrationId, $memberId]);
+    if (!$stmt->fetch()) {
+        throw new RuntimeException('กรุณาลงทะเบียนก่อนหมุนวงล้อ');
     }
 
     $game = game_by_code('lucky_wheel');
@@ -61,18 +72,27 @@ try {
     $campaign = $pdo->query("SELECT id FROM campaigns WHERE status='active' ORDER BY id LIMIT 1")->fetch();
     $campaignId = $campaign['id'] ?? null;
 
-    $pdo->prepare('INSERT INTO spin_logs (member_id, game_id, prize_id, campaign_id, ip_address) VALUES (?,?,?,?,?)')
-        ->execute([$memberId, $gameId, $prize['id'], $campaignId, $_SERVER['REMOTE_ADDR'] ?? null]);
+    $pdo->prepare('INSERT INTO spin_logs (member_id, registration_id, game_id, prize_id, campaign_id, ip_address) VALUES (?,?,?,?,?,?)')
+        ->execute([$memberId, $registrationId, $gameId, $prize['id'], $campaignId, $_SERVER['REMOTE_ADDR'] ?? null]);
 
     $spinId = (int) $pdo->lastInsertId();
+
+    $pdo->prepare('UPDATE wheel_registrations SET spin_log_id = ? WHERE id = ?')
+        ->execute([$spinId, $registrationId]);
 
     $pdo->prepare('INSERT INTO reward_claims (member_id, prize_id, spin_log_id, status) VALUES (?,?,?,?)')
         ->execute([$memberId, $prize['id'], $spinId, 'won']);
 
     $pdo->commit();
 
-    $spinsLeft = $playsLeft - 1;
-    $_SESSION['member']['spins_remaining'] = $spinsLeft;
+    $stmt = $pdo->prepare('SELECT spins_remaining FROM members WHERE id = ? LIMIT 1');
+    $stmt->execute([$memberId]);
+    $spinsLeft = (int) $stmt->fetchColumn();
+
+    unset($_SESSION['wheel_spin_unlocked'], $_SESSION['wheel_registration_id']);
+    if (!empty($_SESSION['member'])) {
+        $_SESSION['member']['spins_remaining'] = $spinsLeft;
+    }
 
     json_response([
         'ok' => true,

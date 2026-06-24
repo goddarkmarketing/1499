@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS games (
 ) ENGINE=InnoDB;
 
 INSERT IGNORE INTO games (id, code, name, type, description, status, sort_order) VALUES
-(1, 'lucky_wheel', 'วงล้อโชคดี', 'wheel', 'เกมหมุนวงล้อลุ้นรางวัลสำหรับลูกค้า BoyInsure', 'active', 1);
+(1, 'lucky_wheel', 'วงล้อโชคดี', 'wheel', 'เกมหมุนวงล้อลุ้นรางวัลสำหรับลูกค้า BOYINSURE', 'active', 1);
 
 -- prizes.game_id
 SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS

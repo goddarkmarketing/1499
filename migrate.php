@@ -47,7 +47,7 @@ try {
 
     $pdo->exec(
         "INSERT IGNORE INTO games (id, code, name, type, description, status, sort_order) VALUES
-        (1, 'lucky_wheel', 'วงล้อโชคดี', 'wheel', 'เกมหมุนวงล้อลุ้นรางวัลสำหรับลูกค้า BoyInsure', 'active', 1)"
+        (1, 'lucky_wheel', 'วงล้อโชคดี', 'wheel', 'เกมหมุนวงล้อลุ้นรางวัลสำหรับลูกค้า BOYINSURE', 'active', 1)"
     );
     $steps[] = 'เพิ่มเกมวงล้อโชคดี (ถ้ายังไม่มี)';
 
@@ -69,6 +69,65 @@ try {
     }
     $pdo->exec('UPDATE spin_logs SET game_id = 1 WHERE game_id IS NULL');
     $steps[] = 'อัปเดตประวัติการเล่นให้ผูกกับวงล้อโชคดี';
+
+    foreach ([
+        'first_name' => 'VARCHAR(60) NULL AFTER name',
+        'last_name' => 'VARCHAR(60) NULL AFTER first_name',
+        'national_id' => 'VARCHAR(13) NULL AFTER phone',
+        'birth_date' => 'DATE NULL AFTER national_id',
+    ] as $column => $definition) {
+        if (!db_column_exists('members', $column)) {
+            $pdo->exec("ALTER TABLE members ADD COLUMN {$column} {$definition}");
+            $steps[] = "เพิ่มคอลัมน์ members.{$column}";
+        }
+    }
+
+    if (!db_table_exists('wheel_registrations')) {
+        $pdo->exec(
+            "CREATE TABLE wheel_registrations (
+              id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+              member_id INT UNSIGNED NULL,
+              first_name VARCHAR(60) NOT NULL,
+              last_name VARCHAR(60) NOT NULL,
+              phone VARCHAR(20) NOT NULL,
+              national_id VARCHAR(13) NOT NULL,
+              birth_date DATE NOT NULL,
+              email VARCHAR(190) NULL,
+              consent_at DATETIME NOT NULL,
+              ip_address VARCHAR(45) NULL,
+              user_agent VARCHAR(255) NULL,
+              spin_log_id INT UNSIGNED NULL,
+              created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              KEY idx_wr_phone (phone),
+              KEY idx_wr_created (created_at),
+              KEY idx_wr_spin (spin_log_id),
+              CONSTRAINT fk_wr_member FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE SET NULL,
+              CONSTRAINT fk_wr_spin FOREIGN KEY (spin_log_id) REFERENCES spin_logs(id) ON DELETE SET NULL
+            ) ENGINE=InnoDB"
+        );
+        $steps[] = 'สร้างตาราง wheel_registrations';
+    }
+
+    if (!db_column_exists('spin_logs', 'registration_id')) {
+        $pdo->exec(
+            'ALTER TABLE spin_logs
+             ADD COLUMN registration_id INT UNSIGNED NULL AFTER member_id,
+             ADD KEY idx_spin_registration (registration_id),
+             ADD CONSTRAINT fk_spin_registration FOREIGN KEY (registration_id) REFERENCES wheel_registrations(id) ON DELETE SET NULL'
+        );
+        $steps[] = 'เพิ่มคอลัมน์ spin_logs.registration_id';
+    }
+
+    if (!db_column_exists('members', 'login_id')) {
+        $pdo->exec(
+            'ALTER TABLE members
+             ADD COLUMN login_id VARCHAR(60) NULL AFTER phone,
+             ADD UNIQUE KEY uk_members_login_id (login_id)'
+        );
+        $steps[] = 'เพิ่มคอลัมน์ members.login_id';
+    }
+    $pdo->exec('UPDATE members SET login_id = phone WHERE login_id IS NULL OR login_id = ""');
+    $steps[] = 'ตั้งค่า login_id จากเบอร์โทรสำหรับสมาชิกเดิม';
 
     $ok = true;
 } catch (Throwable $e) {

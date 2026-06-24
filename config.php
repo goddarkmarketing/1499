@@ -1,6 +1,6 @@
 <?php
 /**
- * BoyInsure — การตั้งค่าระบบ
+ * BOYINSURE — การตั้งค่าระบบ
  * ปรับค่า DB ให้ตรงกับ XAMPP ของคุณ
  */
 return [
@@ -13,7 +13,7 @@ return [
         'charset' => 'utf8mb4',
     ],
     'app' => [
-        'name' => 'BoyInsure Admin',
+        'name' => 'BOYINSURE Admin',
         'url' => '/1499',
         'timezone' => 'Asia/Bangkok',
     ],

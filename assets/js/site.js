@@ -1,9 +1,9 @@
 const FOOTER_HTML = `<div class="site-footer__inner">
   <div class="site-footer__brand">
-    <a href="index.html" class="site-footer__name">BoyInsure</a>
+    <a href="index.html" class="site-footer__name">BOYINSURE</a>
     <p class="site-footer__tagline">คุ้มครองทุกช่วงชีวิต ด้วยใจ</p>
     <p class="site-footer__desc">พันธมิตรด้านประกันชีวิตและประกันภัย วิเคราะห์และเปรียบเทียบแผนให้ก่อนตัดสินใจ ดูแลลูกค้าต่อเนื่องจนจบทุกเคส</p>
-    <p class="site-footer__note">ศูนย์ไทยประกันชีวิต</p>
+    <p class="site-footer__note">พันธมิตรด้านประกันภัย</p>
     <div class="site-footer__social">
       <a href="tel:0627878968" class="site-footer__social-link" aria-label="โทรศัพท์"><i data-lucide="phone" aria-hidden="true"></i></a>
       <a href="contact.html" class="site-footer__social-link" aria-label="แชทสอบถาม"><i data-lucide="message-circle" aria-hidden="true"></i></a>
@@ -43,7 +43,7 @@ const FOOTER_HTML = `<div class="site-footer__inner">
   </div>
 </div>
 <div class="site-footer__bottom">
-  <p class="site-footer__copy">© 2026 BoyInsure — สงวนลิขสิทธิ์</p>
+  <p class="site-footer__copy">© 2026 BOYINSURE — สงวนลิขสิทธิ์</p>
   <nav class="site-footer__legal" aria-label="ข้อกำหนดทางกฎหมาย">
     <a href="contact.html">นโยบายความเป็นส่วนตัว</a>
     <a href="contact.html">เงื่อนไขการใช้งาน</a>
@@ -140,52 +140,62 @@ function fbVideoEmbedUrl(href, width) {
 
 function loadHighlightVideo(iframe, href, fallbackWidth) {
   if (!iframe || !href) return;
-  const shell = iframe.closest('.highlights__player, .highlights__video');
-  const width = Math.max(120, Math.round(shell?.getBoundingClientRect().width || fallbackWidth || 300));
+  const shell = iframe.closest('.site-modal__video');
+  const width = Math.max(280, Math.round(shell?.getBoundingClientRect().width || fallbackWidth || 360));
   iframe.hidden = false;
   iframe.src = fbVideoEmbedUrl(href, width);
+}
+
+function getHighlightMainPoster(item) {
+  return item.mainVideoPoster || item.image;
+}
+
+function getHighlightThumbPoster(item) {
+  return item.thumbVideoPoster || item.thumb;
 }
 
 const HIGHLIGHTS_DATA = [
   {
     brandInitial: 'B',
-    brandName: 'BoyInsure',
-    brandTagline: 'ศูนย์ไทยประกันชีวิต',
+    brandName: 'BOYINSURE',
+    brandTagline: 'พันธมิตรด้านประกันภัย',
     tags: ['วิเคราะห์แผน', 'เปรียบเทียบเบี้ย', 'ไม่บังคับซื้อ'],
     title: 'วางแผนความคุ้มครองอย่างมืออาชีพ',
-    text: 'BoyInsure ช่วยวิเคราะห์และเปรียบเทียบแผนประกันจากบริษัทชั้นนำ อธิบายให้เข้าใจง่ายก่อนตัดสินใจ ไม่บังคับซื้อ และดูแลต่อเนื่องตลอดอายุกรมธรรม์ เพื่อให้คุณและครอบครัวอุ่นใจในทุกช่วงชีวิต',
-    image: 'assets/img/products/life.jpg',
-    imageAlt: 'BoyInsure วางแผนประกันครอบครัว',
+    text: 'BOYINSURE ช่วยวิเคราะห์และเปรียบเทียบแผนประกันจากบริษัทชั้นนำ อธิบายให้เข้าใจง่ายก่อนตัดสินใจ ไม่บังคับซื้อ และดูแลต่อเนื่องตลอดอายุกรมธรรม์ เพื่อให้คุณและครอบครัวอุ่นใจในทุกช่วงชีวิต',
+    image: 'assets/img/highlights/reel-main.jpg',
+    imageAlt: 'BOYINSURE วางแผนประกันครอบครัว',
     mainVideo: 'https://www.facebook.com/reel/1316213417025596/',
-    thumb: 'assets/img/products/health.jpg',
+    mainVideoPoster: 'assets/img/highlights/reel-main.jpg',
+    thumb: 'assets/img/highlights/reel-thumb.jpg',
     thumbVideo: 'https://www.facebook.com/reel/2393152494542455/',
-    caption: 'ทีม BoyInsure ดูแลเคลมประกันสุขภาพจนจบทุกขั้นตอน',
+    thumbVideoPoster: 'assets/img/highlights/reel-thumb.jpg',
+    caption: 'ทีม BOYINSURE ดูแลเคลมประกันสุขภาพจนจบทุกขั้นตอน',
     link: 'about.html',
   },
   {
     brandInitial: 'B',
-    brandName: 'BoyInsure',
+    brandName: 'BOYINSURE',
     brandTagline: 'คุ้มครองทุกช่วงชีวิต ด้วยใจ',
     tags: ['ประกันชีวิต', 'สุขภาพ', 'ออมทรัพย์'],
     title: 'แผนครอบคลุมทุกความต้องการ',
-    text: 'ครอบคลุมประกันชีวิต สุขภาพ ออมสะสมทรัพย์ และความคุ้มครองอื่น ๆ จากพาร์ทเนอร์ชั้นนำ BoyInsure ช่วยจัดสรรงบให้เหมาะกับครอบครัวและเป้าหมายระยะยาว โดยเลือกแผนที่พอดีกับชีวิตจริงของคุณ',
+    text: 'ครอบคลุมประกันชีวิต สุขภาพ ออมสะสมทรัพย์ และความคุ้มครองอื่น ๆ จากพาร์ทเนอร์ชั้นนำ BOYINSURE ช่วยจัดสรรงบให้เหมาะกับครอบครัวและเป้าหมายระยะยาว โดยเลือกแผนที่พอดีกับชีวิตจริงของคุณ',
     image: 'assets/img/home-hero-2.png',
-    imageAlt: 'BoyInsure คุ้มครองครอบครัวครบวงจร',
+    imageAlt: 'BOYINSURE คุ้มครองครอบครัวครบวงจร',
     thumb: 'assets/img/products/savings.jpg',
-    caption: 'วางแผนออมและคุ้มครองไปพร้อมกันกับ BoyInsure',
+    caption: 'วางแผนออมและคุ้มครองไปพร้อมกันกับ BOYINSURE',
     link: 'insurance.html',
   },
   {
     brandInitial: 'B',
-    brandName: 'BoyInsure',
+    brandName: 'BOYINSURE',
     brandTagline: 'พันธมิตรด้านประกันที่ไว้วางใจ',
     tags: ['ตอบแชทไว', 'คำนวณเบี้ย', 'ดูแลเคลม'],
     title: 'ดูแลหลังการขายจริง ๆ',
-    text: 'BoyInsure ตอบแชทไว ดูแลใกล้ชิด มีแพลตฟอร์มช่วยคำนวณเบี้ยและจัดทำใบเสนอราคา ทีมซัพพอร์ตช่วยดูแลเคลมและติดตามผลประโยชน์ให้ครบถ้วนทุกเคส ไม่ทิ้งลูกค้าหลังทำสัญญา',
+    text: 'BOYINSURE ตอบแชทไว ดูแลใกล้ชิด มีแพลตฟอร์มช่วยคำนวณเบี้ยและจัดทำใบเสนอราคา ทีมซัพพอร์ตช่วยดูแลเคลมและติดตามผลประโยชน์ให้ครบถ้วนทุกเคส ไม่ทิ้งลูกค้าหลังทำสัญญา',
     image: 'assets/img/products/critical.jpg',
-    imageAlt: 'BoyInsure ดูแลลูกค้าหลังการขาย',
+    imageAlt: 'BOYINSURE ดูแลลูกค้าหลังการขาย',
     thumb: 'assets/img/products/accident.jpg',
-    caption: 'เครื่องมือวางแผนและซัพพอร์ตจากทีม BoyInsure',
+    caption: 'เครื่องมือวางแผนและซัพพอร์ตจากทีม BOYINSURE',
     link: 'contact.html',
   },
 ];
@@ -194,6 +204,47 @@ function initHighlights() {
   const block = document.getElementById('highlightsBlock');
   const moreBtn = document.getElementById('highlightMoreBtn');
   if (!block || !moreBtn || ACTIVE_HIGHLIGHTS_DATA.length === 0) return;
+
+  const modal = document.getElementById('highlightVideoModal');
+  const modalFrame = document.getElementById('highlightVideoModalFrame');
+  const modalTitle = document.getElementById('highlightVideoModalTitle');
+  const modalDialog = modal?.querySelector('.site-modal__dialog');
+  let lastVideoTrigger = null;
+
+  function closeVideoModal() {
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    document.body.classList.remove('site-modal-open');
+    if (modalFrame) {
+      modalFrame.hidden = true;
+      modalFrame.removeAttribute('src');
+    }
+    lastVideoTrigger?.focus();
+    lastVideoTrigger = null;
+  }
+
+  function openVideoModal(href, title, trigger) {
+    if (!modal || !modalFrame || !href) return;
+    lastVideoTrigger = trigger || null;
+    if (modalTitle) modalTitle.textContent = title || 'BOYINSURE';
+    modalFrame.title = title || 'BOYINSURE';
+    modal.hidden = false;
+    document.body.classList.add('site-modal-open');
+    loadHighlightVideo(modalFrame, href, 360);
+    modal.querySelector('.site-modal__close')?.focus();
+    if (window.lucide?.createIcons) lucide.createIcons();
+  }
+
+  if (modal) {
+    modal.querySelectorAll('[data-video-modal-close]').forEach((el) => {
+      el.addEventListener('click', closeVideoModal);
+    });
+    modalDialog?.addEventListener('click', (e) => e.stopPropagation());
+    document.addEventListener('keydown', (e) => {
+      if (modal.hidden) return;
+      if (e.key === 'Escape') closeVideoModal();
+    });
+  }
 
   const els = {
     content: block.querySelector('.highlights__content'),
@@ -208,11 +259,9 @@ function initHighlights() {
     image: document.getElementById('highlightImage'),
     mainPlayer: document.getElementById('highlightMainPlayer'),
     mainPlay: document.getElementById('highlightMainPlay'),
-    mainVideo: document.getElementById('highlightMainVideo'),
     thumb: document.getElementById('highlightThumb'),
     thumbWrap: document.getElementById('highlightThumbWrap'),
     thumbPlay: document.getElementById('highlightThumbPlay'),
-    thumbVideo: document.getElementById('highlightThumbVideo'),
     caption: document.getElementById('highlightCaption'),
     thumbLink: document.getElementById('highlightThumbLink'),
   };
@@ -220,53 +269,28 @@ function initHighlights() {
   let current = 0;
 
   function resetMainPlayer() {
-    if (els.mainPlayer) els.mainPlayer.classList.remove('is-playing');
-    if (els.mainVideo) {
-      els.mainVideo.hidden = true;
-      els.mainVideo.removeAttribute('src');
-    }
+    if (els.mainPlayer) els.mainPlayer.classList.remove('is-playing', 'has-video');
     if (els.image) els.image.hidden = false;
     if (els.mainPlay) els.mainPlay.hidden = true;
   }
 
   function resetThumbPlayer() {
-    if (els.thumbWrap) els.thumbWrap.classList.remove('is-playing');
-    if (els.thumbVideo) {
-      els.thumbVideo.hidden = true;
-      els.thumbVideo.removeAttribute('src');
-    }
+    if (els.thumbWrap) els.thumbWrap.classList.remove('is-playing', 'has-video');
     if (els.thumb) els.thumb.hidden = false;
     if (els.thumbPlay) els.thumbPlay.hidden = true;
     if (els.thumbLink) els.thumbLink.hidden = true;
-  }
-
-  function playMainVideo(item) {
-    if (!item?.mainVideo || !els.mainVideo) return;
-    els.image.hidden = true;
-    if (els.mainPlay) els.mainPlay.hidden = true;
-    els.mainPlayer?.classList.add('is-playing');
-    loadHighlightVideo(els.mainVideo, item.mainVideo, 300);
-    els.mainVideo.title = item.imageAlt;
-  }
-
-  function playThumbVideo(item) {
-    if (!item?.thumbVideo || !els.thumbVideo) return;
-    els.thumb.hidden = true;
-    if (els.thumbPlay) els.thumbPlay.hidden = true;
-    if (els.thumbLink) els.thumbLink.hidden = true;
-    els.thumbWrap?.classList.add('is-playing');
-    loadHighlightVideo(els.thumbVideo, item.thumbVideo, 220);
   }
 
   function setMainMedia(item) {
     resetMainPlayer();
     if (!els.image) return;
 
-    els.image.src = item.image;
+    els.image.src = getHighlightMainPoster(item);
     els.image.alt = item.imageAlt;
 
     if (item.mainVideo && els.mainPlay) {
       els.mainPlay.hidden = false;
+      els.mainPlayer?.classList.add('has-video');
     }
   }
 
@@ -274,10 +298,12 @@ function initHighlights() {
     resetThumbPlayer();
     if (!els.thumb) return;
 
-    els.thumb.src = item.thumb;
+    els.thumb.src = getHighlightThumbPoster(item);
+    els.thumb.alt = item.thumbAlt || item.caption || item.imageAlt || '';
 
     if (item.thumbVideo && els.thumbPlay) {
       els.thumbPlay.hidden = false;
+      els.thumbWrap?.classList.add('has-video');
       return;
     }
 
@@ -304,6 +330,7 @@ function initHighlights() {
   }
 
   function fadeSwitch(nextIndex) {
+    closeVideoModal();
     [els.content, els.clips, els.caption, moreBtn].forEach((el) => el?.classList.add('is-fading'));
     setTimeout(() => {
       current = nextIndex;
@@ -317,12 +344,17 @@ function initHighlights() {
     fadeSwitch((current + 1) % ACTIVE_HIGHLIGHTS_DATA.length);
   });
 
-  els.mainPlay?.addEventListener('click', () => {
-    playMainVideo(ACTIVE_HIGHLIGHTS_DATA[current]);
+  els.mainPlayer?.addEventListener('click', () => {
+    const item = ACTIVE_HIGHLIGHTS_DATA[current];
+    if (!item?.mainVideo) return;
+    openVideoModal(item.mainVideo, item.imageAlt, els.mainPlayer);
   });
 
-  els.thumbPlay?.addEventListener('click', () => {
-    playThumbVideo(ACTIVE_HIGHLIGHTS_DATA[current]);
+  els.thumbWrap?.addEventListener('click', (e) => {
+    const item = ACTIVE_HIGHLIGHTS_DATA[current];
+    if (!item?.thumbVideo) return;
+    e.preventDefault();
+    openVideoModal(item.thumbVideo, item.caption || 'BOYINSURE', els.thumbWrap);
   });
 
   render(current);
@@ -385,7 +417,7 @@ const INSURANCE_CATEGORIES = [
         id: 'senior-health',
         name: 'ประกันผู้สูงอายุ',
         desc: 'ดูแลสุขภาพวัยเกษียณอย่างมั่นใจ เน้นความคุ้มครองที่ใช้จริง',
-        image: 'assets/img/products/elderly.jpg',
+        image: 'assets/img/products/senior-health.jpg',
         features: ['ออกแบบสำหรับวัย 50+', 'ค่ารักษาและการเฝ้าไข้', 'เบี้ยเหมาะกับวัยทำงาน'],
       },
     ],
@@ -446,7 +478,7 @@ const INSURANCE_CATEGORIES = [
         name: 'ประกันเดินทางในประเทศ',
         desc: 'เหมาะสำหรับทริปสั้น คุ้มครองอุบัติเหตุและค่าใช้จ่ายฉุกเฉิน',
         image: 'assets/img/products/travel.jpg',
-        features: ['เริ่มต้นรายวัน', 'คุ้มครองครอบครัว', 'เคลมง่ายผ่านทีม BoyInsure'],
+        features: ['เริ่มต้นรายวัน', 'คุ้มครองครอบครัว', 'เคลมง่ายผ่านทีม BOYINSURE'],
       },
     ],
   },
@@ -510,14 +542,14 @@ function siteApiUrl(phpPath) {
 
 function sitePublicSettings() {
   return SITE_PUBLIC?.settings || {
-    site_name: 'BoyInsure',
+    site_name: 'BOYINSURE',
     site_tagline: 'คุ้มครองทุกช่วงชีวิต ด้วยใจ',
     contact_email: 'contact@boyinsure.com',
     phone: '0627878968',
     phone_display: '062-787-8968',
     business_hours: 'จันทร์–ศุกร์ 09:00–18:00 น.',
     address: 'ให้บริการทั่วประเทศ',
-    footer_note: 'ศูนย์ไทยประกันชีวิต',
+    footer_note: 'พันธมิตรด้านประกันภัย',
     facebook_url: 'https://www.facebook.com/',
     tiktok_url: 'https://www.tiktok.com/',
     line_url: 'https://line.me/R/ti/p/@boyinsure',
@@ -788,10 +820,10 @@ function applyContactPage(contact, settings) {
 function buildFooterHtml() {
   const s = sitePublicSettings();
   const footer = SITE_PUBLIC?.content?.footer || {};
-  const siteName = s.site_name || 'BoyInsure';
+  const siteName = s.site_name || 'BOYINSURE';
   const tagline = footer.tagline || s.site_tagline || 'คุ้มครองทุกช่วงชีวิต ด้วยใจ';
   const desc = footer.description || 'พันธมิตรด้านประกันชีวิตและประกันภัย วิเคราะห์และเปรียบเทียบแผนให้ก่อนตัดสินใจ ดูแลลูกค้าต่อเนื่องจนจบทุกเคส';
-  const note = footer.note || s.footer_note || 'ศูนย์ไทยประกันชีวิต';
+  const note = footer.note || s.footer_note || 'พันธมิตรด้านประกันภัย';
   const phone = s.phone || '0627878968';
   const phoneDisplay = s.phone_display || '062-787-8968';
   const email = s.contact_email || 'contact@boyinsure.com';
@@ -859,14 +891,14 @@ const CATEGORY_DETAIL_DEFAULTS = {
     faq: [
       { q: 'ต้องตรวจสุขภาพไหม?', a: 'ขึ้นกับอายุ ทุนประกัน และบริษัทที่เลือก บางแผนไม่ต้องตรวจสุขภาพ' },
       { q: 'ยกเลิกกลางคันได้ไหม?', a: 'ยกเลิกได้ตามเงื่อนไขกรมธรรม์ อาจได้รับมูลค่าเงินคืนตามระยะเวลาที่ชำระ' },
-      { q: 'BoyInsure บังคับซื้อไหม?', a: 'ไม่บังคับซื้อ เราให้คำปรึกษาและเปรียบเทียบแผนให้ฟรีก่อนตัดสินใจ' },
+      { q: 'BOYINSURE บังคับซื้อไหม?', a: 'ไม่บังคับซื้อ เราให้คำปรึกษาและเปรียบเทียบแผนให้ฟรีก่อนตัดสินใจ' },
     ],
   },
   health: {
     facts: { age: '0–75 ปี', term: 'ต่ออายุรายปี', premium: 'เริ่มต้น ~3,000–20,000 บ./ปี', processDays: '1–5 วันทำการ' },
     exclusions: ['โรคที่มีอยู่ก่อนทำสัญญา (ตามเงื่อนไขรับประกัน)', 'การรักษาเพื่อความสวยงาม', 'อุบัติเหตุจากกีฬาเสี่ยง (ถ้าไม่ได้ซื้อความคุ้มครองเสริม)', 'การรักษานอกเหนือวงเงินหรือข้อยกเว้นในกรมธรรม์'],
     faq: [
-      { q: 'เคลมค่ารักษายังไง?', a: 'แจ้งเคลมผ่าน BoyInsure หรือบริษัทประกันโดยตรง ทีมช่วยติดตามจนจบเคส' },
+      { q: 'เคลมค่ารักษายังไง?', a: 'แจ้งเคลมผ่าน BOYINSURE หรือบริษัทประกันโดยตรง ทีมช่วยติดตามจนจบเคส' },
       { q: 'OPD คุ้มครองไหม?', a: 'ขึ้นกับแผนที่เลือก บางแผนครอบคลุมทั้ง IPD และ OPD' },
       { q: 'เปลี่ยนแผนได้ไหม?', a: 'ปรับแผนหรือเพิ่มความคุ้มครองได้เมื่อครบกำหนดต่ออายุ หรือตามเงื่อนไขบริษัท' },
     ],
@@ -886,7 +918,7 @@ const CATEGORY_DETAIL_DEFAULTS = {
     faq: [
       { q: 'ซื้อก่อนเดินทางกี่วัน?', a: 'แนะนำซื้อก่อนออกเดินทางอย่างน้อย 1 วัน บางแผนซื้อได้ในวันเดินทาง' },
       { q: 'เคลมกระเป๋าหายยังไง?', a: 'แจ้งเคลมพร้อมเอกสารจากสายการบินหรือตำรวจตามเงื่อนไขกรมธรรม์' },
-      { q: 'ประกันรถต่ออายุเมื่อไหร่?', a: 'ต่ออายุก่อนหมดอายุกรมธรรม์ ทีม BoyInsure ช่วยเตือนและเปรียบเทียบเบี้ยใหม่' },
+      { q: 'ประกันรถต่ออายุเมื่อไหร่?', a: 'ต่ออายุก่อนหมดอายุกรมธรรม์ ทีม BOYINSURE ช่วยเตือนและเปรียบเทียบเบี้ยใหม่' },
     ],
   },
   property: {
@@ -895,7 +927,7 @@ const CATEGORY_DETAIL_DEFAULTS = {
     faq: [
       { q: 'ประเมินทุนประกันอย่างไร?', a: 'ประเมินจากมูลค่าอาคารและทรัพย์สินภายใน ทีมช่วยแนะนำให้คุ้มครองพอดี' },
       { q: 'ประกันกลุ่มเหมาะกับบริษัทขนาดไหน?', a: 'ออกแบบได้ตั้งแต่ SME ไปจนถึงองค์กรขนาดใหญ่' },
-      { q: 'เคลมอัคคีภัยใช้เวลานานไหม?', a: 'ขึ้นกับความเสียหายและเอกสาร ทีม BoyInsure ช่วยประสานจนจบเคส' },
+      { q: 'เคลมอัคคีภัยใช้เวลานานไหม?', a: 'ขึ้นกับความเสียหายและเอกสาร ทีม BOYINSURE ช่วยประสานจนจบเคส' },
     ],
   },
 };
@@ -903,7 +935,7 @@ const CATEGORY_DETAIL_DEFAULTS = {
 const INSURANCE_PLAN_DETAILS = {
   'savings-fund': {
     coverageDetails: ['ออมเงินตามระยะเวลาที่กำหนด พร้อมดอกเบี้ย/ผลตอบแทนตามแผน', 'คุ้มครองชีวิตตลอดอายุสัญญา', 'รับเงินคืนตามกำหนดหรือเมื่อครบสัญญา', 'ปรับทุนประกันและเบี้ยให้เหมาะกับงบประมาณ'],
-    useCase: 'คุณอายุ 35 ปี อยากออมเงิน 10–15 ปี พร้อมคุ้มครองชีวิตให้ครอบครัว งบประมาณ ~3,000 บ./เดือน — ทีม BoyInsure ช่วยเปรียบเทียบแผนที่ให้ทั้งการออมและความคุ้มครอง',
+    useCase: 'คุณอายุ 35 ปี อยากออมเงิน 10–15 ปี พร้อมคุ้มครองชีวิตให้ครอบครัว งบประมาณ ~3,000 บ./เดือน — ทีม BOYINSURE ช่วยเปรียบเทียบแผนที่ให้ทั้งการออมและความคุ้มครอง',
     faq: [{ q: 'ได้เงินคืนเมื่อไหร่?', a: 'ตามระยะเวลาในกรมธรรม์ เช่น ราย 3–5 ปี หรือเมื่อครบสัญญา ขึ้นกับแผนที่เลือก' }],
   },
   pension: {
@@ -956,7 +988,7 @@ const INSURANCE_PLAN_DETAILS = {
   },
   'travel-domestic': {
     facts: { premium: 'เริ่มต้น ~50–500 บ./วัน' },
-    coverageDetails: ['คุ้มครองรายวันหรือรายทริป', 'อุบัติเหตุและค่าใช้จ่ายฉุกเฉิน', 'ครอบครัวสมัครพร้อมกันได้', 'เคลมง่ายผ่านทีม BoyInsure'],
+    coverageDetails: ['คุ้มครองรายวันหรือรายทริป', 'อุบัติเหตุและค่าใช้จ่ายฉุกเฉิน', 'ครอบครัวสมัครพร้อมกันได้', 'เคลมง่ายผ่านทีม BOYINSURE'],
     useCase: 'ทริปเที่ยวภูเก็ต 3 วัน กับเพื่อน อยากมีประกันเบา ๆ คุ้มอุบัติเหตุและค่ารักษา — ซื้อได้ก่อนออกเดินทาง',
   },
   fire: {
@@ -981,7 +1013,7 @@ function getPlanDetailContent(plan, category) {
     facts: { ...catDefaults.facts, ...planData.facts },
     coverageDetails: planData.coverageDetails || plan.coverage || plan.features,
     exclusions: planData.exclusions || catDefaults.exclusions,
-    useCase: planData.useCase || `เหมาะสำหรับผู้ที่สนใจ${plan.name} และต้องการคำปรึกษาแบบไม่บังคับซื้อ ทีม BoyInsure ช่วยวิเคราะห์และเปรียบเทียบแผนจากหลายบริษัทให้เหมาะกับงบและเป้าหมายของคุณ`,
+    useCase: planData.useCase || `เหมาะสำหรับผู้ที่สนใจ${plan.name} และต้องการคำปรึกษาแบบไม่บังคับซื้อ ทีม BOYINSURE ช่วยวิเคราะห์และเปรียบเทียบแผนจากหลายบริษัทให้เหมาะกับงบและเป้าหมายของคุณ`,
     faq: [...(catDefaults.faq || []), ...(planData.faq || [])],
   };
 }
@@ -1256,7 +1288,7 @@ const ARTICLE_CATEGORIES = [
       {
         id: 'compare-plans',
         title: 'เปรียบเทียบประกันก่อนซื้อ ทำอย่างไร?',
-        excerpt: 'ดูทุนประกัน ข้อยกเว้น เบี้ย และผลประโยชน์คู่กัน BoyInsure ช่วยสรุปให้เข้าใจง่ายก่อนตัดสินใจ',
+        excerpt: 'ดูทุนประกัน ข้อยกเว้น เบี้ย และผลประโยชน์คู่กัน BOYINSURE ช่วยสรุปให้เข้าใจง่ายก่อนตัดสินใจ',
         image: 'assets/img/products/savings.jpg',
         readTime: '4 นาที',
         link: 'insurance.html',
@@ -1294,13 +1326,13 @@ const ARTICLE_CATEGORIES = [
   {
     id: 'tips',
     title: 'เคล็ดลับและ FAQ',
-    tagline: 'คำตอบที่พบบ่อยและเคล็ดลับจากทีม BoyInsure',
+    tagline: 'คำตอบที่พบบ่อยและเคล็ดลับจากทีม BOYINSURE',
     icon: 'lightbulb',
     articles: [
       {
         id: 'agent-tips',
         title: 'พูดไม่เก่ง จะเป็นตัวแทนประกันได้ไหม?',
-        excerpt: 'สิ่งสำคัญกว่าคือการเข้าใจข้อมูล และสื่อสารประโยชน์ที่ลูกค้าจะได้รับให้ชัดเจน BoyInsure มีระบบและการซัพพอร์ตอย่างเป็นขั้นตอน',
+        excerpt: 'สิ่งสำคัญกว่าคือการเข้าใจข้อมูล และสื่อสารประโยชน์ที่ลูกค้าจะได้รับให้ชัดเจน BOYINSURE มีระบบและการซัพพอร์ตอย่างเป็นขั้นตอน',
         image: 'assets/img/products/group.jpg',
         readTime: '4 นาที',
         featured: true,
@@ -1310,7 +1342,7 @@ const ARTICLE_CATEGORIES = [
       {
         id: 'claim-guide',
         title: 'เคลมประกันต้องเตรียมอะไรบ้าง?',
-        excerpt: 'เตรียมเอกสารให้ครบ แจ้งเคลมตั้งแต่เนิ่น ๆ ทีม BoyInsure ช่วยติดตามจนจบทุกเคส',
+        excerpt: 'เตรียมเอกสารให้ครบ แจ้งเคลมตั้งแต่เนิ่น ๆ ทีม BOYINSURE ช่วยติดตามจนจบทุกเคส',
         image: 'assets/img/products/fire.jpg',
         readTime: '3 นาที',
         link: 'contact.html',
@@ -1321,13 +1353,13 @@ const ARTICLE_CATEGORIES = [
   {
     id: 'promo',
     title: 'โปรโมชั่น',
-    tagline: 'กิจกรรม สิทธิพิเศษ และของรางวัลจาก BoyInsure',
+    tagline: 'กิจกรรม สิทธิพิเศษ และของรางวัลจาก BOYINSURE',
     icon: 'gift',
     articles: [
       {
         id: 'promo-rewards',
-        title: 'โปรโมชั่นและของรางวัล BoyInsure',
-        excerpt: 'ลูกค้าที่ทำประกันกับ BoyInsure รับสิทธิ์ลุ้นของรางวัลและวอเชอร์จากพาร์ทเนอร์ชั้นนำ ผ่านกิจกรรมวงล้อของรางวัล',
+        title: 'โปรโมชั่นและของรางวัล BOYINSURE',
+        excerpt: 'ลูกค้าที่ทำประกันกับ BOYINSURE รับสิทธิ์ลุ้นของรางวัลและวอเชอร์จากพาร์ทเนอร์ชั้นนำ ผ่านกิจกรรมวงล้อของรางวัล',
         image: 'assets/img/home-hero-2.png',
         readTime: '2 นาที',
         featured: true,
@@ -1373,7 +1405,7 @@ const ARTICLE_BODY = {
       { type: 'ul', items: ['สร้างความมั่นคงให้คนที่คุณรัก', 'ช่วยปิดหนี้หรือภาระทางการเงินที่ค้างอยู่', 'เป็นส่วนหนึ่งของแผนการเงินครอบครัวระยะยาว'] },
       { type: 'h2', text: 'ควรเริ่มเมื่อไหร่?' },
       { type: 'p', text: 'ยิ่งเริ่มเร็ว โดยทั่วไปเบี้ยประกันมักต่ำกว่าเมื่ออายุน้อยและสุขภาพดี แต่ถ้ายังไม่พร้อม สิ่งสำคัญคือเริ่มจากงบที่จ่ายได้สบาย แล้วค่อยปรับทุนเมื่อรายได้หรือภาระเปลี่ยน' },
-      { type: 'p', text: 'BoyInsure ช่วยวิเคราะห์และเปรียบเทียบแผนจากหลายบริษัทให้ฟรี ไม่บังคับซื้อ — ปรึกษาเพื่อหาแผนที่เหมาะกับชีวิตจริงของคุณ' },
+      { type: 'p', text: 'BOYINSURE ช่วยวิเคราะห์และเปรียบเทียบแผนจากหลายบริษัทให้ฟรี ไม่บังคับซื้อ — ปรึกษาเพื่อหาแผนที่เหมาะกับชีวิตจริงของคุณ' },
     ],
   },
   'life-coverage-amount': {
@@ -1427,7 +1459,7 @@ const ARTICLE_BODY = {
       { type: 'p', text: 'การเลือกประกันไม่ใช่การหาแผนที่ "ดีที่สุด" แต่คือแผนที่ "พอดีที่สุด" กับชีวิตและงบประมาณของคุณ' },
       { type: 'h2', text: '3 ขั้นตอนง่าย ๆ' },
       { type: 'ul', items: ['กำหนดงบประมาณต่อเดือน/ปีที่จ่ายได้โดยไม่เดือดร้อน', 'จัดลำดับความต้องการ เช่น สุขภาพ → ชีวิต → ออม', 'เปรียบเทียบอย่างน้อย 2–3 แผนจากหลายบริษัท'] },
-      { type: 'h2', text: 'BoyInsure ช่วยอะไรได้?' },
+      { type: 'h2', text: 'BOYINSURE ช่วยอะไรได้?' },
       { type: 'p', text: 'ทีมช่วยสรุปแผนให้เข้าใจง่าย เปรียบเทียบเบี้ยและความคุ้มครอง โดยไม่บังคับซื้อ — ปรึกษาฟรีได้ทุกเมื่อ' },
     ],
   },
@@ -1438,7 +1470,7 @@ const ARTICLE_BODY = {
       { type: 'p', text: 'แผนที่เบี้ยถูกกว่า ไม่ได้หมายความว่าคุ้มกว่าเสมอไป การเปรียบเทียบที่ดีต้องดูหลายมิติพร้อมกัน' },
       { type: 'h2', text: 'สิ่งที่ควรเทียบ' },
       { type: 'ul', items: ['ทุนประกันและผลประโยชน์', 'ข้อยกเว้นและเงื่อนไขสำคัญ', 'ระยะเวลารับประกันและการต่ออายุ', 'เบี้ยประกันและช่องทางชำระ'] },
-      { type: 'p', text: 'BoyInsure ช่วยจัดตารางเปรียบเทียบให้เห็นภาพรวม ก่อนคุณตัดสินใจด้วยตัวเองอย่างมั่นใจ' },
+      { type: 'p', text: 'BOYINSURE ช่วยจัดตารางเปรียบเทียบให้เห็นภาพรวม ก่อนคุณตัดสินใจด้วยตัวเองอย่างมั่นใจ' },
     ],
   },
   'save-today': {
@@ -1458,7 +1490,7 @@ const ARTICLE_BODY = {
       { type: 'p', text: 'อายุเกษียณอาจดูไกล แต่ยิ่งวางแผนเร็ว ยิ่งมีตัวเลือกมากขึ้น และเบี้ยมักต่ำกว่าเมื่อเริ่มต้นตอนยังหนุ่ม' },
       { type: 'h2', text: 'ประกันบำนาญทำงานอย่างไร?' },
       { type: 'p', text: 'ระหว่างทำงาน คุณชำระเบี้ยตามแผน เมื่อถึงอายุที่กำหนด จะได้รับเงินบำนาญรายเดือนต่อเนื่อง ช่วยสร้างรายได้หลังเกษียณอย่างมั่นคง' },
-      { type: 'p', text: 'ทีม BoyInsure ช่วยคำนวณและเปรียบเทียบแผนบำนาญจากหลายบริษัท ให้เหมาะกับเป้าหมายรายได้หลังเกษียณของคุณ' },
+      { type: 'p', text: 'ทีม BOYINSURE ช่วยคำนวณและเปรียบเทียบแผนบำนาญจากหลายบริษัท ให้เหมาะกับเป้าหมายรายได้หลังเกษียณของคุณ' },
     ],
   },
   'agent-tips': {
@@ -1468,28 +1500,28 @@ const ARTICLE_BODY = {
       { type: 'p', text: 'หลายคนกลัวว่าพูดไม่เก่งจะขายประกันไม่ได้ แต่ในความเป็นจริง ลูกค้าต้องการคนที่อธิบายให้เข้าใจและดูแลต่อเนื่อง มากกว่าคนพูดเก่งแต่ไม่รู้รายละเอียด' },
       { type: 'h2', text: 'ทักษะที่สำคัญกว่า' },
       { type: 'ul', items: ['ฟังความต้องการลูกค้าให้ชัด', 'อธิบายประโยชน์และข้อจำกัดอย่างตรงไปตรงมา', 'ติดตามและดูแลหลังทำสัญญา'] },
-      { type: 'p', text: 'BoyInsure มีระบบ การอบรม และทีมซัพพอร์ต ช่วยให้คุณเริ่มต้นได้อย่างมั่นใจ แม้ไม่เคยมีประสบการณ์มาก่อน' },
+      { type: 'p', text: 'BOYINSURE มีระบบ การอบรม และทีมซัพพอร์ต ช่วยให้คุณเริ่มต้นได้อย่างมั่นใจ แม้ไม่เคยมีประสบการณ์มาก่อน' },
     ],
   },
   'claim-guide': {
     date: '18 พ.ค. 2026',
-    takeaways: ['แจ้งเคลมเร็ว = ดำเนินการเร็ว', 'เตรียมเอกสารให้ครบตั้งแต่แรก', 'BoyInsure ช่วยติดตามจนจบเคส'],
+    takeaways: ['แจ้งเคลมเร็ว = ดำเนินการเร็ว', 'เตรียมเอกสารให้ครบตั้งแต่แรก', 'BOYINSURE ช่วยติดตามจนจบเคส'],
     sections: [
       { type: 'p', text: 'การเคลมประกันไม่ยากอย่างที่คิด ถ้ารู้ขั้นตอนและเตรียมเอกสารให้พร้อม บทความนี้สรุปสิ่งที่ควรทราบ' },
       { type: 'h2', text: 'ขั้นตอนเบื้องต้น' },
       { type: 'ul', items: ['แจ้งเหตุหรือการเคลมโดยเร็ว', 'เตรียมเอกสารตามที่กรมธรรม์กำหนด', 'ติดตามสถานะและตอบกลับเมื่อบริษัทขอข้อมูลเพิ่ม'] },
       { type: 'h2', text: 'เอกสารที่มักใช้' },
-      { type: 'p', text: 'ขึ้นกับประเภทการเคลม เช่น ใบรับรองแพทย์ ใบเสร็จค่ารักษา สำเนาบัตรประชาชน หรือใบมรณบัตร (กรณีเสียชีวิต) ทีม BoyInsure ช่วยตรวจสอบรายการก่อนส่ง' },
+      { type: 'p', text: 'ขึ้นกับประเภทการเคลม เช่น ใบรับรองแพทย์ ใบเสร็จค่ารักษา สำเนาบัตรประชาชน หรือใบมรณบัตร (กรณีเสียชีวิต) ทีม BOYINSURE ช่วยตรวจสอบรายการก่อนส่ง' },
     ],
   },
   'promo-rewards': {
     date: '12 มิ.ย. 2026',
-    takeaways: ['ลูกค้า BoyInsure มีสิทธิ์ร่วมกิจกรรม', 'ของรางวัลจากพาร์ทเนอร์ชั้นนำ', 'ตรวจสอบเงื่อนไขก่อนร่วมสนุก'],
+    takeaways: ['ลูกค้า BOYINSURE มีสิทธิ์ร่วมกิจกรรม', 'ของรางวัลจากพาร์ทเนอร์ชั้นนำ', 'ตรวจสอบเงื่อนไขก่อนร่วมสนุก'],
     sections: [
-      { type: 'p', text: 'BoyInsure จัดกิจกรรมและโปรโมชั่นให้ลูกค้าที่ทำประกันกับเรา ร่วมลุ้นของรางวัลและวอเชอร์จากพาร์ทเนอร์ที่หลากหลาย' },
+      { type: 'p', text: 'BOYINSURE จัดกิจกรรมและโปรโมชั่นให้ลูกค้าที่ทำประกันกับเรา ร่วมลุ้นของรางวัลและวอเชอร์จากพาร์ทเนอร์ที่หลากหลาย' },
       { type: 'h2', text: 'วงล้อของรางวัล' },
       { type: 'p', text: 'กิจกรรมวงล้อของรางวัลจัดขึ้นเป็นช่วง ๆ ลูกค้าที่มีสิทธิ์สามารถหมุนวงล้อเพื่อลุ้นรางวัลได้ รายละเอียดและเงื่อนไขดูได้ที่หน้าโปรโมชั่น' },
-      { type: 'p', text: 'ติดตามข่าวสารและโปรโมชั่นล่าสุดได้ที่หน้าโปรโมชั่นและของรางวัลของ BoyInsure' },
+      { type: 'p', text: 'ติดตามข่าวสารและโปรโมชั่นล่าสุดได้ที่หน้าโปรโมชั่นและของรางวัลของ BOYINSURE' },
     ],
     extraLink: { href: 'promotions.html', label: 'ไปหน้าโปรโมชั่นและของรางวัล' },
   },
@@ -1654,7 +1686,7 @@ function initArticleDetail() {
   const recommendedIds = new Set(recommended.map((item) => item.article.id));
   const sameCategory = related.filter((item) => !recommendedIds.has(item.article.id));
 
-  document.title = `BoyInsure | ${article.title}`;
+  document.title = `BOYINSURE | ${article.title}`;
 
   let metaDesc = document.querySelector('meta[name="description"]');
   if (!metaDesc) {
@@ -1681,7 +1713,7 @@ function initArticleDetail() {
         <h1 class="article-read__title">${article.title}</h1>
         <p class="article-read__lead">${article.excerpt}</p>
         <div class="article-read__meta">
-          <span><i data-lucide="user" aria-hidden="true"></i> ทีม BoyInsure</span>
+          <span><i data-lucide="user" aria-hidden="true"></i> ทีม BOYINSURE</span>
           <span><i data-lucide="calendar" aria-hidden="true"></i> ${body.date}</span>
           <span><i data-lucide="clock" aria-hidden="true"></i> ${article.readTime}</span>
         </div>
@@ -1717,7 +1749,7 @@ function initArticleDetail() {
             </p>
           ` : ''}
           <footer class="article-read__end">
-            <p>มีคำถามเรื่องประกัน? ปรึกษาทีม BoyInsure ฟรี ไม่บังคับซื้อ</p>
+            <p>มีคำถามเรื่องประกัน? ปรึกษาทีม BOYINSURE ฟรี ไม่บังคับซื้อ</p>
             <a href="contact.html" class="btn btn--gold">สอบถามเรื่องนี้</a>
           </footer>
         </div>
@@ -1755,7 +1787,7 @@ function initArticleDetail() {
           <div class="article-read__aside-cta">
             <i data-lucide="message-circle" aria-hidden="true"></i>
             <strong>อยากให้ช่วยเลือกแผน?</strong>
-            <p>ทีม BoyInsure วิเคราะห์และเปรียบเทียบให้ฟรี</p>
+            <p>ทีม BOYINSURE วิเคราะห์และเปรียบเทียบให้ฟรี</p>
             <a href="contact.html" class="btn btn--primary">ปรึกษาฟรี</a>
           </div>
         </aside>
@@ -1993,7 +2025,7 @@ function initInsurancePlanDetail() {
 
     const { category, plan } = match;
     detail = detail || getPlanDetailContent(plan, category);
-  const summary = plan.summary || `${plan.desc} ทีม BoyInsure ช่วยวิเคราะห์และเปรียบเทียบแผนจากบริษัทชั้นนำให้เหมาะกับงบประมาณและเป้าหมายของคุณ โดยไม่บังคับซื้อ`;
+  const summary = plan.summary || `${plan.desc} ทีม BOYINSURE ช่วยวิเคราะห์และเปรียบเทียบแผนจากบริษัทชั้นนำให้เหมาะกับงบประมาณและเป้าหมายของคุณ โดยไม่บังคับซื้อ`;
   const idealFor = plan.idealFor || [
     'ผู้ที่ต้องการวางแผนความคุ้มครองอย่างเป็นระบบ',
     'ครอบครัวที่ต้องการคำปรึกษาแบบไม่บังคับซื้อ',
@@ -2002,7 +2034,7 @@ function initInsurancePlanDetail() {
   const contactUrl = `contact.html?plan=${encodeURIComponent(plan.id)}`;
   const relatedPlans = category.plans.filter((item) => item.id !== plan.id).slice(0, 2);
 
-  document.title = `BoyInsure | ${plan.name}`;
+  document.title = `BOYINSURE | ${plan.name}`;
 
   let metaDesc = document.querySelector('meta[name="description"]');
   if (!metaDesc) {
@@ -2099,7 +2131,7 @@ function initInsurancePlanDetail() {
     </section>
 
     <section class="plan-detail__steps">
-      <h2 class="plan-detail__section-title">ขั้นตอนทำงานกับ BoyInsure</h2>
+      <h2 class="plan-detail__section-title">ขั้นตอนทำงานกับ BOYINSURE</h2>
       <p class="plan-detail__section-lead">ปรึกษาฟรี เปรียบเทียบหลายบริษัท ไม่บังคับซื้อ</p>
       <ol class="plan-detail__steps-flow">
         ${ACTIVE_PLAN_PROCESS_STEPS.map((step, i) => `
@@ -2146,7 +2178,7 @@ function initInsurancePlanDetail() {
     <section class="plan-detail__cta">
       <div class="plan-detail__cta-inner">
         <h2>สนใจ${plan.name}?</h2>
-        <p>ปรึกษาทีม BoyInsure ฟรี ไม่มีค่าใช้จ่าย ไม่บังคับซื้อ — เราช่วยเปรียบเทียบแผนที่เหมาะกับคุณ</p>
+        <p>ปรึกษาทีม BOYINSURE ฟรี ไม่มีค่าใช้จ่าย ไม่บังคับซื้อ — เราช่วยเปรียบเทียบแผนที่เหมาะกับคุณ</p>
         <div class="plan-detail__actions">
           <a href="${contactUrl}" class="btn btn--gold">สอบถามแผนนี้</a>
           <a href="${telHref}" class="btn btn--outline btn--outline-dark">${telLabel}</a>
@@ -2289,6 +2321,9 @@ function initContactFormSubmit() {
     initHomeHeroSlideshow();
     initHighlights();
     initReviewSlider();
+    initHomeNewsModal();
+    initHomeNewsCountdown();
+    initHomeNewsPrizes();
     await loadInsuranceApi();
     initInsuranceCatalog();
     await loadArticleCategoriesApi();
@@ -2425,4 +2460,189 @@ function initReviewSlider() {
 
   updateMetrics();
   startAutoplay();
+}
+
+const HOME_NEWS_PROMO_START = new Date('2026-06-20T00:00:00');
+const HOME_NEWS_PROMO_END = new Date('2026-06-27T23:59:59');
+
+function initHomeNewsCountdown() {
+  const daysLabel = document.getElementById('homeNewsDurationDays');
+  const hintEl = document.getElementById('homeNewsCountdownHint');
+  const daysEl = document.getElementById('homeNewsCountdownDays');
+  const hoursEl = document.getElementById('homeNewsCountdownHours');
+  const minutesEl = document.getElementById('homeNewsCountdownMinutes');
+  const secondsEl = document.getElementById('homeNewsCountdownSeconds');
+  if (!daysEl) return;
+
+  const pad = (n) => String(Math.max(0, n)).padStart(2, '0');
+  const formatEndDate = (date) => date.toLocaleDateString('th-TH', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  const campaignDays = Math.max(1, Math.ceil((HOME_NEWS_PROMO_END - HOME_NEWS_PROMO_START) / 86400000));
+  if (daysLabel) daysLabel.textContent = String(campaignDays);
+
+  function updateCountdown() {
+    const diff = HOME_NEWS_PROMO_END - Date.now();
+    if (diff <= 0) {
+      daysEl.textContent = '00';
+      hoursEl.textContent = '00';
+      minutesEl.textContent = '00';
+      secondsEl.textContent = '00';
+      if (hintEl) hintEl.textContent = 'กิจกรรมสิ้นสุดแล้ว — ขอบคุณที่ร่วมสนุกกับ BOYINSURE';
+      return;
+    }
+
+    if (hintEl) {
+      hintEl.textContent = `เหลือเวลาร่วมกิจกรรมก่อนปิดรับสิทธิ์ — สิ้นสุด ${formatEndDate(HOME_NEWS_PROMO_END)}`;
+    }
+
+    const totalSec = Math.floor(diff / 1000);
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const minutes = Math.floor((totalSec % 3600) / 60);
+    const seconds = totalSec % 60;
+
+    daysEl.textContent = pad(days);
+    hoursEl.textContent = pad(hours);
+    minutesEl.textContent = pad(minutes);
+    secondsEl.textContent = pad(seconds);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+
+const HOME_NEWS_PRIZES = [
+  { logo: 'assets/img/icon/Group 1.png', short: 'โลตัส', label: "บัตร Lotus's มูลค่า 500 บาท", qty: 100 },
+  { logo: 'assets/img/icon/Group 2.png', short: 'ปตท.', label: 'บัตร PTT Station มูลค่า 500 บาท', qty: 100 },
+  { logo: 'assets/img/icon/Group 11.png', short: 'Big C', label: 'Voucher Big C มูลค่า 500 บาท', qty: 40 },
+  { logo: 'assets/img/icon/Group 3.png', short: 'รพ.กรุงเทพ', label: 'Voucher ตรวจสุขภาพ รพ.กรุงเทพ', qty: 30 },
+  { logo: 'assets/img/icon/Group 4.png', short: 'Supersports', label: 'Voucher Supersports มูลค่า 500 บาท', qty: 50 },
+  { logo: 'assets/img/icon/Group 5.png', short: 'ทันตกรรม', label: 'Voucher ทันตกรรม', qty: 25 },
+  { logo: 'assets/img/icon/Group 6.png', short: 'โบท็อกซ์', label: 'Voucher โบท็อกซ์ฟิลเลอร์', qty: 20 },
+  { logo: 'assets/img/icon/Group 7.png', short: 'Jett Fitness', label: 'Voucher Jett Fitness', qty: 30 },
+  { logo: 'assets/img/prizes/ohkajhu.png', short: 'โอ้กะจู๋', label: 'Voucher โอ้กะจู๋ มูลค่า 500 บาท', qty: 40 },
+  { logo: 'assets/img/icon/Group 13.png', short: 'ประกันรถ', label: 'ประกันรถยนต์ ชั้น 1', qty: 10 },
+];
+
+function renderHomeNewsPrizeItem(prize) {
+  return `
+    <article class="home-news-prize-card">
+      <div class="home-news-prize-card__logo">
+        <img src="${prize.logo}" alt="${prize.short}" width="56" height="56" loading="lazy" />
+      </div>
+      <strong class="home-news-prize-card__name">${prize.label}</strong>
+      <span class="home-news-prize-card__qty">${prize.qty} รางวัล</span>
+    </article>
+  `;
+}
+
+function initHomeNewsPrizes() {
+  const list = document.getElementById('homeNewsPrizeList');
+  if (!list) return;
+  list.innerHTML = HOME_NEWS_PRIZES.map(renderHomeNewsPrizeItem).join('');
+  if (window.lucide?.createIcons) lucide.createIcons();
+}
+
+const HOME_NEWS_DETAILS = {
+  'wheel-promo': {
+    badge: 'กิจกรรม',
+    category: 'โปรโมชั่น',
+    title: 'หมุนวงล้อลุ้นของรางวัล',
+    meta: '12 มิ.ย. 2026',
+    image: 'assets/img/home-news-featured.png',
+    imageAlt: 'กิจกรรมหมุนวงล้อรับของรางวัล',
+    ctaHref: 'promotions.html',
+    body: `
+      <p>ลูกค้าที่ทำประกันกับ BOYINSURE รับสิทธิ์เข้าร่วมกิจกรรมหมุนวงล้อลุ้นของรางวัลและวอเชอร์จากพาร์ทเนอร์ชั้นนำ</p>
+      <ul>
+        <li>รางวัลจากพาร์ทเนอร์ เช่น โอ้กะจู๋ Jetts Supersports และอื่น ๆ</li>
+        <li>จัดกิจกรรมเป็นช่วง ๆ ตามเงื่อนไขที่ประกาศ</li>
+        <li>ตรวจสอบสิทธิ์และรายการรางวัลได้ที่หน้าโปรโมชั่น</li>
+      </ul>
+      <p>ลงทะเบียนเพื่อรับสิทธิ์และติดตามข่าวสารกิจกรรมล่าสุดจาก BOYINSURE</p>
+    `,
+  },
+  'car-insurance': {
+    badge: 'ข่าวสาร',
+    category: 'ประกันรถยนต์',
+    title: 'ประกันรถยนต์ชั้น 1 ปรึกษาฟรี',
+    meta: '10 มิ.ย. 2026',
+    image: 'assets/img/home-news-car-banner.png',
+    imageAlt: 'ประกันรถยนต์ชั้น 1 ปรึกษาฟรี',
+    ctaHref: '#homeCarPromo',
+    body: `
+      <p>ลงทะเบียนเพื่อปรึกษาและเปรียบเทียบเบี้ยประกันรถยนต์ชั้น 1 จากหลายบริษัท โดยทีม BOYINSURE อธิบายให้เข้าใจง่ายก่อนตัดสินใจ</p>
+      <ul>
+        <li>คุ้มครองรถยนต์ ผู้ขับขี่ และบุคคลภายนอก ตามเงื่อนไขกรมธรรม์</li>
+        <li>เปรียบเทียบเบี้ยและความคุ้มครองให้ฟรี ไม่บังคับซื้อ</li>
+        <li>ทีมงานติดต่อกลับเพื่อวิเคราะห์ความต้องการและเสนอแผนที่เหมาะสม</li>
+      </ul>
+      <p>กรอกแบบฟอร์มลงทะเบียนด้านล่างเพื่อรับคำปรึกษาโดยไม่มีค่าใช้จ่าย</p>
+    `,
+  },
+};
+
+function initHomeNewsModal() {
+  const modal = document.getElementById('homeNewsModal');
+  if (!modal) return;
+
+  const image = document.getElementById('homeNewsModalImage');
+  const badge = document.getElementById('homeNewsModalBadge');
+  const category = document.getElementById('homeNewsModalCategory');
+  const title = document.getElementById('homeNewsModalTitle');
+  const meta = document.getElementById('homeNewsModalMeta');
+  const body = document.getElementById('homeNewsModalBody');
+  const cta = document.getElementById('homeNewsModalCta');
+  const dialog = modal.querySelector('.site-modal__dialog');
+  let lastTrigger = null;
+
+  function openModal(detailId, trigger) {
+    const data = HOME_NEWS_DETAILS[detailId];
+    if (!data) return;
+
+    lastTrigger = trigger || null;
+    if (image) {
+      image.src = data.image;
+      image.alt = data.imageAlt || data.title;
+    }
+    if (badge) badge.textContent = data.badge;
+    if (category) category.textContent = data.category;
+    if (title) title.textContent = data.title;
+    if (meta) meta.textContent = data.meta;
+    if (body) body.innerHTML = data.body;
+    if (cta) cta.href = data.ctaHref;
+
+    modal.hidden = false;
+    document.body.classList.add('site-modal-open');
+    modal.querySelector('.site-modal__close')?.focus();
+    if (window.lucide?.createIcons) lucide.createIcons();
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    document.body.classList.remove('site-modal-open');
+    lastTrigger?.focus();
+    lastTrigger = null;
+  }
+
+  document.querySelectorAll('[data-news-detail]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      openModal(btn.getAttribute('data-news-detail'), btn);
+    });
+  });
+
+  modal.querySelectorAll('[data-news-modal-close]').forEach((el) => {
+    el.addEventListener('click', closeModal);
+  });
+
+  dialog?.addEventListener('click', (e) => e.stopPropagation());
+
+  document.addEventListener('keydown', (e) => {
+    if (modal.hidden) return;
+    if (e.key === 'Escape') closeModal();
+  });
 }

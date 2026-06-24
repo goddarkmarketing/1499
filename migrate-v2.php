@@ -40,7 +40,7 @@ try {
     }
 
     $defaults = [
-        'site_name' => 'BoyInsure',
+        'site_name' => 'BOYINSURE',
         'contact_email' => 'admin@boyinsure.com',
         'notify_email' => '',
         'low_stock_threshold' => '5',
@@ -96,7 +96,7 @@ try {
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <title>อัปเดต v2 | BoyInsure</title>
+  <title>อัปเดต v2 | BOYINSURE</title>
   <style>body{font-family:sans-serif;max-width:640px;margin:40px auto;padding:0 20px}.ok{color:#166534}.err{color:#991b1b}</style>
 </head>
 <body>

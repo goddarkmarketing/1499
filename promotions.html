@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <base href="./" />
-  <title>BoyInsure | โปรโมชั่นและของรางวัล</title>
+  <title>BOYINSURE | โปรโมชั่นและของรางวัล</title>
   <link rel="stylesheet" href="assets/css/fonts.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/member.css" />
   <link rel="stylesheet" href="assets/css/responsive.css" />
   <link rel="stylesheet" href="assets/css/icons.css" />
 </head>
@@ -16,7 +17,7 @@
   <header class="site-header">
     <nav class="navbar">
       <a href="index.html" class="navbar__brand">
-        <span class="navbar__name">BoyInsure</span>
+        <span class="navbar__name">BOYINSURE</span>
       </a>
       <ul class="navbar__menu" id="navbarMenu">
         <li><a href="index.html" data-nav="home">หน้าแรก</a></li>
@@ -24,11 +25,34 @@
         <li><a href="insurance.html" data-nav="insurance">แบบประกันของเรา</a></li>
         <li><a href="about.html" data-nav="about">เกี่ยวกับ BOYINSURE</a></li>
         <li><a href="articles.html" data-nav="articles">บทความ</a></li>
+        <li class="navbar__menu-auth js-header-profile-item" hidden>
+          <a href="profile.html" class="navbar__menu-auth-link js-header-profile">
+            <i data-lucide="user-circle" aria-hidden="true"></i>
+            <span class="js-header-profile-name">โปรไฟล์</span>
+          </a>
+        </li>
+        <li class="navbar__menu-auth js-header-signin-item"><a href="#login" class="navbar__menu-auth-link js-header-signin">เข้าสู่ระบบ</a></li>
+        <li class="navbar__menu-auth js-header-logout-item" hidden><a href="#" class="navbar__menu-auth-link js-header-logout">ออกจากระบบ</a></li>
+        <li class="navbar__menu-auth js-header-register-item"><a href="#register" class="navbar__menu-auth-link js-header-register">ลงทะเบียน</a></li>
       </ul>
-      <a href="#login" class="btn-login" id="headerLoginBtn">
-        <i data-lucide="log-in" aria-hidden="true"></i>
-        เข้าสู่ระบบ
-      </a>
+      <div class="navbar__actions">
+        <a href="profile.html" class="btn-login btn-login--outline btn-login--profile js-header-profile" hidden>
+          <i data-lucide="user-circle" aria-hidden="true"></i>
+          <span class="js-header-profile-name">โปรไฟล์</span>
+        </a>
+        <a href="#login" class="btn-login btn-login--outline js-header-signin">
+          <i data-lucide="log-in" aria-hidden="true"></i>
+          เข้าสู่ระบบ
+        </a>
+        <button type="button" class="btn-login btn-login--danger js-header-logout" hidden>
+          <i data-lucide="log-out" aria-hidden="true"></i>
+          ออกจากระบบ
+        </button>
+        <a href="#register" class="btn-login js-header-register">
+          <i data-lucide="user-plus" aria-hidden="true"></i>
+          ลงทะเบียน
+        </a>
+      </div>
       <button class="navbar__toggle" id="navToggle" aria-label="เมนู" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -67,40 +91,47 @@
             </span>
             <h1 class="promo-hero__title">หมุนวงล้อ<br/>รับของรางวัลมากมาย</h1>
             <p class="promo-hero__lead">
-              ลูกค้า BoyInsure ที่ทำประกันใหม่หรือแนะนำเพื่อน รับสิทธิ์หมุนวงล้อลุ้นวอเชอร์และของรางวัลจากพาร์ทเนอร์ชั้นนำ
+              ลูกค้า BOYINSURE ที่ทำประกันใหม่หรือแนะนำเพื่อน รับสิทธิ์หมุนวงล้อลุ้นวอเชอร์และของรางวัลจากพาร์ทเนอร์ชั้นนำ
             </p>
             <ul class="promo-hero__features">
               <li><i data-lucide="shield-check" aria-hidden="true"></i> มั่นใจ ปลอดภัย</li>
               <li><i data-lucide="sparkles" aria-hidden="true"></i> ของรางวัลหลากหลาย</li>
               <li><i data-lucide="eye" aria-hidden="true"></i> โปร่งใส ตรวจสอบได้</li>
             </ul>
-            <div class="promo-countdown" id="promoCountdown" aria-label="นับถอยหลังกิจกรรม">
-              <div class="promo-countdown__item">
-                <strong id="countdownDays">00</strong>
-                <span>วัน</span>
-              </div>
-              <div class="promo-countdown__item">
-                <strong id="countdownHours">00</strong>
-                <span>ชั่วโมง</span>
-              </div>
-              <div class="promo-countdown__item">
-                <strong id="countdownMinutes">00</strong>
-                <span>นาที</span>
-              </div>
-              <div class="promo-countdown__item">
-                <strong id="countdownSeconds">00</strong>
-                <span>วินาที</span>
+            <div class="promo-countdown-wrap">
+              <p class="promo-countdown__label">
+                <i data-lucide="clock" aria-hidden="true"></i>
+                ช่วงเวลาพิเศษ <span id="promoDurationDays">8</span> วันเท่านั้น
+              </p>
+              <p class="promo-countdown__hint" id="promoCountdownHint">เหลือเวลาร่วมกิจกรรมก่อนปิดรับสิทธิ์หมุนวงล้อ</p>
+              <div class="promo-countdown" id="promoCountdown" role="timer" aria-labelledby="promoCountdownHint">
+                <div class="promo-countdown__item">
+                  <strong id="countdownDays">00</strong>
+                  <span>วัน</span>
+                </div>
+                <div class="promo-countdown__item">
+                  <strong id="countdownHours">00</strong>
+                  <span>ชั่วโมง</span>
+                </div>
+                <div class="promo-countdown__item">
+                  <strong id="countdownMinutes">00</strong>
+                  <span>นาที</span>
+                </div>
+                <div class="promo-countdown__item">
+                  <strong id="countdownSeconds">00</strong>
+                  <span>วินาที</span>
+                </div>
               </div>
             </div>
-            <div class="promo-hero__prize-bar">
+            <div class="promo-hero__prize-section">
+              <div class="prize-cards-row-wrap">
+                <div class="prize-cards-row" id="heroPrizeCards"></div>
+              </div>
               <a href="#" class="promo-hero__all-prizes" id="viewAllPrizesBtn" role="button">
                 <i data-lucide="gift" aria-hidden="true"></i>
                 <span>ดูของรางวัลทั้งหมด</span>
                 <i data-lucide="chevron-right" class="promo-hero__all-prizes-arrow" aria-hidden="true"></i>
               </a>
-              <div class="promo-prize-marquee" aria-hidden="true">
-                <div class="promo-prize-marquee__track" id="prizeMarqueeTrack"></div>
-              </div>
             </div>
           </div>
         </div>
@@ -111,7 +142,7 @@
       <div class="container">
         <div class="promo-dashboard__status wheel-panel__status" id="wheelPanelStatus">
           <p class="wheel-panel__status-text" id="wheelStatusGuest">
-            เข้าสู่ระบบเพื่อรับสิทธิ์เข้าร่วมกิจกรรมวงล้อของรางวัล
+            กรุณาเข้าสู่ระบบหรือลงทะเบียนเพื่อหมุนวงล้อ
           </p>
           <p class="wheel-panel__status-text" id="wheelStatusHasSpins" hidden>
             วันนี้ คุณมีสิทธิ์หมุนวงล้อ <strong id="spinsLeft">2</strong> ครั้ง
@@ -125,14 +156,14 @@
           <article class="promo-stat">
             <span class="promo-stat__icon" aria-hidden="true"><i data-lucide="compass"></i></span>
             <div>
-              <strong class="promo-stat__value" id="dashSpinsLeft">2</strong>
+              <strong class="promo-stat__value" id="dashSpinsLeft">0</strong>
               <span class="promo-stat__label">สิทธิ์คงเหลือ (ครั้ง)</span>
             </div>
           </article>
           <article class="promo-stat">
             <span class="promo-stat__icon" aria-hidden="true"><i data-lucide="coins"></i></span>
             <div>
-              <strong class="promo-stat__value" id="dashPoints">12,500</strong>
+              <strong class="promo-stat__value" id="dashPoints">0</strong>
               <span class="promo-stat__label">สะสมคะแนน</span>
             </div>
           </article>
@@ -291,7 +322,7 @@
           <article class="promo-trust__card">
             <span class="promo-trust__icon" aria-hidden="true"><i data-lucide="badge-check"></i></span>
             <strong>ถูกต้องตามกฎหมาย</strong>
-            <span>ศูนย์ไทยประกันชีวิต</span>
+            <span>บริษัทประกันชั้นนำ</span>
           </article>
           <article class="promo-trust__card">
             <span class="promo-trust__icon" aria-hidden="true"><i data-lucide="map-pin"></i></span>
@@ -350,24 +381,89 @@
 
   <div class="result-overlay" id="loginOverlay" hidden>
     <div class="result-modal result-modal--auth">
-      <p class="result-modal__label">เข้าร่วมกิจกรรม</p>
-      <p class="auth-modal__message">เข้าสู่ระบบหรือสมัครสมาชิกเพื่อหมุนวงล้อ</p>
-      <form id="memberLoginForm" class="auth-modal__form" hidden>
-        <label for="loginPhone">เบอร์โทรศัพท์</label>
-        <input type="tel" id="loginPhone" required placeholder="08x-xxx-xxxx" />
-        <button type="submit" class="btn-close-result">เข้าสู่ระบบ</button>
-      </form>
-      <form id="memberRegisterForm" class="auth-modal__form">
-        <label for="registerName">ชื่อ-นามสกุล</label>
-        <input type="text" id="registerName" required placeholder="กรอกชื่อของคุณ" />
-        <label for="registerPhone">เบอร์โทรศัพท์</label>
-        <input type="tel" id="registerPhone" required placeholder="08x-xxx-xxxx" />
-        <button type="submit" class="btn-close-result">สมัครและเข้าร่วม</button>
-      </form>
-      <div class="auth-modal__actions">
-        <button type="button" class="auth-modal__btn auth-modal__btn--outline" id="loginModalToggle">มีบัญชีแล้ว? เข้าสู่ระบบ</button>
+      <p class="result-modal__label" id="authModalLabel">ลงทะเบียนก่อนหมุน</p>
+      <div class="auth-modal__tabs" role="tablist" aria-label="เลือกลงทะเบียนหรือเข้าสู่ระบบ">
+        <button type="button" class="auth-modal__tab is-active" id="authTabRegister" role="tab" aria-selected="true" aria-controls="authPanelRegister">ลงทะเบียน</button>
+        <button type="button" class="auth-modal__tab" id="authTabLogin" role="tab" aria-selected="false" aria-controls="authPanelLogin">เข้าสู่ระบบ</button>
       </div>
+      <p class="auth-modal__message" id="authModalMessage">กรุณากรอกข้อมูลให้ครบถ้วนก่อนหมุนวงล้อทุกครั้ง</p>
+      <form id="memberRegisterForm" class="auth-modal__form" data-auth-panel="register">
+        <div class="auth-modal__grid auth-modal__grid--names">
+          <div class="auth-modal__field">
+            <label for="registerFirstName">ชื่อ</label>
+            <input type="text" id="registerFirstName" name="first_name" required autocomplete="given-name" placeholder="ชื่อจริง" />
+          </div>
+          <div class="auth-modal__field">
+            <label for="registerLastName">นามสกุล</label>
+            <input type="text" id="registerLastName" name="last_name" required autocomplete="family-name" placeholder="นามสกุล" />
+          </div>
+        </div>
+        <div class="auth-modal__grid auth-modal__grid--details">
+          <div class="auth-modal__field">
+            <label for="registerPhone">เบอร์โทรศัพท์</label>
+            <input type="tel" id="registerPhone" name="phone" required autocomplete="tel" inputmode="numeric" placeholder="08x-xxx-xxxx" />
+          </div>
+          <div class="auth-modal__field">
+            <label for="registerNationalId">เลขบัตรประชาชน</label>
+            <input type="text" id="registerNationalId" name="national_id" required inputmode="numeric" maxlength="13" placeholder="13 หลัก" />
+          </div>
+          <div class="auth-modal__field">
+            <label for="registerBirthDate">วันเกิด</label>
+            <input type="date" id="registerBirthDate" name="birth_date" required />
+          </div>
+          <div class="auth-modal__field">
+            <label for="registerEmail">อีเมล (ถ้ามี)</label>
+            <input type="email" id="registerEmail" name="email" autocomplete="email" placeholder="example@email.com" />
+          </div>
+          <div class="auth-modal__field">
+            <label for="registerLoginId">ไอดีสำหรับเข้าสู่ระบบ</label>
+            <input type="text" id="registerLoginId" name="login_id" autocomplete="username" minlength="4" maxlength="32" pattern="[A-Za-z0-9._-]{4,32}" placeholder="เช่น boy1234" />
+          </div>
+          <div class="auth-modal__field">
+            <label for="registerPassword">รหัสผ่าน</label>
+            <input type="password" id="registerPassword" name="password" autocomplete="new-password" minlength="6" placeholder="อย่างน้อย 6 ตัวอักษร" />
+          </div>
+          <div class="auth-modal__field">
+            <label for="registerPasswordConfirm">ยืนยันรหัสผ่าน</label>
+            <input type="password" id="registerPasswordConfirm" name="password_confirm" autocomplete="new-password" minlength="6" placeholder="กรอกรหัสผ่านอีกครั้ง" />
+          </div>
+        </div>
+        <p class="auth-modal__hint auth-modal__hint--register">ตั้งไอดีและรหัสผ่านสำหรับเข้าสู่ระบบครั้งถัดไป (สมาชิกที่เคยตั้งแล้วไม่ต้องกรอกซ้ำ)</p>
+        <label class="auth-modal__consent">
+          <input type="checkbox" id="registerConsent" name="consent" required />
+          <span>ข้าพเจ้ายินยอมให้ BOYINSURE เก็บและใช้ข้อมูลเพื่อเข้าร่วมกิจกรรม ตามข้อกำหนดและเงื่อนไข</span>
+        </label>
+        <button type="submit" class="btn-close-result" id="registerSubmitBtn">ลงทะเบียนและหมุนวงล้อ</button>
+      </form>
+      <form id="memberLoginForm" class="auth-modal__form" data-auth-panel="login" hidden>
+        <label for="loginId">ไอดี</label>
+        <input type="text" id="loginId" name="login_id" required autocomplete="username" minlength="4" maxlength="32" placeholder="ไอดีที่ตั้งไว้ตอนลงทะเบียน" />
+        <label for="loginPassword">รหัสผ่าน</label>
+        <input type="password" id="loginPassword" name="password" required autocomplete="current-password" minlength="6" placeholder="รหัสผ่านของคุณ" />
+        <p class="auth-modal__hint">เข้าสู่ระบบเพื่อดูสิทธิ์และรางวัล — สมาชิกที่เข้าสู่ระบบแล้วสามารถหมุนวงล้อได้ทันที</p>
+        <button type="submit" class="btn-close-result" id="loginSubmitBtn">เข้าสู่ระบบ</button>
+      </form>
       <button type="button" class="auth-modal__close" id="closeLogin">ปิด</button>
+    </div>
+  </div>
+
+  <div class="result-overlay" id="credentialsOverlay" hidden>
+    <div class="result-modal result-modal--auth result-modal--credentials">
+      <p class="result-modal__label">สมัครสมาชิกสำเร็จ</p>
+      <p class="auth-modal__message">บันทึกข้อมูลเข้าสู่ระบบของคุณไว้ให้ดี</p>
+      <div class="auth-credentials">
+        <div class="auth-credentials__row">
+          <span class="auth-credentials__label">ไอดี</span>
+          <strong class="auth-credentials__value" id="credLoginId"></strong>
+        </div>
+        <div class="auth-credentials__row">
+          <span class="auth-credentials__label">รหัสผ่าน</span>
+          <strong class="auth-credentials__value" id="credPassword"></strong>
+        </div>
+      </div>
+      <p class="auth-modal__hint" id="credEmailHint" hidden>ส่งข้อมูลเข้าสู่ระบบไปที่อีเมลของคุณแล้ว</p>
+      <p class="auth-modal__hint auth-modal__hint--credentials">ใช้ไอดีและรหัสผ่านนี้เข้าสู่ระบบในครั้งถัดไป ข้อมูลถูกบันทึกในระบบหลังบ้านแล้ว</p>
+      <button type="button" class="btn-close-result" id="closeCredentials">เข้าใจแล้ว</button>
     </div>
   </div>
 
@@ -384,11 +480,60 @@
   </div>
 
   <div class="result-overlay" id="rewardsOverlay" hidden>
-    <div class="result-modal result-modal--list">
+    <div class="result-modal result-modal--rewards">
       <p class="result-modal__label">รางวัลของฉัน</p>
-      <ul class="rewards-list" id="rewardsList"></ul>
-      <p class="rewards-empty" id="rewardsEmpty" hidden>ยังไม่มีรางวัล — หมุนวงล้อเพื่อลุ้นรับของรางวัล BoyInsure</p>
+      <p class="result-modal__hint result-modal__hint--rewards">แตะการ์ดเพื่อดูรายละเอียด — เลื่อนซ้ายขวาเพื่อดูรางวัลอื่น</p>
+      <div class="prize-cards-row-wrap prize-cards-row-wrap--modal">
+        <div class="prize-cards-row" id="rewardsCardGrid"></div>
+      </div>
+      <p class="rewards-empty" id="rewardsEmpty" hidden>ยังไม่มีรางวัล — หมุนวงล้อเพื่อลุ้นรับของรางวัล BOYINSURE</p>
       <button class="btn-close-result" id="closeRewards">ปิด</button>
+    </div>
+  </div>
+
+  <div class="reward-slider" id="prizeCatalogSlider" hidden>
+    <div class="reward-slider__backdrop" data-reward-slider-close tabindex="-1"></div>
+    <div class="reward-slider__dialog" role="dialog" aria-modal="true">
+      <button type="button" class="reward-slider__close" data-reward-slider-close aria-label="ปิด">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+      <div class="reward-slider__head">
+        <span class="reward-slider__label">รายละเอียดของรางวัล</span>
+        <span class="reward-slider__counter" id="prizeCatalogCounter">1 / 1</span>
+      </div>
+      <div class="reward-slider__viewport">
+        <div class="reward-slider__track" id="prizeCatalogTrack"></div>
+      </div>
+      <button type="button" class="reward-slider__nav reward-slider__nav--prev" aria-label="รางวัลก่อนหน้า">
+        <i data-lucide="chevron-left" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="reward-slider__nav reward-slider__nav--next" aria-label="รางวัลถัดไป">
+        <i data-lucide="chevron-right" aria-hidden="true"></i>
+      </button>
+      <div class="reward-slider__dots" id="prizeCatalogDots" role="tablist" aria-label="เลือกของรางวัล"></div>
+    </div>
+  </div>
+
+  <div class="reward-slider" id="rewardSlider" hidden>
+    <div class="reward-slider__backdrop" data-reward-slider-close tabindex="-1"></div>
+    <div class="reward-slider__dialog" role="dialog" aria-modal="true">
+      <button type="button" class="reward-slider__close" data-reward-slider-close aria-label="ปิด">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+      <div class="reward-slider__head">
+        <span class="reward-slider__label">รายละเอียดรางวัล</span>
+        <span class="reward-slider__counter" id="rewardSliderCounter">1 / 1</span>
+      </div>
+      <div class="reward-slider__viewport">
+        <div class="reward-slider__track" id="rewardSliderTrack"></div>
+      </div>
+      <button type="button" class="reward-slider__nav reward-slider__nav--prev" id="rewardSliderPrev" aria-label="รางวัลก่อนหน้า">
+        <i data-lucide="chevron-left" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="reward-slider__nav reward-slider__nav--next" id="rewardSliderNext" aria-label="รางวัลถัดไป">
+        <i data-lucide="chevron-right" aria-hidden="true"></i>
+      </button>
+      <div class="reward-slider__dots" id="rewardSliderDots" role="tablist" aria-label="เลือกรางวัล"></div>
     </div>
   </div>
 
@@ -423,16 +568,10 @@
 
   <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
 
-  <div class="dev-mode" id="devModePanel" title="สำหรับพัฒนาเท่านั้น">
-    <label class="dev-mode__toggle">
-      <input type="checkbox" id="devModeToggle" checked />
-      <span class="dev-mode__track" aria-hidden="true"><span class="dev-mode__thumb"></span></span>
-      <span class="dev-mode__text">โหมดทดลอง</span>
-    </label>
-  </div>
-
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="assets/js/api.js"></script>
+  <script src="assets/js/member-auth.js"></script>
+  <script src="assets/js/rewards-ui.js"></script>
   <script src="assets/js/site.js"></script>
   <script src="assets/js/app.js"></script>
 </body>

@@ -16,10 +16,10 @@ INSERT INTO agent_tiers (code, name, description, min_policies, sort_order) VALU
 ('leader', 'Leader', 'มีทีมและรับสมัคร downline', 25, 4);
 
 INSERT INTO campaigns (name, description, start_date, end_date, status) VALUES
-('วงล้อของรางวัล BoyInsure 2026', 'กิจกรรมหมุนวงล้อสำหรับลูกค้า BoyInsure', '2026-01-01', '2026-12-31', 'active');
+('วงล้อของรางวัล BOYINSURE 2026', 'กิจกรรมหมุนวงล้อสำหรับลูกค้า BOYINSURE', '2026-01-01', '2026-12-31', 'active');
 
 INSERT INTO games (code, name, type, description, status, sort_order) VALUES
-('lucky_wheel', 'วงล้อโชคดี', 'wheel', 'เกมหมุนวงล้อลุ้นรางวัลสำหรับลูกค้า BoyInsure', 'active', 1);
+('lucky_wheel', 'วงล้อโชคดี', 'wheel', 'เกมหมุนวงล้อลุ้นรางวัลสำหรับลูกค้า BOYINSURE', 'active', 1);
 
 INSERT INTO prizes (game_id, campaign_id, name, short_name, detail, logo_path, color, prize_type, weight, wheel_enabled, status, sort_order) VALUES
 (1, 1, 'บัตรโลตัส', 'โลตัส', 'บัตรของขวัญมูลค่า 500 บาท ใช้ได้ทุกสาขา Lotus''s', 'assets/img/prizes/lotus.svg', '#fff9e6', 'voucher', 12, 1, 'active', 1),
@@ -41,17 +41,17 @@ INSERT INTO article_categories (slug, title, tagline, icon, sort_order) VALUES
 ('health', 'สุขภาพและการรักษา', 'เจ็บป่วยไม่สะเทือนเงินเก็บ', 'heart-pulse', 2),
 ('planning', 'วางแผนประกัน', 'เลือกแผนที่พอดีกับงบ', 'clipboard-list', 3),
 ('savings', 'ออมเงินและอนาคต', 'ออมวันนี้ สบายวันหน้า', 'piggy-bank', 4),
-('tips', 'เคล็ดลับและ FAQ', 'คำตอบจากทีม BoyInsure', 'lightbulb', 5),
+('tips', 'เคล็ดลับและ FAQ', 'คำตอบจากทีม BOYINSURE', 'lightbulb', 5),
 ('promo', 'โปรโมชั่น', 'กิจกรรมและของรางวัล', 'gift', 6);
 
 INSERT INTO settings (setting_key, setting_value) VALUES
-('site_name', 'BoyInsure'),
+('site_name', 'BOYINSURE'),
 ('site_tagline', 'คุ้มครองทุกช่วงชีวิต ด้วยใจ'),
 ('contact_email', 'admin@boyinsure.com'),
 ('phone', '0627878968'),
 ('phone_display', '062-787-8968'),
 ('business_hours', 'จันทร์–ศุกร์ 09:00–18:00 น.'),
 ('address', 'ให้บริการทั่วประเทศ'),
-('footer_note', 'ศูนย์ไทยประกันชีวิต'),
+('footer_note', 'พันธมิตรด้านประกันภัย'),
 ('notify_email', ''),
 ('low_stock_threshold', '5');

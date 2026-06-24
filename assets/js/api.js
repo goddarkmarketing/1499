@@ -1,5 +1,5 @@
 /**
- * BoyInsure API client
+ * BOYINSURE API client
  */
 const BoyInsureAPI = (() => {
   const base = (() => {
@@ -31,6 +31,15 @@ const BoyInsureAPI = (() => {
     loginMember(payload) {
       return request('member/login.php', { method: 'POST', body: JSON.stringify(payload) });
     },
+    logoutMember() {
+      return request('member/logout.php', { method: 'POST', body: '{}' });
+    },
+    prepareSpin() {
+      return request('member/prepare-spin.php', { method: 'POST', body: '{}' });
+    },
+    dashboard() {
+      return request('member/dashboard.php');
+    },
     me() {
       return request('member/me.php');
     },
@@ -60,3 +69,5 @@ const BoyInsureAPI = (() => {
     },
   };
 })();
+
+window.BoyInsureAPI = BoyInsureAPI;

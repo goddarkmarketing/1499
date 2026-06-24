@@ -40,7 +40,7 @@ try {
 
     $notify = setting_get('notify_email', '');
     if ($notify !== '' && filter_var($notify, FILTER_VALIDATE_EMAIL)) {
-        $subject = '[BoyInsure] Lead ใหม่: ' . $name;
+        $subject = '[BOYINSURE] Lead ใหม่: ' . $name;
         $body = "ชื่อ: {$name}\nเบอร์: {$phone}\nความสนใจ: {$interest}\nแผน: {$plan}\nข้อความ: {$message}";
         @mail($notify, $subject, $body, 'From: ' . (setting_get('contact_email', 'noreply@localhost') ?: 'noreply@localhost'));
     }

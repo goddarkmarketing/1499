@@ -15,25 +15,31 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $data = read_json_body();
-$phone = preg_replace('/\D+/', '', trim($data['phone'] ?? ''));
+$loginId = normalize_login_id($data['login_id'] ?? $data['loginId'] ?? '');
+$password = (string) ($data['password'] ?? '');
 
-if ($phone === '') {
-    json_response(['error' => 'กรุณากรอกเบอร์โทร'], 422);
+if ($loginId === '' || $password === '') {
+    json_response(['error' => 'กรุณากรอกไอดีและรหัสผ่าน'], 422);
 }
 
 $stmt = db()->prepare(
     'SELECT m.*, mt.name AS tier_name, mt.code AS tier_code
-     FROM members m LEFT JOIN member_tiers mt ON mt.id = m.tier_id WHERE m.phone = ? LIMIT 1'
+     FROM members m LEFT JOIN member_tiers mt ON mt.id = m.tier_id
+     WHERE m.login_id = ? LIMIT 1'
 );
-$stmt->execute([$phone]);
+$stmt->execute([$loginId]);
 $member = $stmt->fetch();
 
 if (!$member) {
-    json_response(['error' => 'ไม่พบสมาชิก กรุณาสมัครสมาชิก'], 404);
+    json_response(['error' => 'ไอดีหรือรหัสผ่านไม่ถูกต้อง'], 401);
 }
 
 if ($member['status'] !== 'active') {
     json_response(['error' => 'บัญชีถูกระงับ กรุณาติดต่อทีมงาน'], 403);
+}
+
+if (empty($member['password_hash']) || !password_verify($password, $member['password_hash'])) {
+    json_response(['error' => 'ไอดีหรือรหัสผ่านไม่ถูกต้อง'], 401);
 }
 
 unset($member['password_hash']);
@@ -44,8 +50,12 @@ json_response([
     'member' => [
         'id' => (int) $member['id'],
         'name' => $member['name'],
+        'first_name' => $member['first_name'] ?? '',
+        'last_name' => $member['last_name'] ?? '',
+        'login_id' => $member['login_id'] ?? $loginId,
         'phone' => $member['phone'],
         'spins_remaining' => (int) $member['spins_remaining'],
+        'points' => (int) ($member['points'] ?? 0),
         'tier_name' => $member['tier_name'] ?? 'ทั่วไป',
         'tier_code' => $member['tier_code'] ?? 'general',
     ],

@@ -63,6 +63,51 @@ function read_json_body(): array {
     return is_array($data) ? $data : [];
 }
 
+function normalize_phone(string $phone): string {
+    return preg_replace('/\D+/', '', trim($phone));
+}
+
+function validate_thai_phone(string $phone): bool {
+    return (bool) preg_match('/^0\d{9}$/', $phone);
+}
+
+function validate_thai_national_id(string $id): bool {
+    if (!preg_match('/^\d{13}$/', $id)) {
+        return false;
+    }
+    $sum = 0;
+    for ($i = 0; $i < 12; $i++) {
+        $sum += (int) $id[$i] * (13 - $i);
+    }
+    $check = (11 - ($sum % 11)) % 10;
+    return $check === (int) $id[12];
+}
+
+function validate_birth_date(string $date): bool {
+    $dt = DateTime::createFromFormat('Y-m-d', $date);
+    if (!$dt || $dt->format('Y-m-d') !== $date) {
+        return false;
+    }
+    $today = new DateTime('today');
+    if ($dt > $today) {
+        return false;
+    }
+    $age = $dt->diff($today)->y;
+    return $age >= 15 && $age <= 120;
+}
+
+function normalize_login_id(string $loginId): string {
+    return strtolower(trim($loginId));
+}
+
+function validate_login_id(string $loginId): bool {
+    return (bool) preg_match('/^[a-zA-Z0-9._-]{4,32}$/', $loginId);
+}
+
+function validate_member_password(string $password): bool {
+    return strlen($password) >= 6;
+}
+
 function start_session(string $key): void {
     if (session_status() === PHP_SESSION_NONE) {
         session_name($key);
@@ -190,6 +235,49 @@ function setting_set(string $key, ?string $value): void {
         'INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)
          ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)'
     )->execute([$key, $value]);
+}
+
+function mail_from_address(): string {
+    return setting_get('contact_email', 'noreply@localhost') ?: 'noreply@localhost';
+}
+
+function send_plain_mail(string $to, string $subject, string $body): bool {
+    if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+    $headers = 'From: ' . mail_from_address() . "\r\n" . 'Content-Type: text/plain; charset=UTF-8';
+    return @mail($to, '=?UTF-8?B?' . base64_encode($subject) . '?=', $body, $headers);
+}
+
+function send_member_credentials_email(string $email, string $name, string $loginId, string $password): bool {
+    $subject = 'ข้อมูลเข้าสู่ระบบ BOYINSURE';
+    $body = "เรียน {$name}\n\n"
+        . "ขอบคุณที่สมัครใช้งาน BOYINSURE\n"
+        . "ข้อมูลเข้าสู่ระบบของคุณมีดังนี้\n\n"
+        . "ไอดี: {$loginId}\n"
+        . "รหัสผ่าน: {$password}\n\n"
+        . "กรุณาเก็บรักษาข้อมูลนี้ไว้เป็นความลับ\n"
+        . "เข้าสู่ระบบได้ที่หน้าโปรโมชั่นและของรางวัล\n\n"
+        . "BOYINSURE";
+    return send_plain_mail($email, $subject, $body);
+}
+
+function notify_admin_new_member(array $member, string $loginId, ?string $plainPassword = null): bool {
+    $notify = setting_get('notify_email', '');
+    if ($notify === '' || !filter_var($notify, FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+    $subject = '[BOYINSURE] สมาชิกใหม่: ' . ($member['name'] ?? '');
+    $body = "มีการสมัครสมาชิกใหม่\n\n"
+        . 'ชื่อ: ' . ($member['name'] ?? '-') . "\n"
+        . 'เบอร์: ' . ($member['phone'] ?? '-') . "\n"
+        . 'อีเมล: ' . ($member['email'] ?? '-') . "\n"
+        . 'ไอดี: ' . $loginId . "\n";
+    if ($plainPassword !== null && $plainPassword !== '') {
+        $body .= 'รหัสผ่าน: ' . $plainPassword . "\n";
+    }
+    $body .= "\nดูรายละเอียดใน Admin > สมาชิก (ID: " . (int) ($member['id'] ?? 0) . ')';
+    return send_plain_mail($notify, $subject, $body);
 }
 
 function member_game_plays(int $memberId, int $gameId): int {

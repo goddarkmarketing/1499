@@ -89,7 +89,7 @@ try {
         'business_hours' => 'จันทร์–ศุกร์ 09:00–18:00 น.',
         'address' => 'ให้บริการทั่วประเทศ',
         'site_tagline' => 'คุ้มครองทุกช่วงชีวิต ด้วยใจ',
-        'footer_note' => 'ศูนย์ไทยประกันชีวิต',
+        'footer_note' => 'พันธมิตรด้านประกันภัย',
     ];
     $ins = $pdo->prepare('INSERT IGNORE INTO settings (setting_key, setting_value) VALUES (?, ?)');
     foreach ($extraSettings as $k => $v) {
@@ -112,7 +112,7 @@ try {
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <title>อัปเดต v3 CMS | BoyInsure</title>
+  <title>อัปเดต v3 CMS | BOYINSURE</title>
   <style>body{font-family:sans-serif;max-width:640px;margin:40px auto;padding:0 20px}.ok{color:#166534}.err{color:#991b1b}</style>
 </head>
 <body>

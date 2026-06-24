@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>เข้าสู่ระบบ | BoyInsure Admin</title>
+  <title>เข้าสู่ระบบ | BOYINSURE Admin</title>
   <link rel="stylesheet" href="../assets/css/fonts.css" />
   <link rel="stylesheet" href="assets/admin.css" />
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="admin-login__card">
         <div class="admin-login__card-header">
           <div class="admin-login__card-mark">B</div>
-          <h1>BoyInsure Admin</h1>
+          <h1>BOYINSURE Admin</h1>
           <p class="admin-login__card-desc">เข้าสู่ระบบหลังบ้าน</p>
         </div>
         <?php if ($error): ?>

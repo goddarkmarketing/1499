@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="./" />
+  <title>โปรไฟล์สมาชิก | BOYINSURE</title>
+  <link rel="stylesheet" href="assets/css/fonts.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <link rel="stylesheet" href="assets/css/member.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="stylesheet" href="assets/css/icons.css" />
+</head>
+<body data-page="profile" class="member-page">
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__name">BOYINSURE</span>
+      </a>
+      <ul class="navbar__menu" id="navbarMenu">
+        <li><a href="index.html" data-nav="home">หน้าแรก</a></li>
+        <li><a href="promotions.html" data-nav="promotions">โปรโมชั่นและของรางวัล</a></li>
+        <li><a href="insurance.html" data-nav="insurance">แบบประกันของเรา</a></li>
+        <li><a href="about.html" data-nav="about">เกี่ยวกับ BOYINSURE</a></li>
+        <li><a href="articles.html" data-nav="articles">บทความ</a></li>
+        <li class="navbar__menu-auth js-header-profile-item" hidden>
+          <a href="profile.html" class="navbar__menu-auth-link js-header-profile">
+            <i data-lucide="user-circle" aria-hidden="true"></i>
+            <span class="js-header-profile-name">โปรไฟล์</span>
+          </a>
+        </li>
+        <li class="navbar__menu-auth js-header-signin-item"><a href="promotions.html#login" class="navbar__menu-auth-link js-header-signin">เข้าสู่ระบบ</a></li>
+        <li class="navbar__menu-auth js-header-logout-item" hidden><a href="#" class="navbar__menu-auth-link js-header-logout">ออกจากระบบ</a></li>
+        <li class="navbar__menu-auth js-header-register-item"><a href="promotions.html#register" class="navbar__menu-auth-link js-header-register">ลงทะเบียน</a></li>
+      </ul>
+      <div class="navbar__actions">
+        <a href="profile.html" class="btn-login btn-login--outline btn-login--profile js-header-profile" hidden>
+          <i data-lucide="user-circle" aria-hidden="true"></i>
+          <span class="js-header-profile-name">โปรไฟล์</span>
+        </a>
+        <a href="promotions.html#login" class="btn-login btn-login--outline js-header-signin">
+          <i data-lucide="log-in" aria-hidden="true"></i>
+          เข้าสู่ระบบ
+        </a>
+        <button type="button" class="btn-login btn-login--danger js-header-logout" hidden>
+          <i data-lucide="log-out" aria-hidden="true"></i>
+          ออกจากระบบ
+        </button>
+        <a href="promotions.html#register" class="btn-login js-header-register">
+          <i data-lucide="user-plus" aria-hidden="true"></i>
+          ลงทะเบียน
+        </a>
+      </div>
+      <button class="navbar__toggle" id="navToggle" aria-label="เมนู" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="member-layout" id="memberLayout" hidden>
+    <aside class="member-sidebar" aria-label="เมนูโปรไฟล์">
+      <div class="member-sidebar__user">
+        <div class="member-sidebar__avatar" aria-hidden="true"><i data-lucide="user-circle"></i></div>
+        <div>
+          <strong class="member-sidebar__name" id="sidebarName">—</strong>
+          <span class="member-sidebar__tier" id="sidebarTier">สมาชิก</span>
+        </div>
+      </div>
+      <nav class="member-sidebar__nav">
+        <a href="#overview" class="member-sidebar__link is-active" data-panel="overview">
+          <i data-lucide="layout-dashboard" aria-hidden="true"></i> ภาพรวม
+        </a>
+        <a href="#info" class="member-sidebar__link" data-panel="info">
+          <i data-lucide="user" aria-hidden="true"></i> ข้อมูลส่วนตัว
+        </a>
+        <a href="#activities" class="member-sidebar__link" data-panel="activities">
+          <i data-lucide="history" aria-hidden="true"></i> กิจกรรม
+        </a>
+        <a href="#rewards" class="member-sidebar__link" data-panel="rewards">
+          <i data-lucide="gift" aria-hidden="true"></i> รางวัลของฉัน
+        </a>
+        <a href="promotions.html" class="member-sidebar__link member-sidebar__link--promo">
+          <i data-lucide="disc-3" aria-hidden="true"></i> หมุนวงล้อ
+        </a>
+      </nav>
+      <button type="button" class="member-sidebar__logout js-header-logout">
+        <i data-lucide="log-out" aria-hidden="true"></i> ออกจากระบบ
+      </button>
+    </aside>
+
+    <div class="member-content">
+      <section class="member-panel is-active" id="panel-overview" data-panel="overview">
+        <header class="member-panel__head">
+          <h1>ภาพรวม</h1>
+          <p>สรุปสิทธิ์และกิจกรรมของคุณในระบบ BOYINSURE</p>
+        </header>
+        <div class="member-stats">
+          <article class="member-stat">
+            <span class="member-stat__icon"><i data-lucide="compass"></i></span>
+            <div>
+              <strong id="statSpins">0</strong>
+              <span>สิทธิ์หมุนคงเหลือ</span>
+            </div>
+          </article>
+          <article class="member-stat">
+            <span class="member-stat__icon"><i data-lucide="coins"></i></span>
+            <div>
+              <strong id="statPoints">0</strong>
+              <span>คะแนนสะสม</span>
+            </div>
+          </article>
+          <article class="member-stat">
+            <span class="member-stat__icon"><i data-lucide="disc-3"></i></span>
+            <div>
+              <strong id="statTotalSpins">0</strong>
+              <span>หมุนวงล้อแล้ว (ครั้ง)</span>
+            </div>
+          </article>
+          <article class="member-stat">
+            <span class="member-stat__icon"><i data-lucide="gift"></i></span>
+            <div>
+              <strong id="statTotalRewards">0</strong>
+              <span>รางวัลที่ได้รับ</span>
+            </div>
+          </article>
+        </div>
+        <div class="member-card">
+          <h2>สถานะสิทธิ์หมุนวงล้อ</h2>
+          <p class="member-status" id="overviewSpinStatus">กำลังโหลด...</p>
+          <a href="promotions.html" class="member-btn member-btn--primary" id="overviewSpinBtn">ไปหน้าหมุนวงล้อ</a>
+        </div>
+      </section>
+
+      <section class="member-panel" id="panel-info" data-panel="info" hidden>
+        <header class="member-panel__head">
+          <h1>ข้อมูลส่วนตัว</h1>
+          <p>ข้อมูลที่บันทึกในระบบหลังบ้าน</p>
+        </header>
+        <dl class="member-info" id="memberInfoList"></dl>
+      </section>
+
+      <section class="member-panel" id="panel-activities" data-panel="activities" hidden>
+        <header class="member-panel__head">
+          <h1>กิจกรรม</h1>
+          <p>ประวัติการหมุนวงล้อและการลงทะเบียนเข้าร่วมกิจกรรม</p>
+        </header>
+        <div class="member-card">
+          <h2>ประวัติการหมุนวงล้อ</h2>
+          <div class="member-table-wrap">
+            <table class="member-table" id="spinsTable">
+              <thead><tr><th>วันที่</th><th>เกม</th><th>รางวัล</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="member-empty" id="spinsEmpty" hidden>ยังไม่มีประวัติการหมุน</p>
+        </div>
+        <div class="member-card">
+          <h2>การลงทะเบียนเข้าร่วมกิจกรรม</h2>
+          <div class="member-table-wrap">
+            <table class="member-table" id="regsTable">
+              <thead><tr><th>วันที่</th><th>สถานะ</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="member-empty" id="regsEmpty" hidden>ยังไม่มีการลงทะเบียน</p>
+        </div>
+      </section>
+
+      <section class="member-panel" id="panel-rewards" data-panel="rewards" hidden>
+        <header class="member-panel__head">
+          <h1>รางวัลของฉัน</h1>
+          <p>แตะการ์ดเพื่อดูรายละเอียด — เลื่อนซ้ายขวาเพื่อดูรางวัลอื่น</p>
+        </header>
+        <div class="prize-cards-row-wrap">
+          <div class="prize-cards-row" id="rewardsGrid"></div>
+        </div>
+        <p class="member-empty" id="rewardsEmpty" hidden>ยังไม่มีรางวัล — หมุนวงล้อเพื่อลุ้นรับของรางวัล</p>
+      </section>
+    </div>
+  </main>
+
+  <div class="member-guest" id="memberGuest" hidden>
+    <div class="member-guest__card">
+      <h1>กรุณาเข้าสู่ระบบ</h1>
+      <p>เข้าสู่ระบบเพื่อดูโปรไฟล์ สิทธิ์ และรางวัลของคุณ</p>
+      <a href="promotions.html#login" class="member-btn member-btn--primary">ไปหน้าเข้าสู่ระบบ</a>
+    </div>
+  </div>
+
+  <footer class="site-footer" id="siteFooter" aria-label="ส่วนท้ายเว็บไซต์"></footer>
+
+  <div class="reward-slider" id="rewardSlider" hidden>
+    <div class="reward-slider__backdrop" data-reward-slider-close tabindex="-1"></div>
+    <div class="reward-slider__dialog" role="dialog" aria-modal="true" aria-labelledby="rewardSliderTitle">
+      <button type="button" class="reward-slider__close" data-reward-slider-close aria-label="ปิด">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+      <div class="reward-slider__head">
+        <span class="reward-slider__label">รายละเอียดรางวัล</span>
+        <span class="reward-slider__counter" id="rewardSliderCounter">1 / 1</span>
+      </div>
+      <div class="reward-slider__viewport">
+        <div class="reward-slider__track" id="rewardSliderTrack"></div>
+      </div>
+      <button type="button" class="reward-slider__nav reward-slider__nav--prev" id="rewardSliderPrev" aria-label="รางวัลก่อนหน้า">
+        <i data-lucide="chevron-left" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="reward-slider__nav reward-slider__nav--next" id="rewardSliderNext" aria-label="รางวัลถัดไป">
+        <i data-lucide="chevron-right" aria-hidden="true"></i>
+      </button>
+      <div class="reward-slider__dots" id="rewardSliderDots" role="tablist" aria-label="เลือกรางวัล"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/member-auth.js"></script>
+  <script src="assets/js/rewards-ui.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/profile.js"></script>
+</body>
+</html>

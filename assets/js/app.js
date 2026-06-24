@@ -79,7 +79,7 @@
       short: 'โอ้กะจู๋',
       detail: 'Voucher อาหารออร์แกนิกมูลค่า 500 บาท ใช้ได้ที่ร้านโอ้กะจู๋',
       color: '#f0ffe8',
-      logo: prizeIcon(12),
+      logo: 'img/prizes/ohkajhu.png',
     },
     {
       name: 'ประกันรถยนต์ ชั้น 1',
@@ -119,12 +119,10 @@
   /* lotus, ptt, hospital, supersports, dental, botox, jett, ohkajhu, car, accident, fire, solar */
   const WHEEL_TO_PRIZE = [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12];
 
-  const DEFAULT_SPINS = 2;
-
   const PRIZE_CATALOG_DISPLAY = [
     { prizeIndex: 0, label: "บัตร Lotus's มูลค่า 500 บาท", qty: 100 },
     { prizeIndex: 1, label: 'บัตร PTT Station มูลค่า 500 บาท', qty: 100 },
-    { prizeIndex: 8, label: 'ประกันอุบัติเหตุส่วนบุคคล 400,000 บาท', qty: 20 },
+    { prizeIndex: 8, label: 'Voucher โอ้กะจู๋ มูลค่า 500 บาท', qty: 40 },
     { prizeIndex: 9, label: 'ประกันรถยนต์ ชั้น 1', qty: 10 },
     { prizeIndex: 3, label: 'Voucher Supersports มูลค่า 500 บาท', qty: 50 },
   ];
@@ -149,6 +147,7 @@
 
   const RECENT_WINNERS = ALL_WINNERS.slice(0, 5);
 
+  const PROMO_START = new Date('2026-06-20T00:00:00');
   const PROMO_END = new Date('2026-06-27T23:59:59');
 
   const wheelCanvas = document.getElementById('wheelCanvas');
@@ -165,8 +164,10 @@
   const myRewardsBtn = document.getElementById('myRewardsBtn');
   const termsBtn = document.getElementById('termsBtn');
   const rewardsOverlay = document.getElementById('rewardsOverlay');
-  const rewardsList = document.getElementById('rewardsList');
+  const rewardsCardGrid = document.getElementById('rewardsCardGrid');
   const rewardsEmpty = document.getElementById('rewardsEmpty');
+  const rewardSlider = BoyInsureRewardsUI.createSlider(document.getElementById('rewardSlider'));
+  const prizeCatalogSlider = BoyInsureRewardsUI.createSlider(document.getElementById('prizeCatalogSlider'));
   const closeRewards = document.getElementById('closeRewards');
   const termsOverlay = document.getElementById('termsOverlay');
   const closeTerms = document.getElementById('closeTerms');
@@ -181,63 +182,71 @@
   const prizeCompareGrid = document.getElementById('prizeCompareGrid');
   const resultOverlay = document.getElementById('resultOverlay');
   const loginOverlay = document.getElementById('loginOverlay');
+  const credentialsOverlay = document.getElementById('credentialsOverlay');
+  const closeCredentials = document.getElementById('closeCredentials');
   const closeLogin = document.getElementById('closeLogin');
-  const headerLoginBtn = document.getElementById('headerLoginBtn');
+  const authModalLabel = document.getElementById('authModalLabel');
+  const authModalMessage = document.getElementById('authModalMessage');
+  const authTabRegister = document.getElementById('authTabRegister');
+  const authTabLogin = document.getElementById('authTabLogin');
+  const memberLoginForm = document.getElementById('memberLoginForm');
+  const memberRegisterForm = document.getElementById('memberRegisterForm');
+  const registerSubmitBtn = document.getElementById('registerSubmitBtn');
   const resultPrizeLogo = document.getElementById('resultPrizeLogo');
   const resultPrize = document.getElementById('resultPrize');
   const resultPrizeDetail = document.getElementById('resultPrizeDetail');
   const closeResult = document.getElementById('closeResult');
   const confettiCanvas = document.getElementById('confettiCanvas');
-  const confettiCtx = confettiCanvas.getContext('2d');
+  const confettiCtx = confettiCanvas?.getContext('2d');
   const heroConfetti = document.getElementById('heroConfetti');
-  const devModeToggle = document.getElementById('devModeToggle');
   const dashSpinsLeft = document.getElementById('dashSpinsLeft');
   const dashPoints = document.getElementById('dashPoints');
   const dashPrizesWon = document.getElementById('dashPrizesWon');
   const dashMemberLevel = document.getElementById('dashMemberLevel');
   const winnersList = document.getElementById('winnersList');
 
-  const DEV_MODE_KEY = 'boyinsure_dev_mode';
-
-  function loadDevMode() {
-    const stored = localStorage.getItem(DEV_MODE_KEY);
-    return stored === null ? true : stored === '1';
-  }
-
-  let devMode = loadDevMode();
   let isLoggedIn = false;
   let memberProfile = null;
-  let spinsLeft = DEFAULT_SPINS;
+  let spinsLeft = 0;
+  let pendingSpinAfterRegister = false;
   let isSpinning = false;
 
-  function applyMemberSession(member, rewards = []) {
-    if (!member) return;
-    memberProfile = member;
-    isLoggedIn = true;
-    spinsLeft = member.spins_remaining ?? spinsLeft;
-    if (dashMemberLevel) dashMemberLevel.textContent = member.tier_name || 'ทั่วไป';
-    wonPrizes.length = 0;
-    rewards.forEach((r) => {
-      wonPrizes.push({
-        name: r.name,
-        detail: r.detail || '',
-        logo: r.logo_path ? asset(r.logo_path.replace(/^assets\//, '')) : '',
-        color: r.color || '#fff',
+  function syncFromAuth() {
+    isLoggedIn = BoyInsureAuth.isLoggedIn();
+    memberProfile = BoyInsureAuth.getMember();
+    spinsLeft = BoyInsureAuth.getSpinsRemaining();
+    if (isLoggedIn && memberProfile) {
+      if (dashMemberLevel) dashMemberLevel.textContent = memberProfile.tier_name || 'ทั่วไป';
+      wonPrizes.length = 0;
+      BoyInsureAuth.getRewards().forEach((r) => {
+        wonPrizes.push({
+          name: r.name,
+          detail: r.detail || '',
+          logo: r.logo_path ? asset(r.logo_path.replace(/^assets\//, '')) : '',
+          color: r.color || '#fff',
+        });
       });
-    });
+    }
     updateSpinsDisplay();
   }
 
-  async function restoreMemberSession() {
-    if (!window.BoyInsureAPI || devMode) return;
-    try {
-      const data = await BoyInsureAPI.me();
-      if (data.logged_in && data.member) {
-        applyMemberSession(data.member, data.rewards || []);
-      }
-    } catch (_) {
-      /* API unavailable — fallback to dev/local mode */
+  function applyMemberSession(member, rewards = []) {
+    BoyInsureAuth.setSession(member, rewards);
+    syncFromAuth();
+  }
+
+  function clearSpinUnlockState() {
+    pendingSpinAfterRegister = false;
+  }
+
+  async function refreshMemberAfterSpin(spinsRemaining) {
+    clearSpinUnlockState();
+    if (typeof spinsRemaining === 'number' && memberProfile) {
+      spinsLeft = spinsRemaining;
+      memberProfile.spins_remaining = spinsRemaining;
     }
+    await BoyInsureAuth.refresh();
+    syncFromAuth();
   }
 
   function segmentFromPrizeIndex(prizeIndex) {
@@ -255,6 +264,8 @@
   let spinAnimationId = null;
   const wonPrizes = [];
   const sessionWins = [];
+
+  BoyInsureAuth.subscribe(syncFromAuth);
 
   const tickSound = new Audio(asset('audio/tick.mp3'));
   tickSound.loop = true;
@@ -648,35 +659,49 @@
     return custom ? custom.qty : 10;
   }
 
-  function buildPrizeListItem(index) {
-    const p = PRIZES[index];
-    if (!p) return '';
-    const label = getPrizeLabel(index);
-    const qty = getPrizeQty(index);
-    return `
-      <div class="prize-list__item" data-index="${index}">
-        <div class="prize-list__prize">
-          <span class="prize-list__logo">
-            <img src="${asset(p.logo)}" alt="${p.short}" loading="lazy" />
-          </span>
-          <strong class="prize-list__name">${label}</strong>
-        </div>
-        <span class="prize-list__qty">${qty} รางวัล</span>
-      </div>
-    `;
+  function buildCatalogItem(prizeIndex) {
+    const p = PRIZES[prizeIndex];
+    if (!p) return null;
+    return {
+      prizeIndex,
+      name: getPrizeLabel(prizeIndex),
+      short: p.short,
+      detail: p.detail || p.name.replace('\n', ' '),
+      logo: asset(p.logo),
+      qty: getPrizeQty(prizeIndex),
+    };
+  }
+
+  function getAllCatalogItems() {
+    return PRIZES
+      .map((_, i) => i)
+      .filter((i) => !CATALOG_EXCLUDE.has(i))
+      .map((i) => buildCatalogItem(i))
+      .filter(Boolean);
+  }
+
+  function getPanelCatalogItems() {
+    return PRIZE_CATALOG_DISPLAY
+      .map(({ prizeIndex }) => buildCatalogItem(prizeIndex))
+      .filter(Boolean);
+  }
+
+  function getHeroCatalogItems() {
+    return [...new Set(WHEEL_TO_PRIZE)]
+      .map((i) => buildCatalogItem(i))
+      .filter(Boolean);
   }
 
   function buildAllPrizesList() {
     if (!allPrizesList) return;
-    allPrizesList.innerHTML = PRIZES
-      .map((_, i) => i)
-      .filter((i) => !CATALOG_EXCLUDE.has(i))
-      .map((i) => buildPrizeListItem(i))
+    allPrizesList.innerHTML = getAllCatalogItems()
+      .map((item) => buildPrizeListItemHTML(item.prizeIndex))
       .join('');
   }
 
   function openAllPrizesModal() {
     if (!allPrizesOverlay) return;
+    buildAllPrizesList();
     allPrizesOverlay.hidden = false;
     document.body.style.overflow = 'hidden';
     if (window.lucide?.createIcons) lucide.createIcons();
@@ -690,52 +715,33 @@
     }
   }
 
+  function buildPrizeListItemHTML(prizeIndex) {
+    const p = PRIZES[prizeIndex];
+    if (!p) return '';
+    return `
+      <div class="prize-list__item" data-index="${prizeIndex}">
+        <div class="prize-list__prize">
+          <div class="prize-list__logo">
+            <img src="${asset(p.logo)}" alt="${p.short}" width="44" height="44" loading="lazy" />
+          </div>
+          <span class="prize-list__name">${getPrizeLabel(prizeIndex)}</span>
+        </div>
+        <span class="prize-list__qty">${getPrizeQty(prizeIndex)} รางวัล</span>
+      </div>
+    `;
+  }
+
   function buildPrizeGrid() {
     if (!prizesGrid) return;
+    prizesGrid.innerHTML = PRIZE_CATALOG_DISPLAY
+      .map(({ prizeIndex }) => buildPrizeListItemHTML(prizeIndex))
+      .join('');
+  }
 
-    if (prizesGrid.classList.contains('prize-list')) {
-      prizesGrid.innerHTML = '';
-      PRIZE_CATALOG_DISPLAY.forEach(({ prizeIndex, label, qty }) => {
-        const p = PRIZES[prizeIndex];
-        if (!p) return;
-        const item = document.createElement('div');
-        item.className = 'prize-list__item';
-        item.dataset.index = prizeIndex;
-        item.innerHTML = `
-          <div class="prize-list__prize">
-            <span class="prize-list__logo">
-              <img src="${asset(p.logo)}" alt="${p.short}" loading="lazy" />
-            </span>
-            <strong class="prize-list__name">${label}</strong>
-          </div>
-          <span class="prize-list__qty">${qty} รางวัล</span>
-        `;
-        prizesGrid.appendChild(item);
-      });
-      return;
-    }
-
-    const colsPerRow = 6;
-    prizesGrid.innerHTML = '';
-
-    const row1 = document.createElement('div');
-    row1.className = 'prizes-grid__row prizes-grid__row--top';
-    const row2 = document.createElement('div');
-    row2.className = 'prizes-grid__row prizes-grid__row--bottom';
-
-    const catalogItems = PRIZES.map((p, i) => ({ p, i })).filter(({ i }) => !CATALOG_EXCLUDE.has(i));
-
-    catalogItems.forEach(({ p, i }, idx) => {
-      const card = document.createElement('article');
-      card.className = 'prize-catalog-card';
-      card.dataset.index = i;
-      card.style.animationDelay = `${idx * 0.04}s`;
-      card.innerHTML = buildPrizeCatalogCardHTML(p);
-      (idx < colsPerRow ? row1 : row2).appendChild(card);
-    });
-
-    prizesGrid.appendChild(row1);
-    prizesGrid.appendChild(row2);
+  function initHeroPrizeCards() {
+    const container = document.getElementById('heroPrizeCards');
+    if (!container) return;
+    BoyInsureRewardsUI.bindCatalogGrid(container, getHeroCatalogItems(), prizeCatalogSlider);
   }
 
   function buildWinnerItemHTML(w) {
@@ -785,6 +791,25 @@
     return String(Math.max(0, n)).padStart(2, '0');
   }
 
+  function formatPromoEndDate(date) {
+    return date.toLocaleDateString('th-TH', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  }
+
+  function initCountdownMeta() {
+    const daysLabel = document.getElementById('promoDurationDays');
+    const hintEl = document.getElementById('promoCountdownHint');
+    const campaignDays = Math.max(1, Math.ceil((PROMO_END - PROMO_START) / 86400000));
+
+    if (daysLabel) daysLabel.textContent = String(campaignDays);
+    if (hintEl) {
+      hintEl.textContent = `เหลือเวลาร่วมกิจกรรมก่อนปิดรับสิทธิ์ — สิ้นสุด ${formatPromoEndDate(PROMO_END)}`;
+    }
+  }
+
   function updateCountdown() {
     const daysEl = document.getElementById('countdownDays');
     const hoursEl = document.getElementById('countdownHours');
@@ -798,6 +823,8 @@
       hoursEl.textContent = '00';
       minutesEl.textContent = '00';
       secondsEl.textContent = '00';
+      const hintEl = document.getElementById('promoCountdownHint');
+      if (hintEl) hintEl.textContent = 'กิจกรรมสิ้นสุดแล้ว — ขอบคุณที่ร่วมสนุกกับ BOYINSURE';
       return;
     }
 
@@ -814,47 +841,18 @@
   }
 
   function initCountdown() {
+    initCountdownMeta();
     updateCountdown();
     setInterval(updateCountdown, 1000);
   }
 
-  function restartPrizeMarquee() {
-    const track = document.getElementById('prizeMarqueeTrack');
-    if (!track || !track.firstElementChild) return;
-    track.style.animation = 'none';
-    void track.offsetWidth;
-    track.style.removeProperty('animation');
-  }
-
-  function initPrizeMarquee() {
-    const track = document.getElementById('prizeMarqueeTrack');
-    if (!track) return;
-
-    const indices = [...new Set(WHEEL_TO_PRIZE)];
-    const items = indices.map((i) => {
-      const p = PRIZES[i];
-      if (!p) return '';
-      return `<span class="promo-prize-marquee__item"><img src="${asset(p.logo)}" alt="${p.short}" loading="lazy" /></span>`;
-    }).join('');
-
-    track.innerHTML = items + items;
-    restartPrizeMarquee();
-  }
-
   function resumePromoAnimations() {
-    restartPrizeMarquee();
     restartLightAnimation();
     updateCountdown();
   }
 
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) resumePromoAnimations();
-  });
-
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && document.getElementById('prizeMarqueeTrack')) {
-      restartPrizeMarquee();
-    }
   });
 
   function initViewAllPrizes() {
@@ -910,94 +908,240 @@
   }
 
   function updateDashboard() {
-    const active = canParticipate();
-    if (dashSpinsLeft) dashSpinsLeft.textContent = active ? spinsLeft : '0';
-    if (dashPrizesWon) dashPrizesWon.textContent = wonPrizes.length;
-    if (dashPoints) dashPoints.textContent = active ? '12,500' : '0';
-    if (dashMemberLevel) dashMemberLevel.textContent = active ? 'Gold' : 'สมาชิก';
+    if (dashSpinsLeft) dashSpinsLeft.textContent = isLoggedIn ? String(spinsLeft) : '0';
+    if (dashPrizesWon) dashPrizesWon.textContent = String(isLoggedIn ? wonPrizes.length : 0);
+    if (dashPoints) dashPoints.textContent = isLoggedIn ? BoyInsureAuth.formatPoints(memberProfile?.points) : '0';
+    if (dashMemberLevel) {
+      dashMemberLevel.textContent = isLoggedIn
+        ? (memberProfile?.tier_name || 'ทั่วไป')
+        : 'สมาชิก';
+    }
   }
 
   function canParticipate() {
-    return devMode || isLoggedIn;
+    return isLoggedIn && spinsLeft > 0;
   }
 
   function updateSpinsDisplay() {
-    if (!canParticipate()) {
-      spinBtn.disabled = isSpinning;
+    spinBtn.disabled = isSpinning;
+
+    if (spinsLeftEl) spinsLeftEl.textContent = String(spinsLeft);
+
+    if (isLoggedIn) {
+      if (wheelStatusGuest) wheelStatusGuest.hidden = true;
+      if (spinsLeft > 0) {
+        if (wheelStatusHasSpins) wheelStatusHasSpins.hidden = false;
+        if (wheelStatusNoSpins) wheelStatusNoSpins.hidden = true;
+        if (wheelPanelStatus) wheelPanelStatus.classList.remove('wheel-panel__status--empty');
+      } else {
+        if (wheelStatusHasSpins) wheelStatusHasSpins.hidden = true;
+        if (wheelStatusNoSpins) wheelStatusNoSpins.hidden = false;
+        if (wheelPanelStatus) wheelPanelStatus.classList.add('wheel-panel__status--empty');
+      }
+    } else {
       if (wheelStatusGuest) wheelStatusGuest.hidden = false;
       if (wheelStatusHasSpins) wheelStatusHasSpins.hidden = true;
       if (wheelStatusNoSpins) wheelStatusNoSpins.hidden = true;
       if (wheelPanelStatus) wheelPanelStatus.classList.remove('wheel-panel__status--empty');
-      updateDashboard();
-      return;
     }
 
-    const hasSpins = spinsLeft > 0;
-    spinsLeftEl.textContent = spinsLeft;
-    spinsLeftEl.classList.remove('bump');
-    void spinsLeftEl.offsetWidth;
-    spinsLeftEl.classList.add('bump');
-
-    const canSpin = hasSpins && !isSpinning;
-    spinBtn.disabled = !canSpin;
-
-    if (wheelStatusGuest) wheelStatusGuest.hidden = true;
-    if (wheelStatusHasSpins) wheelStatusHasSpins.hidden = !hasSpins;
-    if (wheelStatusNoSpins) wheelStatusNoSpins.hidden = hasSpins;
-    if (wheelPanelStatus) {
-      wheelPanelStatus.classList.toggle('wheel-panel__status--empty', !hasSpins);
-    }
     updateDashboard();
   }
 
   function isModalOpen() {
-    return !loginOverlay.hidden || !resultOverlay.hidden || !rewardsOverlay.hidden || !termsOverlay.hidden || (allPrizesOverlay && !allPrizesOverlay.hidden) || (allWinnersOverlay && !allWinnersOverlay.hidden);
+    const catalogSlider = document.getElementById('prizeCatalogSlider');
+    const memberRewardSlider = document.getElementById('rewardSlider');
+    return !loginOverlay.hidden || !credentialsOverlay?.hidden || !resultOverlay.hidden || !rewardsOverlay.hidden || !termsOverlay.hidden || (catalogSlider && !catalogSlider.hidden) || (memberRewardSlider && !memberRewardSlider.hidden) || (allPrizesOverlay && !allPrizesOverlay.hidden) || (allWinnersOverlay && !allWinnersOverlay.hidden);
   }
 
-  function openLoginModal() {
+  function showCredentialsModal(credentials, sentEmail = false) {
+    return new Promise((resolve) => {
+      if (!credentialsOverlay || !credentials?.login_id) {
+        resolve();
+        return;
+      }
+      const loginEl = document.getElementById('credLoginId');
+      const passEl = document.getElementById('credPassword');
+      const hintEl = document.getElementById('credEmailHint');
+      if (loginEl) loginEl.textContent = credentials.login_id;
+      if (passEl) passEl.textContent = credentials.password || '';
+      if (hintEl) hintEl.hidden = !sentEmail;
+      credentialsOverlay.hidden = false;
+      document.body.style.overflow = 'hidden';
+
+      const done = () => {
+        credentialsOverlay.hidden = true;
+        closeCredentials?.removeEventListener('click', onClose);
+        credentialsOverlay.removeEventListener('click', onBackdrop);
+        if (!isModalOpen()) {
+          document.body.style.overflow = '';
+        }
+        resolve();
+      };
+      const onClose = (e) => {
+        e.preventDefault();
+        done();
+      };
+      const onBackdrop = (e) => {
+        if (e.target === credentialsOverlay) done();
+      };
+      closeCredentials?.addEventListener('click', onClose);
+      credentialsOverlay.addEventListener('click', onBackdrop);
+      credentialsOverlay.querySelector('.result-modal--credentials')?.addEventListener('click', (e) => e.stopPropagation());
+    });
+  }
+
+  function setAuthModalMode(mode = 'register') {
+    const isLogin = mode === 'login';
+
+    if (authTabRegister) {
+      authTabRegister.classList.toggle('is-active', !isLogin);
+      authTabRegister.setAttribute('aria-selected', String(!isLogin));
+    }
+    if (authTabLogin) {
+      authTabLogin.classList.toggle('is-active', isLogin);
+      authTabLogin.setAttribute('aria-selected', String(isLogin));
+    }
+    if (memberRegisterForm) memberRegisterForm.hidden = isLogin;
+    if (memberLoginForm) memberLoginForm.hidden = !isLogin;
+
+    if (authModalLabel) {
+      authModalLabel.textContent = isLogin ? 'เข้าสู่ระบบ' : 'ลงทะเบียนก่อนหมุน';
+    }
+    if (authModalMessage) {
+      authModalMessage.textContent = isLogin
+        ? 'เข้าสู่ระบบด้วยไอดีและรหัสผ่านที่ตั้งไว้ตอนลงทะเบียน'
+        : 'กรุณากรอกข้อมูลให้ครบถ้วนเพื่อสมัครสมาชิกและหมุนวงล้อ';
+    }
+    if (registerSubmitBtn) {
+      registerSubmitBtn.textContent = pendingSpinAfterRegister
+        ? 'ลงทะเบียนและหมุนวงล้อ'
+        : 'ลงทะเบียน';
+    }
+  }
+
+  function openAuthModal(mode = 'register', forSpin = false) {
+    pendingSpinAfterRegister = forSpin;
+    setAuthModalMode(mode);
     loginOverlay.hidden = false;
     document.body.style.overflow = 'hidden';
+    if (mode === 'login') {
+      document.getElementById('loginId')?.focus();
+    } else {
+      document.getElementById('registerFirstName')?.focus();
+    }
+  }
+
+  function openRegisterModal(forSpin = false) {
+    openAuthModal('register', forSpin);
   }
 
   function closeLoginModal() {
     loginOverlay.hidden = true;
+    pendingSpinAfterRegister = false;
     if (!isModalOpen()) {
       document.body.style.overflow = '';
     }
   }
 
-  function requireLogin() {
-    if (canParticipate()) return true;
-    openLoginModal();
-    return false;
+  function collectRegisterPayload() {
+    return {
+      first_name: document.getElementById('registerFirstName')?.value?.trim(),
+      last_name: document.getElementById('registerLastName')?.value?.trim(),
+      phone: document.getElementById('registerPhone')?.value?.trim(),
+      national_id: document.getElementById('registerNationalId')?.value?.trim(),
+      birth_date: document.getElementById('registerBirthDate')?.value,
+      email: document.getElementById('registerEmail')?.value?.trim(),
+      login_id: document.getElementById('registerLoginId')?.value?.trim(),
+      password: document.getElementById('registerPassword')?.value ?? '',
+      password_confirm: document.getElementById('registerPasswordConfirm')?.value ?? '',
+      consent: document.getElementById('registerConsent')?.checked,
+    };
   }
 
-  function setDevMode(enabled) {
-    devMode = enabled;
-    localStorage.setItem(DEV_MODE_KEY, enabled ? '1' : '0');
-    if (devModeToggle) devModeToggle.checked = enabled;
-    if (enabled) {
-      closeLoginModal();
-      if (spinsLeft <= 0) spinsLeft = DEFAULT_SPINS;
+  async function submitRegistration(shouldSpinAfter = false) {
+    if (!window.BoyInsureAPI) {
+      alert('ระบบไม่พร้อมใช้งาน กรุณาลองใหม่ภายหลัง');
+      return false;
     }
-    updateSpinsDisplay();
+
+    const payload = collectRegisterPayload();
+    const hasPasswordInput = payload.password !== '' || payload.password_confirm !== '' || payload.login_id !== '';
+    if (hasPasswordInput) {
+      if (!payload.login_id) {
+        alert('กรุณากรอกไอดีสำหรับเข้าสู่ระบบ');
+        return false;
+      }
+      if (payload.password.length < 6) {
+        alert('กรุณาตั้งรหัสผ่านอย่างน้อย 6 ตัวอักษร');
+        return false;
+      }
+      if (payload.password !== payload.password_confirm) {
+        alert('รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน');
+        return false;
+      }
+    }
+
+    const submitBtn = document.getElementById('registerSubmitBtn');
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+      const data = await BoyInsureAPI.registerMember(payload);
+      applyMemberSession(data.member);
+      spinsLeft = data.member.spins_remaining ?? 0;
+      closeLoginModal();
+      if (data.credentials) {
+        await showCredentialsModal(data.credentials, Boolean(data.credentials_sent_email));
+      } else if (!shouldSpinAfter) {
+        alert('ลงทะเบียนสำเร็จ');
+      }
+      if (shouldSpinAfter) {
+        await executeSpin();
+      }
+      return true;
+    } catch (err) {
+      alert(err.message || 'ลงทะเบียนไม่สำเร็จ');
+      return false;
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  }
+
+  function getRewardsForUi() {
+    if (isLoggedIn && BoyInsureAuth.getRewards().length) {
+      return BoyInsureAuth.getRewards();
+    }
+    return wonPrizes.map((item) => ({
+      name: item.name,
+      detail: item.detail || '',
+      logo: item.logo || '',
+      status: 'won',
+    }));
   }
 
   function renderRewardsList() {
-    rewardsList.innerHTML = '';
-    const hasRewards = wonPrizes.length > 0;
+    const rewards = getRewardsForUi();
+    const hasRewards = rewards.length > 0;
     rewardsEmpty.hidden = hasRewards;
-    rewardsList.hidden = !hasRewards;
-
-    wonPrizes.forEach((item, i) => {
-      const li = document.createElement('li');
-      li.textContent = `${i + 1}. ${item.name.replace('\n', ' ')}`;
-      rewardsList.appendChild(li);
-    });
+    if (rewardsCardGrid) rewardsCardGrid.hidden = !hasRewards;
+    if (!hasRewards) {
+      if (rewardsCardGrid) rewardsCardGrid.innerHTML = '';
+      return;
+    }
+    BoyInsureRewardsUI.bindGrid(rewardsCardGrid, rewards, rewardSlider);
   }
 
-  function openRewardsModal() {
-    if (!requireLogin()) return;
+  async function openRewardsModal() {
+    if (isLoggedIn) {
+      await BoyInsureAuth.refresh();
+      syncFromAuth();
+    }
+    if (!getRewardsForUi().length) {
+      alert(isLoggedIn
+        ? 'ยังไม่มีรางวัล — ลงทะเบียนและหมุนวงล้อเพื่อลุ้นรับของรางวัล'
+        : 'ยังไม่มีรางวัล — เข้าสู่ระบบและหมุนวงล้อเพื่อลุ้นรับของรางวัล');
+      return;
+    }
     renderRewardsList();
     rewardsOverlay.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -1026,9 +1170,13 @@
     return 1 - Math.pow(1 - t, 3);
   }
 
-  async function spin() {
-    if (!requireLogin()) return;
+  async function executeSpin() {
+    if (!canParticipate()) return;
     if (isSpinning || spinsLeft <= 0) return;
+    if (!window.BoyInsureAPI) {
+      alert('ระบบไม่พร้อมใช้งาน กรุณาลองใหม่ภายหลัง');
+      return;
+    }
 
     wheelPin.classList.remove('bounce');
     cancelAnimationFrame(spinAnimationId);
@@ -1037,22 +1185,18 @@
     let prizeIndex = prizeIndexFromSegment(winSegment);
     let apiPrize = null;
 
-    if (!devMode && isLoggedIn && window.BoyInsureAPI) {
-      try {
-        spinBtn.disabled = true;
-        const result = await BoyInsureAPI.spin();
-        apiPrize = result.prize;
-        prizeIndex = prizeIndexFromApiPrize(apiPrize);
-        winSegment = segmentFromPrizeIndex(prizeIndex);
-        spinsLeft = result.spins_remaining;
-      } catch (err) {
-        alert(err.message || 'หมุนไม่สำเร็จ');
-        updateSpinsDisplay();
-        spinBtn.disabled = false;
-        return;
-      }
-    } else {
-      spinsLeft--;
+    try {
+      spinBtn.disabled = true;
+      const result = await BoyInsureAPI.spin();
+      apiPrize = result.prize;
+      prizeIndex = prizeIndexFromApiPrize(apiPrize);
+      winSegment = segmentFromPrizeIndex(prizeIndex);
+      spinsLeft = result.spins_remaining ?? 0;
+    } catch (err) {
+      alert(err.message || 'หมุนไม่สำเร็จ');
+      updateSpinsDisplay();
+      spinBtn.disabled = false;
+      return;
     }
 
     const targetMod = rotationForSegmentCenter(winSegment);
@@ -1095,11 +1239,42 @@
         } else {
           showResult(prizeIndex);
         }
+        refreshMemberAfterSpin(spinsLeft);
         launchConfetti();
       }
     }
 
     spinAnimationId = requestAnimationFrame(animate);
+  }
+
+  async function spin() {
+    if (isSpinning) return;
+
+    await BoyInsureAuth.refresh();
+    syncFromAuth();
+
+    if (!isLoggedIn) {
+      openRegisterModal(true);
+      return;
+    }
+
+    if (spinsLeft <= 0) {
+      alert('คุณใช้สิทธิ์หมุนวงล้อครบแล้ว');
+      return;
+    }
+
+    if (!window.BoyInsureAPI) {
+      alert('ระบบไม่พร้อมใช้งาน กรุณาลองใหม่ภายหลัง');
+      return;
+    }
+
+    try {
+      const data = await BoyInsureAPI.prepareSpin();
+      if (data.member) applyMemberSession(data.member);
+      await executeSpin();
+    } catch (err) {
+      alert(err.message || 'ไม่สามารถหมุนได้');
+    }
   }
 
   function showResultFromApi(apiPrize, fallbackIndex) {
@@ -1112,7 +1287,7 @@
       resultPrizeDetail.textContent = apiPrize.detail || '';
       resultPrizeDetail.hidden = !apiPrize.detail;
     }
-    closeResult.textContent = spinsLeft > 0 ? 'หมุนต่ออีกครั้ง' : 'ตกลง';
+    closeResult.textContent = 'ตกลง';
     resultOverlay.hidden = false;
     document.body.style.overflow = 'hidden';
     sessionWins.push(fallbackIndex);
@@ -1138,7 +1313,7 @@
       resultPrizeDetail.textContent = prize.detail || '';
       resultPrizeDetail.hidden = !prize.detail;
     }
-    closeResult.textContent = spinsLeft > 0 ? 'หมุนต่ออีกครั้ง' : 'ตกลง';
+    closeResult.textContent = 'ตกลง';
 
     resultOverlay.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -1157,11 +1332,13 @@
   let confettiParticles = [];
 
   function resizeConfetti() {
+    if (!confettiCanvas || !confettiCtx) return;
     confettiCanvas.width = window.innerWidth;
     confettiCanvas.height = window.innerHeight;
   }
 
   function launchConfetti() {
+    if (!confettiCanvas || !confettiCtx) return;
     const colors = ['#f5d060', '#d4af37', '#ffcc00', '#1a4fa0', '#fff', '#ff6b9d'];
     confettiParticles = [];
     const cx = window.innerWidth / 2;
@@ -1185,6 +1362,7 @@
   }
 
   function animateConfetti() {
+    if (!confettiCtx || !confettiCanvas) return;
     confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
     let alive = false;
     confettiParticles.forEach(p => {
@@ -1208,58 +1386,73 @@
     else confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
   }
 
-  function closeResultModal(autoSpin = false) {
+  function closeResultModal() {
     resultOverlay.hidden = true;
 
     if (!isModalOpen()) {
       document.body.style.overflow = '';
     }
 
-    if (autoSpin && spinsLeft > 0 && !isSpinning) {
-      requestAnimationFrame(() => spin());
-      return;
-    }
-
-    if (spinsLeft > 0) {
-      document.getElementById('home').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else if (sessionWins.length > 0 && prizeCompare && !prizeCompare.hidden) {
+    if (sessionWins.length > 0 && prizeCompare && !prizeCompare.hidden) {
       prizeCompare.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
-      document.getElementById('privileges').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('privileges')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
 
   spinBtn?.addEventListener('click', spin);
-  myRewardsBtn.addEventListener('click', openRewardsModal);
-  termsBtn.addEventListener('click', openTermsModal);
-  closeRewards.addEventListener('click', e => {
+  myRewardsBtn?.addEventListener('click', () => {
+    if (isLoggedIn) {
+      window.location.href = 'profile.html#rewards';
+      return;
+    }
+    openRewardsModal();
+  });
+  termsBtn?.addEventListener('click', openTermsModal);
+  closeRewards?.addEventListener('click', e => {
     e.preventDefault();
     closeRewardsModal();
   });
-  closeTerms.addEventListener('click', e => {
+  closeTerms?.addEventListener('click', e => {
     e.preventDefault();
     closeTermsModal();
   });
-  rewardsOverlay.addEventListener('click', e => {
+  rewardsOverlay?.addEventListener('click', e => {
     if (e.target === rewardsOverlay) closeRewardsModal();
   });
-  termsOverlay.addEventListener('click', e => {
+  termsOverlay?.addEventListener('click', e => {
     if (e.target === termsOverlay) closeTermsModal();
   });
-  closeResult.addEventListener('click', e => {
+  closeResult?.addEventListener('click', e => {
     e.preventDefault();
     e.stopPropagation();
-    closeResultModal(spinsLeft > 0);
+    closeResultModal();
   });
-  resultOverlay.addEventListener('click', e => {
+  resultOverlay?.addEventListener('click', e => {
     if (e.target === resultOverlay) closeResultModal();
   });
   resultOverlay.querySelector('.result-modal--win')?.addEventListener('click', e => e.stopPropagation());
 
-  headerLoginBtn?.addEventListener('click', e => {
-    e.preventDefault();
-    openLoginModal();
+  document.querySelectorAll('.js-header-signin').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('navbarMenu')?.classList.remove('open');
+      document.getElementById('navToggle')?.setAttribute('aria-expanded', 'false');
+      openAuthModal('login', false);
+    });
   });
+
+  document.querySelectorAll('.js-header-register').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('navbarMenu')?.classList.remove('open');
+      document.getElementById('navToggle')?.setAttribute('aria-expanded', 'false');
+      openAuthModal('register', false);
+    });
+  });
+
+  authTabRegister?.addEventListener('click', () => setAuthModalMode('register'));
+  authTabLogin?.addEventListener('click', () => setAuthModalMode('login'));
   closeLogin?.addEventListener('click', e => {
     e.preventDefault();
     closeLoginModal();
@@ -1269,49 +1462,35 @@
   });
   loginOverlay?.querySelector('.result-modal--auth')?.addEventListener('click', e => e.stopPropagation());
 
-  const memberLoginForm = document.getElementById('memberLoginForm');
-  const memberRegisterForm = document.getElementById('memberRegisterForm');
-  const loginModalToggle = document.getElementById('loginModalToggle');
-
-  loginModalToggle?.addEventListener('click', () => {
-    const showLogin = memberRegisterForm && !memberRegisterForm.hidden;
-    if (memberLoginForm) memberLoginForm.hidden = !showLogin;
-    if (memberRegisterForm) memberRegisterForm.hidden = showLogin;
-    loginModalToggle.textContent = showLogin ? 'ยังไม่มีบัญชี? สมัครสมาชิก' : 'มีบัญชีแล้ว? เข้าสู่ระบบ';
-  });
-
   memberRegisterForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!window.BoyInsureAPI) return;
-    try {
-      const data = await BoyInsureAPI.registerMember({
-        name: document.getElementById('registerName')?.value?.trim(),
-        phone: document.getElementById('registerPhone')?.value?.trim(),
-      });
-      applyMemberSession(data.member);
-      closeLoginModal();
-      alert('สมัครสมาชิกสำเร็จ!');
-    } catch (err) {
-      alert(err.message || 'สมัครไม่สำเร็จ');
-    }
+    await submitRegistration(pendingSpinAfterRegister);
   });
 
   memberLoginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!window.BoyInsureAPI) return;
+    if (!window.BoyInsureAPI) {
+      alert('ระบบไม่พร้อมใช้งาน กรุณาลองใหม่ภายหลัง');
+      return;
+    }
+
+    const submitBtn = document.getElementById('loginSubmitBtn');
+    if (submitBtn) submitBtn.disabled = true;
+
     try {
       const data = await BoyInsureAPI.loginMember({
-        phone: document.getElementById('loginPhone')?.value?.trim(),
+        login_id: document.getElementById('loginId')?.value?.trim(),
+        password: document.getElementById('loginPassword')?.value ?? '',
       });
       applyMemberSession(data.member);
+      spinsLeft = data.member.spins_remaining ?? 0;
       closeLoginModal();
     } catch (err) {
       alert(err.message || 'เข้าสู่ระบบไม่สำเร็จ');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
     }
   });
-
-  devModeToggle?.addEventListener('change', () => setDevMode(devModeToggle.checked));
-  if (devModeToggle) devModeToggle.checked = devMode;
 
   window.addEventListener('resize', () => {
     resizeConfetti();
@@ -1355,10 +1534,16 @@
   buildAllWinnersList();
   buildWinnersList();
   initCountdown();
-  initPrizeMarquee();
+  initHeroPrizeCards();
   initViewAllPrizes();
   initViewAllWinners();
   applyWheelRotation(0);
   updateSpinsDisplay();
-  restoreMemberSession();
+
+  BoyInsureAuth.refresh().then(() => {
+    syncFromAuth();
+    const authHash = location.hash.replace('#', '');
+    if (authHash === 'login') openAuthModal('login', false);
+    if (authHash === 'register') openAuthModal('register', false);
+  });
 })();

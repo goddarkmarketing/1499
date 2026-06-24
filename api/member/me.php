@@ -16,7 +16,7 @@ if (!$member) {
 }
 
 $stmt = db()->prepare(
-    'SELECT m.id, m.name, m.phone, m.spins_remaining, m.points, mt.name AS tier_name, mt.code AS tier_code
+    'SELECT m.id, m.name, m.first_name, m.last_name, m.login_id, m.phone, m.spins_remaining, m.points, mt.name AS tier_name, mt.code AS tier_code
      FROM members m LEFT JOIN member_tiers mt ON mt.id = m.tier_id WHERE m.id = ?'
 );
 $stmt->execute([(int) $member['id']]);
@@ -39,6 +39,9 @@ json_response([
     'member' => [
         'id' => (int) $row['id'],
         'name' => $row['name'],
+        'first_name' => $row['first_name'] ?? '',
+        'last_name' => $row['last_name'] ?? '',
+        'login_id' => $row['login_id'] ?? '',
         'phone' => $row['phone'],
         'spins_remaining' => (int) $row['spins_remaining'],
         'points' => (int) $row['points'],

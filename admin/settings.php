@@ -56,7 +56,7 @@ ob_start();
   <div class="admin-card__body">
     <form method="post" class="admin-form admin-form--wide">
       <label>ชื่อเว็บไซต์</label>
-      <input name="site_name" value="<?= h(setting_get('site_name', 'BoyInsure')) ?>" />
+      <input name="site_name" value="<?= h(setting_get('site_name', 'BOYINSURE')) ?>" />
       <label>สโลแกน (แสดงใน Footer)</label>
       <input name="site_tagline" value="<?= h(setting_get('site_tagline', 'คุ้มครองทุกช่วงชีวิต ด้วยใจ')) ?>" />
       <div class="admin-form__row">
@@ -76,7 +76,7 @@ ob_start();
       <label>ที่อยู่ / พื้นที่ให้บริการ</label>
       <input name="address" value="<?= h(setting_get('address', 'ให้บริการทั่วประเทศ')) ?>" />
       <label>ข้อความใต้โลโก้ (Footer)</label>
-      <input name="footer_note" value="<?= h(setting_get('footer_note', 'ศูนย์ไทยประกันชีวิต')) ?>" />
+      <input name="footer_note" value="<?= h(setting_get('footer_note', 'พันธมิตรด้านประกันภัย')) ?>" />
       <div class="admin-form__row">
         <div>
           <label>Facebook URL</label>

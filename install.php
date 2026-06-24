@@ -13,7 +13,7 @@ header('Content-Type: text/html; charset=utf-8');
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <title>ติดตั้ง BoyInsure Backend</title>
+  <title>ติดตั้ง BOYINSURE Backend</title>
   <style>
     body { font-family: sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; }
     .ok { color: #166534; } .err { color: #991b1b; }
@@ -21,7 +21,7 @@ header('Content-Type: text/html; charset=utf-8');
   </style>
 </head>
 <body>
-  <h1>ติดตั้งฐานข้อมูล BoyInsure</h1>
+  <h1>ติดตั้งฐานข้อมูล BOYINSURE</h1>
 <?php
 try {
     $c = app_config('db');

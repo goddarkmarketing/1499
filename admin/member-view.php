@@ -53,8 +53,16 @@ ob_start();
   </div>
   <div class="admin-card__body">
     <div class="admin-form__row">
+      <div><strong>ไอดีเข้าสู่ระบบ</strong><br><code><?= h($member['login_id'] ?? '-') ?></code></div>
       <div><strong>เบอร์</strong><br><?= h($member['phone']) ?></div>
+    </div>
+    <div class="admin-form__row" style="margin-top:16px;">
       <div><strong>อีเมล</strong><br><?= h($member['email'] ?? '-') ?></div>
+      <div><strong>เลขบัตรประชาชน</strong><br><?= h($member['national_id'] ?? '-') ?></div>
+    </div>
+    <div class="admin-form__row" style="margin-top:16px;">
+      <div><strong>วันเกิด</strong><br><?= h($member['birth_date'] ?? '-') ?></div>
+      <div><strong>สมัครเมื่อ</strong><br><?= h($member['created_at'] ?? '-') ?></div>
     </div>
     <div class="admin-form__row" style="margin-top:16px;">
       <div><strong>ระดับ</strong><br><?= h($member['tier_name'] ?? '-') ?></div>

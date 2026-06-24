@@ -20,7 +20,7 @@ $initial = mb_strtoupper(mb_substr($admin['name'], 0, 1));
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><?= h($title) ?> | BoyInsure Admin</title>
+  <title><?= h($title) ?> | BOYINSURE Admin</title>
   <link rel="stylesheet" href="../assets/css/fonts.css" />
   <link rel="stylesheet" href="assets/admin.css" />
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
@@ -32,7 +32,7 @@ $initial = mb_strtoupper(mb_substr($admin['name'], 0, 1));
     <aside class="admin-sidebar" id="adminSidebar">
       <a href="index.php" class="admin-brand">
         <span class="admin-brand__mark">B</span>
-        BoyInsure <span>Admin</span>
+        BOYINSURE <span>Admin</span>
       </a>
       <nav class="admin-nav">
         <?php foreach ($menuGroups as [$groupLabel, $items]): ?>

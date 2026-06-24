@@ -68,6 +68,23 @@ html {
     display: none;
   }
 
+  .navbar__actions {
+    display: none;
+  }
+
+  .navbar__menu-auth {
+    display: list-item;
+  }
+
+  .navbar__menu-auth.is-auth-hidden,
+  .navbar__menu-auth[hidden] {
+    display: none !important;
+  }
+
+  .navbar__menu-auth + .navbar__menu-auth {
+    margin-top: 4px;
+  }
+
   .navbar__menu {
     display: none;
     position: absolute;
@@ -143,9 +160,7 @@ html {
   }
 
   .dev-mode {
-    top: calc(var(--site-header-height, 72px) + 8px + env(safe-area-inset-top, 0px));
-    bottom: auto;
-    left: max(12px, env(safe-area-inset-left, 0px));
+    display: none !important;
   }
 
 }

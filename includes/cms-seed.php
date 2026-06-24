@@ -128,7 +128,7 @@ function insurance_plan_detail_merged(array $plan, array $category): array {
     $exclusions = $planData['exclusions'] ?? ($catDefaults['exclusions'] ?? []);
     $useCase = $planData['useCase'] ?? (
         'เหมาะสำหรับผู้ที่สนใจ' . ($plan['name'] ?? '') .
-        ' และต้องการคำปรึกษาแบบไม่บังคับซื้อ ทีม BoyInsure ช่วยวิเคราะห์และเปรียบเทียบแผนจากหลายบริษัทให้เหมาะกับงบและเป้าหมายของคุณ'
+        ' และต้องการคำปรึกษาแบบไม่บังคับซื้อ ทีม BOYINSURE ช่วยวิเคราะห์และเปรียบเทียบแผนจากหลายบริษัทให้เหมาะกับงบและเป้าหมายของคุณ'
     );
     $faq = array_merge($catDefaults['faq'] ?? [], $planData['faq'] ?? []);
     return compact('facts', 'coverage', 'exclusions', 'useCase', 'faq');
@@ -136,14 +136,14 @@ function insurance_plan_detail_merged(array $plan, array $category): array {
 
 function public_site_settings(): array {
     return [
-        'site_name' => setting_get('site_name', 'BoyInsure'),
+        'site_name' => setting_get('site_name', 'BOYINSURE'),
         'site_tagline' => setting_get('site_tagline', 'คุ้มครองทุกช่วงชีวิต ด้วยใจ'),
         'contact_email' => setting_get('contact_email', 'contact@boyinsure.com'),
         'phone' => setting_get('phone', '0627878968'),
         'phone_display' => setting_get('phone_display', '062-787-8968'),
         'business_hours' => setting_get('business_hours', 'จันทร์–ศุกร์ 09:00–18:00 น.'),
         'address' => setting_get('address', 'ให้บริการทั่วประเทศ'),
-        'footer_note' => setting_get('footer_note', 'ศูนย์ไทยประกันชีวิต'),
+        'footer_note' => setting_get('footer_note', 'พันธมิตรด้านประกันภัย'),
         'facebook_url' => setting_get('facebook_url', 'https://www.facebook.com/'),
         'tiktok_url' => setting_get('tiktok_url', 'https://www.tiktok.com/'),
         'line_url' => setting_get('line_url', 'https://line.me/R/ti/p/@boyinsure'),

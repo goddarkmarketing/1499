@@ -1,4 +1,4 @@
--- BoyInsure Backend Schema
+-- BOYINSURE Backend Schema
 CREATE DATABASE IF NOT EXISTS boyinsure CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE boyinsure;
 
@@ -52,6 +52,7 @@ CREATE TABLE member_tiers (
 CREATE TABLE members (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   phone VARCHAR(20) NOT NULL,
+  login_id VARCHAR(60) NULL,
   email VARCHAR(190) NULL,
   name VARCHAR(120) NOT NULL,
   password_hash VARCHAR(255) NULL,
@@ -64,6 +65,7 @@ CREATE TABLE members (
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY uk_members_phone (phone),
+  UNIQUE KEY uk_members_login_id (login_id),
   KEY idx_members_tier (tier_id),
   KEY idx_members_status (status),
   CONSTRAINT fk_members_tier FOREIGN KEY (tier_id) REFERENCES member_tiers(id) ON DELETE SET NULL
