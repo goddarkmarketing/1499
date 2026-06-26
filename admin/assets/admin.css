@@ -180,6 +180,27 @@ body.admin-body {
   transition: background var(--transition), color var(--transition);
 }
 
+.admin-nav__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-nav__badge {
+  margin-left: auto;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #e53935;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px var(--white);
+}
+
 .admin-nav__link svg {
   width: 18px;
   height: 18px;

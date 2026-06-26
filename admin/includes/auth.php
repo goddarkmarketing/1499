@@ -125,9 +125,78 @@ function admin_menu_filtered(array $admin): array {
     return $out;
 }
 
+function admin_nav_seen_mark(string $key): void {
+    $_SESSION['admin_nav_seen'][$key] = date('Y-m-d H:i:s');
+}
+
+function admin_nav_seen_at(string $key): ?string {
+    return $_SESSION['admin_nav_seen'][$key] ?? null;
+}
+
+function admin_nav_default_since(): string {
+    return date('Y-m-d H:i:s', strtotime('-24 hours'));
+}
+
+function admin_nav_since(string $key): string {
+    return admin_nav_seen_at($key) ?? admin_nav_default_since();
+}
+
+/** @return array<string, int> */
+function admin_nav_badges(): array {
+    $badges = [
+        'members' => 0,
+        'member-tiers' => 0,
+        'rewards' => 0,
+        'plays' => 0,
+    ];
+
+    try {
+        $stmt = db()->prepare('SELECT COUNT(*) FROM members WHERE created_at > ?');
+        $stmt->execute([admin_nav_since('members')]);
+        $badges['members'] = (int) $stmt->fetchColumn();
+
+        $sinceTiers = admin_nav_since('member-tiers');
+        $stmt = db()->prepare('SELECT COUNT(*) FROM member_tiers WHERE created_at > ?');
+        $stmt->execute([$sinceTiers]);
+        $badges['member-tiers'] = (int) $stmt->fetchColumn();
+
+        $stmt = db()->prepare('SELECT COUNT(*) FROM members WHERE tier_id IS NULL AND created_at > ?');
+        $stmt->execute([$sinceTiers]);
+        $badges['member-tiers'] += (int) $stmt->fetchColumn();
+
+        $sinceRewards = admin_nav_seen_at('rewards');
+        if ($sinceRewards) {
+            $stmt = db()->prepare(
+                "SELECT COUNT(*) FROM reward_claims
+                 WHERE status IN ('won','pending_verify')
+                 AND GREATEST(created_at, COALESCE(claimed_at, created_at), updated_at) > ?"
+            );
+            $stmt->execute([$sinceRewards]);
+        } else {
+            $stmt = db()->query(
+                "SELECT COUNT(*) FROM reward_claims WHERE status IN ('won','pending_verify')"
+            );
+        }
+        $badges['rewards'] = (int) $stmt->fetchColumn();
+
+        $stmt = db()->prepare('SELECT COUNT(*) FROM spin_logs WHERE created_at > ?');
+        $stmt->execute([admin_nav_since('plays')]);
+        $badges['plays'] = (int) $stmt->fetchColumn();
+    } catch (Throwable $e) {
+        // ignore badge errors — sidebar still works
+    }
+
+    return $badges;
+}
+
+function admin_nav_badge_label(int $count): string {
+    return $count > 99 ? '99+' : (string) $count;
+}
+
 function render_layout(string $title, string $content, string $active = ''): void {
     $admin = require_admin();
     $flash = flash_get();
     $menuGroups = admin_menu_filtered($admin);
+    $navBadges = admin_nav_badges();
     require __DIR__ . '/layout.php';
 }

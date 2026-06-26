@@ -37,6 +37,12 @@ const BoyInsureAPI = (() => {
     prepareSpin() {
       return request('member/prepare-spin.php', { method: 'POST', body: '{}' });
     },
+    selectReward(payload) {
+      return request('member/select-reward.php', { method: 'POST', body: JSON.stringify(payload) });
+    },
+    claimReward(payload) {
+      return request('member/claim-reward.php', { method: 'POST', body: JSON.stringify(payload) });
+    },
     dashboard() {
       return request('member/dashboard.php');
     },

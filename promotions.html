@@ -408,8 +408,18 @@
             <input type="text" id="registerNationalId" name="national_id" required inputmode="numeric" maxlength="13" placeholder="13 หลัก" />
           </div>
           <div class="auth-modal__field">
-            <label for="registerBirthDate">วันเกิด</label>
-            <input type="date" id="registerBirthDate" name="birth_date" required />
+            <label for="registerBirthDay">วันเกิด</label>
+            <div class="auth-modal__dob">
+              <select id="registerBirthDay" name="birth_day" required aria-label="วัน">
+                <option value="" disabled selected>วัน</option>
+              </select>
+              <select id="registerBirthMonth" name="birth_month" required aria-label="เดือน">
+                <option value="" disabled selected>เดือน</option>
+              </select>
+              <select id="registerBirthYear" name="birth_year" required aria-label="ปี (พ.ศ.)">
+                <option value="" disabled selected>ปี (พ.ศ.)</option>
+              </select>
+            </div>
           </div>
           <div class="auth-modal__field">
             <label for="registerEmail">อีเมล (ถ้ามี)</label>
@@ -476,6 +486,79 @@
       <p class="result-modal__prize" id="resultPrize"></p>
       <p class="result-modal__detail" id="resultPrizeDetail"></p>
       <button class="btn-close-result" id="closeResult" type="button">ตกลง</button>
+    </div>
+  </div>
+
+  <div class="result-overlay" id="claimRewardOverlay" hidden>
+    <div class="result-modal result-modal--claim">
+      <p class="result-modal__label">เลือกแผนประกันที่สนใจ</p>
+      <div class="claim-reward__prize" id="claimRewardPrize">
+        <div class="claim-reward__prize-logo">
+          <img id="claimRewardLogo" class="claim-reward__prize-img" src="" alt="" />
+        </div>
+        <div class="claim-reward__prize-info">
+          <span class="claim-reward__prize-badge">รางวัลที่คุณเลือก</span>
+          <span class="claim-reward__prize-name" id="claimRewardName"></span>
+          <span class="claim-reward__prize-hint">กรอกข้อมูลด้านล่าง ทีมงานจะติดต่อกลับเพื่อแนะนำแผนประกัน</span>
+        </div>
+      </div>
+
+      <form id="claimRewardForm" class="claim-reward__form">
+        <div class="claim-reward__field claim-reward__field--full">
+          <label for="claimInsuranceInterest">ประเภทประกันที่สนใจ</label>
+          <select id="claimInsuranceInterest" name="insurance_interest" required>
+            <option value="" disabled selected>เลือกประเภทประกัน</option>
+          </select>
+        </div>
+
+        <div class="claim-reward__grid claim-reward__grid--contact">
+          <div class="claim-reward__field">
+            <label for="claimContactName">ชื่อ-นามสกุล</label>
+            <input type="text" id="claimContactName" name="contact_name" required autocomplete="name" placeholder="ชื่อ-นามสกุล" />
+          </div>
+          <div class="claim-reward__field">
+            <label for="claimContactPhone">เบอร์โทร</label>
+            <input type="tel" id="claimContactPhone" name="contact_phone" required autocomplete="tel" inputmode="numeric" placeholder="08x-xxx-xxxx" />
+          </div>
+          <div class="claim-reward__field">
+            <label for="claimContactLine">LINE ID (ถ้ามี)</label>
+            <input type="text" id="claimContactLine" name="contact_line" placeholder="LINE ID" />
+          </div>
+          <div class="claim-reward__field">
+            <label for="claimContactNote">ช่วงเวลาที่สะดวก</label>
+            <input type="text" id="claimContactNote" name="contact_note" placeholder="เช่น หลัง 17.00 น." />
+          </div>
+        </div>
+
+        <div class="claim-reward__field claim-reward__field--full">
+          <label for="claimMessage">รายละเอียดเพิ่มเติม (ถ้ามี)</label>
+          <textarea id="claimMessage" name="message" rows="2" placeholder="เช่น งบประมาณที่พิจารณา หรือความต้องการพิเศษ"></textarea>
+        </div>
+
+        <label class="auth-modal__consent claim-reward__consent">
+          <input type="checkbox" id="claimConsent" name="consent" required />
+          <span>ยินยอมให้ทีมงาน BOYINSURE ติดต่อกลับเพื่อแนะนำแผนประกันและมอบรางวัล</span>
+        </label>
+
+        <p class="auth-modal__message" id="claimRewardMessage" hidden></p>
+        <div class="claim-reward__actions">
+          <button type="submit" class="btn-close-result" id="claimRewardSubmit">ส่งข้อมูลให้ทีมงานติดต่อกลับ</button>
+          <button type="button" class="claim-reward__back" id="claimRewardCancel">ย้อนกลับ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="result-overlay" id="claimSuccessOverlay" hidden>
+    <div class="result-modal result-modal--win">
+      <div class="result-modal__logo-ring result-modal__logo-ring--success">
+        <i data-lucide="check" aria-hidden="true"></i>
+      </div>
+      <p class="result-modal__label">ดำเนินการสำเร็จ</p>
+      <p class="result-modal__prize" id="claimSuccessTitle">บันทึกข้อมูลเรียบร้อย</p>
+      <p class="result-modal__detail">ทีมงาน BOYINSURE จะติดต่อกลับเพื่อแนะนำแผนประกันที่เหมาะกับคุณ และดำเนินการมอบรางวัลที่เลือกไว้ — ติดตามสถานะได้ในหน้าโปรไฟล์</p>
+      <a href="profile.html#rewards" class="btn-close-result" id="claimSuccessProfile">ดูรางวัลของฉัน</a>
+      <button type="button" class="auth-modal__close" id="claimSuccessClose">ปิด</button>
     </div>
   </div>
 

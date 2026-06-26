@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/includes/auth.php';
 require_admin();
+admin_nav_seen_mark('plays');
 
 $gameFilter = $_GET['game_id'] ?? '';
 $campaignFilter = $_GET['campaign_id'] ?? '';

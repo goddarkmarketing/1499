@@ -82,6 +82,7 @@ try {
 
     $pdo->prepare('INSERT INTO reward_claims (member_id, prize_id, spin_log_id, status) VALUES (?,?,?,?)')
         ->execute([$memberId, $prize['id'], $spinId, 'won']);
+    $claimId = (int) $pdo->lastInsertId();
 
     $pdo->commit();
 
@@ -96,6 +97,7 @@ try {
 
     json_response([
         'ok' => true,
+        'claim_id' => $claimId,
         'prize' => [
             'id' => (int) $prize['id'],
             'name' => $prize['name'],
@@ -103,6 +105,7 @@ try {
             'detail' => $prize['detail'],
             'logo' => $prize['logo_path'],
             'color' => $prize['color'],
+            'prize_type' => $prize['prize_type'] ?? 'voucher',
         ],
         'spins_remaining' => $spinsLeft,
     ]);

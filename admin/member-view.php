@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/includes/auth.php';
 $admin = require_admin();
+admin_nav_seen_mark('members');
 
 $id = (int) ($_GET['id'] ?? 0);
 if (!$id) {

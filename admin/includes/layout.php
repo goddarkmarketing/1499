@@ -39,9 +39,13 @@ $initial = mb_strtoupper(mb_substr($admin['name'], 0, 1));
           <div class="admin-nav__group">
             <div class="admin-nav__label"><?= h($groupLabel) ?></div>
             <?php foreach ($items as [$key, $href, $label, $icon]): ?>
+              <?php $badgeCount = (int) ($navBadges[$key] ?? 0); ?>
               <a href="<?= h($href) ?>" class="admin-nav__link<?= $active === $key ? ' is-active' : '' ?>">
                 <i data-lucide="<?= h($icon) ?>" aria-hidden="true"></i>
-                <?= h($label) ?>
+                <span class="admin-nav__text"><?= h($label) ?></span>
+                <?php if ($badgeCount > 0): ?>
+                  <span class="admin-nav__badge" aria-label="รายการใหม่ <?= (int) $badgeCount ?>"><?= h(admin_nav_badge_label($badgeCount)) ?></span>
+                <?php endif; ?>
               </a>
             <?php endforeach; ?>
           </div>

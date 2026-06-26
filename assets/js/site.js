@@ -146,15 +146,30 @@ function loadHighlightVideo(iframe, href, fallbackWidth) {
   iframe.src = fbVideoEmbedUrl(href, width);
 }
 
-function getHighlightMainPoster(item) {
-  return item.mainVideoPoster || item.image;
+function getHighlightPoster(item) {
+  if (!item) return '';
+  return item.mainVideoPoster || item.image || item.thumbVideoPoster || item.thumb || '';
 }
 
-function getHighlightThumbPoster(item) {
-  return item.thumbVideoPoster || item.thumb;
+function highlightHasVideo(item) {
+  return Boolean(item && (item.mainVideoFile || item.mainVideo));
 }
 
 const HIGHLIGHTS_DATA = [
+  {
+    brandInitial: 'B',
+    brandName: 'BOYINSURE',
+    brandTagline: 'คลิปไฮไลท์ล่าสุด',
+    tags: ['คลิปใหม่', 'อัปเดตล่าสุด', 'ดูแลจริง'],
+    title: 'ไฮไลท์ล่าสุดจาก BOYINSURE',
+    text: 'อัปเดตคลิปไฮไลท์ล่าสุดจากทีม BOYINSURE พร้อมเล่าเรื่องการดูแลลูกค้าและการวางแผนประกันแบบเข้าใจง่าย กดเล่นเพื่อรับชมเต็มคลิป และเลื่อนดูไฮไลท์อื่น ๆ ได้ต่อเนื่อง',
+    image: 'assets/img/highlights/insure-con3-poster.jpg',
+    imageAlt: 'คลิปไฮไลท์ล่าสุดจาก BOYINSURE',
+    mainVideoFile: 'assets/video/insure-con3.mp4',
+    mainVideoPoster: 'assets/img/highlights/insure-con3-poster.jpg',
+    caption: 'คลิปไฮไลท์ล่าสุดจากทีม BOYINSURE',
+    link: 'about.html',
+  },
   {
     brandInitial: 'B',
     brandName: 'BOYINSURE',
@@ -166,37 +181,22 @@ const HIGHLIGHTS_DATA = [
     imageAlt: 'BOYINSURE วางแผนประกันครอบครัว',
     mainVideo: 'https://www.facebook.com/reel/1316213417025596/',
     mainVideoPoster: 'assets/img/highlights/reel-main.jpg',
-    thumb: 'assets/img/highlights/reel-thumb.jpg',
-    thumbVideo: 'https://www.facebook.com/reel/2393152494542455/',
-    thumbVideoPoster: 'assets/img/highlights/reel-thumb.jpg',
-    caption: 'ทีม BOYINSURE ดูแลเคลมประกันสุขภาพจนจบทุกขั้นตอน',
+    caption: 'BOYINSURE วางแผนประกันครอบครัวอย่างมืออาชีพ',
     link: 'about.html',
   },
   {
     brandInitial: 'B',
     brandName: 'BOYINSURE',
-    brandTagline: 'คุ้มครองทุกช่วงชีวิต ด้วยใจ',
-    tags: ['ประกันชีวิต', 'สุขภาพ', 'ออมทรัพย์'],
-    title: 'แผนครอบคลุมทุกความต้องการ',
-    text: 'ครอบคลุมประกันชีวิต สุขภาพ ออมสะสมทรัพย์ และความคุ้มครองอื่น ๆ จากพาร์ทเนอร์ชั้นนำ BOYINSURE ช่วยจัดสรรงบให้เหมาะกับครอบครัวและเป้าหมายระยะยาว โดยเลือกแผนที่พอดีกับชีวิตจริงของคุณ',
-    image: 'assets/img/home-hero-2.png',
-    imageAlt: 'BOYINSURE คุ้มครองครอบครัวครบวงจร',
-    thumb: 'assets/img/products/savings.jpg',
-    caption: 'วางแผนออมและคุ้มครองไปพร้อมกันกับ BOYINSURE',
-    link: 'insurance.html',
-  },
-  {
-    brandInitial: 'B',
-    brandName: 'BOYINSURE',
-    brandTagline: 'พันธมิตรด้านประกันที่ไว้วางใจ',
-    tags: ['ตอบแชทไว', 'คำนวณเบี้ย', 'ดูแลเคลม'],
-    title: 'ดูแลหลังการขายจริง ๆ',
-    text: 'BOYINSURE ตอบแชทไว ดูแลใกล้ชิด มีแพลตฟอร์มช่วยคำนวณเบี้ยและจัดทำใบเสนอราคา ทีมซัพพอร์ตช่วยดูแลเคลมและติดตามผลประโยชน์ให้ครบถ้วนทุกเคส ไม่ทิ้งลูกค้าหลังทำสัญญา',
-    image: 'assets/img/products/critical.jpg',
-    imageAlt: 'BOYINSURE ดูแลลูกค้าหลังการขาย',
-    thumb: 'assets/img/products/accident.jpg',
-    caption: 'เครื่องมือวางแผนและซัพพอร์ตจากทีม BOYINSURE',
-    link: 'contact.html',
+    brandTagline: 'ดูแลเคลมจนจบทุกขั้นตอน',
+    tags: ['ดูแลเคลม', 'ตอบไว', 'จบทุกเคส'],
+    title: 'ดูแลเคลมประกันสุขภาพจนจบ',
+    text: 'ทีม BOYINSURE ดูแลเรื่องเคลมประกันสุขภาพให้ตั้งแต่ต้นจนจบ ประสานงานกับโรงพยาบาลและบริษัทประกัน ติดตามผลให้ครบทุกขั้นตอน เพื่อให้คุณไม่ต้องกังวลในวันที่ต้องใช้สิทธิ์',
+    image: 'assets/img/highlights/reel-thumb.jpg',
+    imageAlt: 'ทีม BOYINSURE ดูแลเคลมประกันสุขภาพจนจบทุกขั้นตอน',
+    mainVideo: 'https://www.facebook.com/reel/2393152494542455/',
+    mainVideoPoster: 'assets/img/highlights/reel-thumb.jpg',
+    caption: 'ทีม BOYINSURE ดูแลเคลมประกันสุขภาพจนจบทุกขั้นตอน',
+    link: 'about.html',
   },
 ];
 
@@ -207,6 +207,7 @@ function initHighlights() {
 
   const modal = document.getElementById('highlightVideoModal');
   const modalFrame = document.getElementById('highlightVideoModalFrame');
+  const modalPlayer = document.getElementById('highlightVideoModalPlayer');
   const modalTitle = document.getElementById('highlightVideoModalTitle');
   const modalDialog = modal?.querySelector('.site-modal__dialog');
   let lastVideoTrigger = null;
@@ -219,18 +220,43 @@ function initHighlights() {
       modalFrame.hidden = true;
       modalFrame.removeAttribute('src');
     }
+    if (modalPlayer) {
+      modalPlayer.pause?.();
+      modalPlayer.hidden = true;
+      modalPlayer.removeAttribute('src');
+      modalPlayer.load?.();
+    }
     lastVideoTrigger?.focus();
     lastVideoTrigger = null;
   }
 
-  function openVideoModal(href, title, trigger) {
-    if (!modal || !modalFrame || !href) return;
+  function openVideoModal(item, trigger) {
+    if (!modal || !highlightHasVideo(item)) return;
     lastVideoTrigger = trigger || null;
-    if (modalTitle) modalTitle.textContent = title || 'BOYINSURE';
-    modalFrame.title = title || 'BOYINSURE';
+    const title = item.imageAlt || item.caption || 'BOYINSURE';
+    if (modalTitle) modalTitle.textContent = title;
     modal.hidden = false;
     document.body.classList.add('site-modal-open');
-    loadHighlightVideo(modalFrame, href, 360);
+
+    if (item.mainVideoFile && modalPlayer) {
+      if (modalFrame) {
+        modalFrame.hidden = true;
+        modalFrame.removeAttribute('src');
+      }
+      modalPlayer.hidden = false;
+      modalPlayer.src = item.mainVideoFile;
+      modalPlayer.currentTime = 0;
+      modalPlayer.play?.().catch(() => {});
+    } else if (item.mainVideo && modalFrame) {
+      if (modalPlayer) {
+        modalPlayer.pause?.();
+        modalPlayer.hidden = true;
+        modalPlayer.removeAttribute('src');
+      }
+      modalFrame.title = title;
+      loadHighlightVideo(modalFrame, item.mainVideo, 360);
+    }
+
     modal.querySelector('.site-modal__close')?.focus();
     if (window.lucide?.createIcons) lucide.createIcons();
   }
@@ -264,6 +290,8 @@ function initHighlights() {
     thumbPlay: document.getElementById('highlightThumbPlay'),
     caption: document.getElementById('highlightCaption'),
     thumbLink: document.getElementById('highlightThumbLink'),
+    nav: block.querySelector('.highlights__nav'),
+    nextBtn: document.getElementById('highlightNextBtn'),
   };
 
   let current = 0;
@@ -285,37 +313,36 @@ function initHighlights() {
     resetMainPlayer();
     if (!els.image) return;
 
-    els.image.src = getHighlightMainPoster(item);
-    els.image.alt = item.imageAlt;
+    els.image.src = getHighlightPoster(item);
+    els.image.alt = item.imageAlt || item.caption || '';
 
-    if (item.mainVideo && els.mainPlay) {
+    if (highlightHasVideo(item) && els.mainPlay) {
       els.mainPlay.hidden = false;
       els.mainPlayer?.classList.add('has-video');
     }
   }
 
-  function setThumbMedia(item) {
+  // Thumb previews the NEXT highlight; advancing promotes it into the main player.
+  function setThumbPreview(nextItem) {
     resetThumbPlayer();
-    if (!els.thumb) return;
+    els.thumbWrap?.classList.remove('has-video');
+    if (!els.thumb || !nextItem) return;
 
-    els.thumb.src = getHighlightThumbPoster(item);
-    els.thumb.alt = item.thumbAlt || item.caption || item.imageAlt || '';
-
-    if (item.thumbVideo && els.thumbPlay) {
-      els.thumbPlay.hidden = false;
-      els.thumbWrap?.classList.add('has-video');
-      return;
-    }
+    els.thumb.src = getHighlightPoster(nextItem);
+    els.thumb.alt = nextItem.imageAlt || nextItem.caption || '';
+    els.thumbWrap?.classList.add('is-preview');
 
     if (els.thumbLink) {
       els.thumbLink.hidden = false;
-      els.thumbLink.href = item.link;
+      els.thumbLink.href = '#';
     }
   }
 
   function render(index) {
+    const total = ACTIVE_HIGHLIGHTS_DATA.length;
     const item = ACTIVE_HIGHLIGHTS_DATA[index];
     if (!item) return;
+    const nextItem = ACTIVE_HIGHLIGHTS_DATA[(index + 1) % total];
     els.avatar.textContent = item.brandInitial;
     els.name.textContent = item.brandName;
     els.tagline.textContent = item.brandTagline;
@@ -325,40 +352,81 @@ function initHighlights() {
     els.title.textContent = item.title;
     els.text.textContent = item.text;
     setMainMedia(item);
-    setThumbMedia(item);
+    setThumbPreview(nextItem);
     els.caption.textContent = item.caption;
+
+    const multiple = total > 1;
+    if (els.nav) els.nav.hidden = !multiple;
   }
 
   function fadeSwitch(nextIndex) {
     closeVideoModal();
-    [els.content, els.clips, els.caption, moreBtn].forEach((el) => el?.classList.add('is-fading'));
+    [els.content, els.clips, els.caption, els.nav].forEach((el) => el?.classList.add('is-fading'));
     setTimeout(() => {
       current = nextIndex;
       render(current);
-      [els.content, els.clips, els.caption, moreBtn].forEach((el) => el?.classList.remove('is-fading'));
+      [els.content, els.clips, els.caption, els.nav].forEach((el) => el?.classList.remove('is-fading'));
       if (window.lucide?.createIcons) lucide.createIcons();
     }, 320);
   }
 
-  moreBtn.addEventListener('click', () => {
-    fadeSwitch((current + 1) % ACTIVE_HIGHLIGHTS_DATA.length);
-  });
+  function goTo(offset) {
+    const total = ACTIVE_HIGHLIGHTS_DATA.length;
+    if (total < 2) return;
+    fadeSwitch(((current + offset) % total + total) % total);
+  }
+
+  const AUTO_MS = 5000;
+  let autoTimer = null;
+  let autoPaused = false;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function stopAuto() {
+    if (autoTimer) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+  }
+
+  function startAuto() {
+    stopAuto();
+    if (reducedMotion || ACTIVE_HIGHLIGHTS_DATA.length < 2) return;
+    autoTimer = setInterval(() => {
+      // หยุดเมื่อเอาเมาส์/โฟกัสไปวาง หรือกำลังเปิดดูวิดีโอ
+      if (autoPaused || (modal && !modal.hidden) || document.hidden) return;
+      goTo(1);
+    }, AUTO_MS);
+  }
+
+  // กดเองแล้วเริ่มจับเวลาใหม่ ไม่ให้เลื่อนซ้ำทันที
+  function manualGo(offset) {
+    goTo(offset);
+    startAuto();
+  }
+
+  moreBtn.addEventListener('click', () => manualGo(1));
+  els.nextBtn?.addEventListener('click', () => manualGo(1));
 
   els.mainPlayer?.addEventListener('click', () => {
-    const item = ACTIVE_HIGHLIGHTS_DATA[current];
-    if (!item?.mainVideo) return;
-    openVideoModal(item.mainVideo, item.imageAlt, els.mainPlayer);
+    openVideoModal(ACTIVE_HIGHLIGHTS_DATA[current], els.mainPlayer);
   });
 
+  // Clicking the preview thumb advances to it (it becomes the main video).
   els.thumbWrap?.addEventListener('click', (e) => {
-    const item = ACTIVE_HIGHLIGHTS_DATA[current];
-    if (!item?.thumbVideo) return;
     e.preventDefault();
-    openVideoModal(item.thumbVideo, item.caption || 'BOYINSURE', els.thumbWrap);
+    manualGo(1);
+  });
+
+  block.addEventListener('mouseenter', () => { autoPaused = true; });
+  block.addEventListener('mouseleave', () => { autoPaused = false; });
+  block.addEventListener('focusin', () => { autoPaused = true; });
+  block.addEventListener('focusout', (e) => {
+    if (!block.contains(e.relatedTarget)) autoPaused = false;
   });
 
   render(current);
   if (window.lucide?.createIcons) lucide.createIcons();
+  startAuto();
 }
 
 const INSURANCE_CATEGORIES = [
@@ -2319,6 +2387,7 @@ function initContactFormSubmit() {
     loadFooter();
     initContactFab();
     initHomeHeroSlideshow();
+    initPromoSpotlight();
     initHighlights();
     initReviewSlider();
     initHomeNewsModal();
@@ -2335,6 +2404,127 @@ function initContactFormSubmit() {
     initContactFormSubmit();
   })();
 })();
+
+function initPromoSpotlight() {
+  const section = document.getElementById('promoSpotlight');
+  if (!section) return;
+
+  const viewport = document.getElementById('promoSpotlightViewport');
+  const track = document.getElementById('promoSpotlightTrack');
+  const dotsWrap = document.getElementById('promoSpotlightDots');
+  const cards = track ? [...track.querySelectorAll('.promo-spotlight__card')] : [];
+  const prevBtn = section.querySelector('.promo-spotlight__arrow[data-dir="prev"]');
+  const nextBtn = section.querySelector('.promo-spotlight__arrow[data-dir="next"]');
+  if (!viewport || !track || cards.length === 0) return;
+
+  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const AUTO_MS = 5000;
+  let index = 0;
+  let autoTimer = null;
+
+  const dots = cards.map((_, i) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'promo-spotlight__dot';
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', `การ์ดที่ ${i + 1}`);
+    dot.addEventListener('click', () => { manualGo(i); });
+    dotsWrap?.appendChild(dot);
+    return dot;
+  });
+
+  function update() {
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === index));
+    if (prevBtn) prevBtn.disabled = index === 0;
+    if (nextBtn) nextBtn.disabled = index === cards.length - 1;
+  }
+
+  function goTo(i, smooth = true) {
+    index = (i + cards.length) % cards.length;
+    const target = cards[index];
+    track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: smooth ? 'smooth' : 'auto' });
+    update();
+  }
+
+  function startAuto() {
+    if (prefersReduced || autoTimer) return;
+    autoTimer = window.setInterval(() => {
+      goTo(index + 1 >= cards.length ? 0 : index + 1);
+    }, AUTO_MS);
+  }
+  function stopAuto() {
+    if (autoTimer) { window.clearInterval(autoTimer); autoTimer = null; }
+  }
+  function manualGo(i) {
+    stopAuto();
+    goTo(i);
+    startAuto();
+  }
+
+  prevBtn?.addEventListener('click', () => manualGo(index - 1));
+  nextBtn?.addEventListener('click', () => manualGo(index + 1));
+
+  let scrollRaf = null;
+  track.addEventListener('scroll', () => {
+    if (scrollRaf) return;
+    scrollRaf = window.requestAnimationFrame(() => {
+      scrollRaf = null;
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let nearest = 0;
+      let best = Infinity;
+      cards.forEach((c, i) => {
+        const cardCenter = c.offsetLeft - track.offsetLeft + c.offsetWidth / 2;
+        const dist = Math.abs(cardCenter - center);
+        if (dist < best) { best = dist; nearest = i; }
+      });
+      if (nearest !== index) { index = nearest; update(); }
+    });
+  }, { passive: true });
+
+  const lightbox = document.createElement('div');
+  lightbox.className = 'promo-spotlight__lightbox';
+  lightbox.setAttribute('aria-hidden', 'true');
+  const lightboxImg = document.createElement('img');
+  lightboxImg.alt = '';
+  lightbox.appendChild(lightboxImg);
+  document.body.appendChild(lightbox);
+
+  function openLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+  }
+
+  cards.forEach((card) => {
+    const media = card.querySelector('.promo-spotlight__media');
+    const img = media?.querySelector('img');
+    if (!media || !img) return;
+    media.addEventListener('mouseenter', () => openLightbox(img.currentSrc || img.src, img.alt));
+    media.addEventListener('mouseleave', closeLightbox);
+    media.addEventListener('click', () => {
+      if (lightbox.classList.contains('is-open')) closeLightbox();
+      else openLightbox(img.currentSrc || img.src, img.alt);
+    });
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+  section.addEventListener('mouseenter', stopAuto);
+  section.addEventListener('mouseleave', startAuto);
+  section.addEventListener('focusin', stopAuto);
+  section.addEventListener('focusout', startAuto);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAuto(); else startAuto();
+  });
+  window.addEventListener('resize', () => goTo(index, false));
+
+  update();
+  startAuto();
+}
 
 function initReviewSlider() {
   const slider = document.getElementById('reviewSlider');

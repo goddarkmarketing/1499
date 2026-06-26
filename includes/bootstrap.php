@@ -72,15 +72,7 @@ function validate_thai_phone(string $phone): bool {
 }
 
 function validate_thai_national_id(string $id): bool {
-    if (!preg_match('/^\d{13}$/', $id)) {
-        return false;
-    }
-    $sum = 0;
-    for ($i = 0; $i < 12; $i++) {
-        $sum += (int) $id[$i] * (13 - $i);
-    }
-    $check = (11 - ($sum % 11)) % 10;
-    return $check === (int) $id[12];
+    return (bool) preg_match('/^\d{13}$/', $id);
 }
 
 function validate_birth_date(string $date): bool {

@@ -315,6 +315,14 @@ const BoyInsureRewardsUI = (() => {
         slider?.open(parseInt(btn.dataset.rewardIndex, 10), items);
       });
     });
+    const wrap = container.closest('.prize-cards-row-wrap');
+    const isStaticGrid = wrap?.classList.contains('prize-cards-row-wrap--grid')
+      || Boolean(container.closest('#panel-rewards'));
+    if (isStaticGrid) {
+      stopRowSlider(container);
+      wrap?.querySelector('.prize-cards-row__dots')?.remove();
+      return;
+    }
     initRowSlider(container);
   }
 

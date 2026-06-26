@@ -32,29 +32,45 @@
     return `${digits.slice(0, 1)}-${digits.slice(1, 5)}-${digits.slice(5, 10)}-${digits.slice(10, 12)}-${digits.slice(12)}`;
   }
 
+  function getActivePanelName() {
+    const panels = ['overview', 'info', 'activities', 'rewards'];
+    const hash = (location.hash || '').replace('#', '');
+    if (panels.includes(hash)) return hash;
+    const saved = sessionStorage.getItem('boyinsure_profile_panel');
+    if (panels.includes(saved)) return saved;
+    return 'overview';
+  }
+
   function showPanel(name) {
+    const panels = ['overview', 'info', 'activities', 'rewards'];
+    const active = panels.includes(name) ? name : 'overview';
     document.querySelectorAll('.member-panel').forEach((panel) => {
-      const active = panel.dataset.panel === name;
-      panel.hidden = !active;
-      panel.classList.toggle('is-active', active);
+      const on = panel.dataset.panel === active;
+      panel.hidden = !on;
+      panel.classList.toggle('is-active', on);
     });
     document.querySelectorAll('.member-sidebar__link[data-panel]').forEach((link) => {
-      link.classList.toggle('is-active', link.dataset.panel === name);
+      link.classList.toggle('is-active', link.dataset.panel === active);
     });
+    sessionStorage.setItem('boyinsure_profile_panel', active);
+    if (location.hash !== `#${active}`) {
+      history.replaceState(null, '', `#${active}`);
+    }
   }
 
   function initSidebarNav() {
     document.querySelectorAll('.member-sidebar__link[data-panel]').forEach((link) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        const panel = link.dataset.panel;
-        showPanel(panel);
-        history.replaceState(null, '', `#${panel}`);
+        showPanel(link.dataset.panel);
       });
     });
 
-    const hash = (location.hash || '#overview').replace('#', '');
-    showPanel(['overview', 'info', 'activities', 'rewards'].includes(hash) ? hash : 'overview');
+    window.addEventListener('hashchange', () => {
+      showPanel(getActivePanelName());
+    });
+
+    showPanel(getActivePanelName());
   }
 
   function renderOverview(data) {
@@ -162,6 +178,7 @@
       layout.hidden = false;
       guest.hidden = true;
       renderDashboard(data);
+      showPanel(getActivePanelName());
     } catch (_) {
       layout.hidden = true;
       guest.hidden = false;

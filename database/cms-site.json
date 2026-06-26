@@ -131,6 +131,20 @@
         {
           "brandInitial": "B",
           "brandName": "BOYINSURE",
+          "brandTagline": "คลิปไฮไลท์ล่าสุด",
+          "tags": ["คลิปใหม่", "อัปเดตล่าสุด", "ดูแลจริง"],
+          "title": "ไฮไลท์ล่าสุดจาก BOYINSURE",
+          "text": "อัปเดตคลิปไฮไลท์ล่าสุดจากทีม BOYINSURE พร้อมเล่าเรื่องการดูแลลูกค้าและการวางแผนประกันแบบเข้าใจง่าย กดเล่นเพื่อรับชมเต็มคลิป และเลื่อนดูไฮไลท์อื่น ๆ ได้ต่อเนื่อง",
+          "image": "assets/img/highlights/insure-con3-poster.jpg",
+          "imageAlt": "คลิปไฮไลท์ล่าสุดจาก BOYINSURE",
+          "mainVideoFile": "assets/video/insure-con3.mp4",
+          "mainVideoPoster": "assets/img/highlights/insure-con3-poster.jpg",
+          "caption": "คลิปไฮไลท์ล่าสุดจากทีม BOYINSURE",
+          "link": "about.html"
+        },
+        {
+          "brandInitial": "B",
+          "brandName": "BOYINSURE",
           "brandTagline": "พันธมิตรด้านประกันภัย",
           "tags": ["วิเคราะห์แผน", "เปรียบเทียบเบี้ย", "ไม่บังคับซื้อ"],
           "title": "วางแผนความคุ้มครองอย่างมืออาชีพ",
@@ -139,37 +153,22 @@
           "imageAlt": "BOYINSURE วางแผนประกันครอบครัว",
           "mainVideo": "https://www.facebook.com/reel/1316213417025596/",
           "mainVideoPoster": "assets/img/highlights/reel-main.jpg",
-          "thumb": "assets/img/highlights/reel-thumb.jpg",
-          "thumbVideo": "https://www.facebook.com/reel/2393152494542455/",
-          "thumbVideoPoster": "assets/img/highlights/reel-thumb.jpg",
-          "caption": "ทีม BOYINSURE ดูแลเคลมประกันสุขภาพจนจบทุกขั้นตอน",
+          "caption": "BOYINSURE วางแผนประกันครอบครัวอย่างมืออาชีพ",
           "link": "about.html"
         },
         {
           "brandInitial": "B",
           "brandName": "BOYINSURE",
-          "brandTagline": "คุ้มครองทุกช่วงชีวิต ด้วยใจ",
-          "tags": ["ประกันชีวิต", "สุขภาพ", "ออมทรัพย์"],
-          "title": "แผนครอบคลุมทุกความต้องการ",
-          "text": "ครอบคลุมประกันชีวิต สุขภาพ ออมสะสมทรัพย์ และความคุ้มครองอื่น ๆ จากพาร์ทเนอร์ชั้นนำ BOYINSURE ช่วยจัดสรรงบให้เหมาะกับครอบครัวและเป้าหมายระยะยาว โดยเลือกแผนที่พอดีกับชีวิตจริงของคุณ",
-          "image": "assets/img/home-hero-2.png",
-          "imageAlt": "BOYINSURE คุ้มครองครอบครัวครบวงจร",
-          "thumb": "assets/img/products/savings.jpg",
-          "caption": "วางแผนออมและคุ้มครองไปพร้อมกันกับ BOYINSURE",
-          "link": "insurance.html"
-        },
-        {
-          "brandInitial": "B",
-          "brandName": "BOYINSURE",
-          "brandTagline": "พันธมิตรด้านประกันที่ไว้วางใจ",
-          "tags": ["ตอบแชทไว", "คำนวณเบี้ย", "ดูแลเคลม"],
-          "title": "ดูแลหลังการขายจริง ๆ",
-          "text": "BOYINSURE ตอบแชทไว ดูแลใกล้ชิด มีแพลตฟอร์มช่วยคำนวณเบี้ยและจัดทำใบเสนอราคา ทีมซัพพอร์ตช่วยดูแลเคลมและติดตามผลประโยชน์ให้ครบถ้วนทุกเคส ไม่ทิ้งลูกค้าหลังทำสัญญา",
-          "image": "assets/img/products/critical.jpg",
-          "imageAlt": "BOYINSURE ดูแลลูกค้าหลังการขาย",
-          "thumb": "assets/img/products/accident.jpg",
-          "caption": "เครื่องมือวางแผนและซัพพอร์ตจากทีม BOYINSURE",
-          "link": "contact.html"
+          "brandTagline": "ดูแลเคลมจนจบทุกขั้นตอน",
+          "tags": ["ดูแลเคลม", "ตอบไว", "จบทุกเคส"],
+          "title": "ดูแลเคลมประกันสุขภาพจนจบ",
+          "text": "ทีม BOYINSURE ดูแลเรื่องเคลมประกันสุขภาพให้ตั้งแต่ต้นจนจบ ประสานงานกับโรงพยาบาลและบริษัทประกัน ติดตามผลให้ครบทุกขั้นตอน เพื่อให้คุณไม่ต้องกังวลในวันที่ต้องใช้สิทธิ์",
+          "image": "assets/img/highlights/reel-thumb.jpg",
+          "imageAlt": "ทีม BOYINSURE ดูแลเคลมประกันสุขภาพจนจบทุกขั้นตอน",
+          "mainVideo": "https://www.facebook.com/reel/2393152494542455/",
+          "mainVideoPoster": "assets/img/highlights/reel-thumb.jpg",
+          "caption": "ทีม BOYINSURE ดูแลเคลมประกันสุขภาพจนจบทุกขั้นตอน",
+          "link": "about.html"
         }
       ]
     }

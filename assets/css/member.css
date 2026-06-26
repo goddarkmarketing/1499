@@ -305,6 +305,40 @@
   outline-offset: 2px;
 }
 
+/* Profile rewards — static grid, no row slider */
+.prize-cards-row-wrap--grid .prize-cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+  overflow: visible;
+  scroll-snap-type: none;
+  padding: 0;
+}
+
+.prize-cards-row-wrap--grid .prize-cards-row > .home-news-prize-card,
+.prize-cards-row-wrap--grid .prize-cards-row > .member-reward-picker {
+  flex: unset;
+  width: auto;
+  min-height: 148px;
+  padding: 12px 10px;
+}
+
+.prize-cards-row-wrap--grid .home-news-prize-card__logo {
+  height: 58px;
+}
+
+.prize-cards-row-wrap--grid .home-news-prize-card__logo img {
+  max-height: 52px;
+}
+
+.prize-cards-row-wrap--grid .home-news-prize-card__name {
+  font-size: .78rem;
+}
+
+.prize-cards-row-wrap--grid .prize-cards-row__dots {
+  display: none !important;
+}
+
 /* prize-cards-row styles live in style.css */
 
 /* Reward detail slider */

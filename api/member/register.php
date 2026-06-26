@@ -48,7 +48,7 @@ if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 $fullName = trim($firstName . ' ' . $lastName);
 $tier = db()->query("SELECT id, spin_quota FROM member_tiers WHERE code='general' LIMIT 1")->fetch();
 $tierId = $tier['id'] ?? null;
-$spins = 1;
+$spins = 2;
 
 $accountCreated = false;
 $credentialsIssued = false;

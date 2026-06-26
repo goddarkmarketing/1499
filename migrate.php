@@ -129,6 +129,28 @@ try {
     $pdo->exec('UPDATE members SET login_id = phone WHERE login_id IS NULL OR login_id = ""');
     $steps[] = 'ตั้งค่า login_id จากเบอร์โทรสำหรับสมาชิกเดิม';
 
+    foreach ([
+        'selected' => "TINYINT(1) NOT NULL DEFAULT 0 AFTER status",
+        'delivery_method' => "VARCHAR(30) NULL AFTER selected",
+        'insurance_interest' => "VARCHAR(120) NULL AFTER delivery_method",
+        'recipient_name' => "VARCHAR(120) NULL AFTER insurance_interest",
+        'recipient_phone' => "VARCHAR(20) NULL AFTER recipient_name",
+        'address_line' => "VARCHAR(255) NULL AFTER recipient_phone",
+        'subdistrict' => "VARCHAR(120) NULL AFTER address_line",
+        'district' => "VARCHAR(120) NULL AFTER subdistrict",
+        'province' => "VARCHAR(120) NULL AFTER district",
+        'postal_code' => "VARCHAR(10) NULL AFTER province",
+        'contact_line' => "VARCHAR(120) NULL AFTER postal_code",
+        'contact_note' => "VARCHAR(255) NULL AFTER contact_line",
+        'claimed_at' => "DATETIME NULL AFTER contact_note",
+        'consent_at' => "DATETIME NULL AFTER claimed_at",
+    ] as $column => $definition) {
+        if (!db_column_exists('reward_claims', $column)) {
+            $pdo->exec("ALTER TABLE reward_claims ADD COLUMN {$column} {$definition}");
+            $steps[] = "เพิ่มคอลัมน์ reward_claims.{$column}";
+        }
+    }
+
     $ok = true;
 } catch (Throwable $e) {
     $ok = false;

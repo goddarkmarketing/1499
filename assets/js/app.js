@@ -180,6 +180,16 @@
   const closeAllWinners = document.getElementById('closeAllWinners');
   const prizeCompare = document.getElementById('prizeCompare');
   const prizeCompareGrid = document.getElementById('prizeCompareGrid');
+  const claimRewardOverlay = document.getElementById('claimRewardOverlay');
+  const claimRewardForm = document.getElementById('claimRewardForm');
+  const claimRewardLogo = document.getElementById('claimRewardLogo');
+  const claimRewardName = document.getElementById('claimRewardName');
+  const claimInsuranceInterest = document.getElementById('claimInsuranceInterest');
+  const claimRewardMessage = document.getElementById('claimRewardMessage');
+  const claimRewardSubmit = document.getElementById('claimRewardSubmit');
+  const claimRewardCancel = document.getElementById('claimRewardCancel');
+  const claimSuccessOverlay = document.getElementById('claimSuccessOverlay');
+  const claimSuccessClose = document.getElementById('claimSuccessClose');
   const resultOverlay = document.getElementById('resultOverlay');
   const loginOverlay = document.getElementById('loginOverlay');
   const credentialsOverlay = document.getElementById('credentialsOverlay');
@@ -264,6 +274,8 @@
   let spinAnimationId = null;
   const wonPrizes = [];
   const sessionWins = [];
+  const roundPrizes = [];
+  let selectedClaim = null;
 
   BoyInsureAuth.subscribe(syncFromAuth);
 
@@ -592,43 +604,66 @@
     if (prizeCompareGrid) prizeCompareGrid.innerHTML = '';
   }
 
+  function prizeTypeLabel(type) {
+    switch (type) {
+      case 'insurance': return 'ประกันภัย';
+      case 'physical': return 'ของรางวัล';
+      case 'other': return 'อื่นๆ';
+      default: return 'VOUCHER';
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, (c) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+  }
+
   function renderPrizeCompare() {
-    if (!prizeCompare || !prizeCompareGrid || sessionWins.length === 0) return;
+    if (!prizeCompare || !prizeCompareGrid) return;
 
-    const compareRows = [
-      { label: '', type: 'logo' },
-      { label: 'ชื่อรางวัล', type: 'short' },
-      { label: 'รายละเอียด', type: 'detail' },
-      { label: 'ประเภท', type: 'tag' },
-    ];
+    // ใช้รางวัลจากรอบนี้ (มี claimId) ถ้ามี ไม่งั้น fallback เป็นรายการเดิม
+    const items = roundPrizes.length
+      ? roundPrizes
+      : sessionWins.map((idx) => ({
+          claimId: null,
+          name: PRIZES[idx].name.replace('\n', ' '),
+          short: PRIZES[idx].short,
+          detail: PRIZES[idx].detail || '',
+          logo: asset(PRIZES[idx].logo),
+          prizeType: [9, 10, 11].includes(idx) ? 'insurance' : 'voucher',
+        }));
 
-    const headerCells = sessionWins.map((_, i) =>
+    if (items.length === 0) return;
+
+    const headerCells = items.map((_, i) =>
       `<th class="prize-compare__th prize-compare__th--spin">ครั้งที่ ${i + 1}</th>`
     ).join('');
 
-    const bodyRows = compareRows.map(row => {
-      const cells = sessionWins.map(prizeIndex => {
-        const p = PRIZES[prizeIndex];
-        if (row.type === 'logo') {
-          return `<td class="prize-compare__td prize-compare__td--logo">
-            <div class="prize-compare__logo-ring">
-              <img src="${asset(p.logo)}" alt="${p.short}" loading="lazy" />
-            </div>
-          </td>`;
-        }
-        if (row.type === 'detail') {
-          const detail = p.detail || p.name.replace('\n', ' ');
-          return `<td class="prize-compare__td">${detail}</td>`;
-        }
-        if (row.type === 'tag') {
-          return `<td class="prize-compare__td"><span class="prize-compare__tag">${getPrizeTag(prizeIndex)}</span></td>`;
-        }
-        return `<td class="prize-compare__td prize-compare__td--title">${p.short}</td>`;
-      }).join('');
-      return `<tr><th class="prize-compare__th prize-compare__th--label" scope="row">${row.label}</th>${cells}</tr>`;
-    }).join('');
+    const rows = [
+      ['', items.map((p) => `<td class="prize-compare__td prize-compare__td--logo">
+        <div class="prize-compare__logo-ring"><img src="${escapeHtml(p.logo)}" alt="${escapeHtml(p.short)}" loading="lazy" /></div>
+      </td>`)],
+      ['ชื่อรางวัล', items.map((p) => `<td class="prize-compare__td prize-compare__td--title">${escapeHtml(p.short)}</td>`)],
+      ['รายละเอียด', items.map((p) => `<td class="prize-compare__td">${escapeHtml(p.detail || p.name)}</td>`)],
+      ['ประเภท', items.map((p) => `<td class="prize-compare__td"><span class="prize-compare__tag">${escapeHtml(prizeTypeLabel(p.prizeType))}</span></td>`)],
+    ];
+
+    const bodyRows = rows.map(([label, cells]) =>
+      `<tr><th class="prize-compare__th prize-compare__th--label" scope="row">${label}</th>${cells.join('')}</tr>`
+    ).join('');
+
+    const canSelect = items.every((p) => p.claimId);
+    const actionRow = canSelect
+      ? `<tr><th class="prize-compare__th prize-compare__th--label" scope="row">เลือกรับ</th>${
+          items.map((p) => `<td class="prize-compare__td prize-compare__td--action">
+            <button type="button" class="prize-compare__choose" data-claim-id="${p.claimId}">เลือกรางวัลนี้</button>
+          </td>`).join('')
+        }</tr>`
+      : '';
 
     prizeCompareGrid.innerHTML = `
+      <p class="prize-compare__hint">เลือกรับ 1 รางวัล แล้วกรอกข้อมูลสนใจประกันเพื่อให้ทีมงานติดต่อกลับ</p>
       <table class="prize-compare__table">
         <thead>
           <tr>
@@ -636,11 +671,157 @@
             ${headerCells}
           </tr>
         </thead>
-        <tbody>${bodyRows}</tbody>
+        <tbody>${bodyRows}${actionRow}</tbody>
       </table>
     `;
 
+    prizeCompareGrid.querySelectorAll('.prize-compare__choose').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const claimId = Number(btn.dataset.claimId);
+        const prize = roundPrizes.find((p) => p.claimId === claimId);
+        chooseReward(claimId, prize);
+      });
+    });
+
     prizeCompare.hidden = false;
+  }
+
+  async function chooseReward(claimId, prize) {
+    if (!claimId) return;
+    try {
+      const claimIds = roundPrizes.map((p) => p.claimId).filter(Boolean);
+      const data = await BoyInsureAPI.selectReward({ claim_id: claimId, claim_ids: claimIds });
+      const claim = data.claim || prize || {};
+      selectedClaim = {
+        id: claimId,
+        name: claim.name ? String(claim.name).replace('\n', ' ') : (prize?.name || ''),
+        logo: claim.logo ? asset(String(claim.logo).replace(/^assets\//, '')) : (prize?.logo || ''),
+        prizeType: claim.prize_type || prize?.prizeType || 'voucher',
+      };
+      await openClaimForm();
+    } catch (err) {
+      alert(err.message || 'เลือกรางวัลไม่สำเร็จ กรุณาลองใหม่');
+    }
+  }
+
+  function setClaimMessage(text, type = 'error') {
+    if (!claimRewardMessage) return;
+    if (!text) {
+      claimRewardMessage.hidden = true;
+      claimRewardMessage.textContent = '';
+      return;
+    }
+    claimRewardMessage.hidden = false;
+    claimRewardMessage.textContent = text;
+    claimRewardMessage.classList.remove('auth-modal__message--error', 'auth-modal__message--success');
+    claimRewardMessage.classList.add(type === 'success' ? 'auth-modal__message--success' : 'auth-modal__message--error');
+  }
+
+  const DEFAULT_INSURANCE_OPTIONS = [
+    'ประกันสุขภาพ',
+    'ประกันชีวิต',
+    'ประกันสะสมทรัพย์ / ออมเงิน',
+    'ประกันโรคร้ายแรง',
+    'ประกันรถยนต์',
+    'ประกันอุบัติเหตุ',
+    'ยังไม่แน่ใจ อยากให้ที่ปรึกษาแนะนำ',
+  ];
+
+  async function populateInsuranceOptions() {
+    const sel = claimInsuranceInterest;
+    if (!sel) return;
+    const current = sel.value;
+    sel.innerHTML = '<option value="" disabled selected>เลือกประเภทประกัน</option>';
+
+    let options = [...DEFAULT_INSURANCE_OPTIONS];
+    try {
+      if (window.BoyInsureAPI) {
+        const data = await BoyInsureAPI.insuranceCategories();
+        const fromApi = (data.categories || []).map((c) => c.title).filter(Boolean);
+        if (fromApi.length) options = fromApi;
+      }
+    } catch (_) {}
+
+    [...new Set(options)].forEach((title) => {
+      const opt = document.createElement('option');
+      opt.value = title;
+      opt.textContent = title;
+      sel.appendChild(opt);
+    });
+    if (current) sel.value = current;
+  }
+
+  async function openClaimForm() {
+    if (!claimRewardOverlay || !selectedClaim) return;
+    if (claimRewardLogo) {
+      claimRewardLogo.src = selectedClaim.logo || '';
+      claimRewardLogo.alt = selectedClaim.name || '';
+    }
+    if (claimRewardName) claimRewardName.textContent = selectedClaim.name || '';
+
+    const m = memberProfile || {};
+    const contactName = document.getElementById('claimContactName');
+    const contactPhone = document.getElementById('claimContactPhone');
+    if (contactName && !contactName.value) {
+      contactName.value = (m.name || `${m.first_name || ''} ${m.last_name || ''}`).trim();
+    }
+    if (contactPhone && !contactPhone.value) {
+      contactPhone.value = m.phone || '';
+    }
+
+    await populateInsuranceOptions();
+    setClaimMessage('');
+
+    claimRewardOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeClaimForm() {
+    if (claimRewardOverlay) claimRewardOverlay.hidden = true;
+    if (!isModalOpen()) document.body.style.overflow = '';
+  }
+
+  function openClaimSuccess() {
+    if (!claimSuccessOverlay) return;
+    claimSuccessOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    if (window.lucide?.createIcons) lucide.createIcons();
+  }
+
+  function closeClaimSuccess() {
+    if (claimSuccessOverlay) claimSuccessOverlay.hidden = true;
+    if (!isModalOpen()) document.body.style.overflow = '';
+    hidePrizeCompare();
+  }
+
+  async function submitClaimForm() {
+    if (!selectedClaim) return;
+    const payload = {
+      claim_id: selectedClaim.id,
+      insurance_interest: claimInsuranceInterest?.value || '',
+      contact_name: document.getElementById('claimContactName')?.value?.trim() || '',
+      contact_phone: document.getElementById('claimContactPhone')?.value?.trim() || '',
+      contact_line: document.getElementById('claimContactLine')?.value?.trim() || '',
+      contact_note: document.getElementById('claimContactNote')?.value?.trim() || '',
+      message: document.getElementById('claimMessage')?.value?.trim() || '',
+      consent: document.getElementById('claimConsent')?.checked || false,
+    };
+
+    if (claimRewardSubmit) claimRewardSubmit.disabled = true;
+    setClaimMessage('กำลังบันทึก...', 'success');
+    try {
+      await BoyInsureAPI.claimReward(payload);
+      await BoyInsureAuth.refresh();
+      syncFromAuth();
+      closeClaimForm();
+      openClaimSuccess();
+      selectedClaim = null;
+      claimRewardForm?.reset();
+    } catch (err) {
+      setClaimMessage(err.message || 'บันทึกไม่สำเร็จ กรุณาลองใหม่', 'error');
+    } finally {
+      if (claimRewardSubmit) claimRewardSubmit.disabled = false;
+    }
   }
 
   /* ไม่แสดงในรายการการ์ดด้านล่าง (แถวละ 6 ใบ) */
@@ -951,7 +1132,7 @@
   function isModalOpen() {
     const catalogSlider = document.getElementById('prizeCatalogSlider');
     const memberRewardSlider = document.getElementById('rewardSlider');
-    return !loginOverlay.hidden || !credentialsOverlay?.hidden || !resultOverlay.hidden || !rewardsOverlay.hidden || !termsOverlay.hidden || (catalogSlider && !catalogSlider.hidden) || (memberRewardSlider && !memberRewardSlider.hidden) || (allPrizesOverlay && !allPrizesOverlay.hidden) || (allWinnersOverlay && !allWinnersOverlay.hidden);
+    return !loginOverlay.hidden || !credentialsOverlay?.hidden || !resultOverlay.hidden || !rewardsOverlay.hidden || !termsOverlay.hidden || (claimRewardOverlay && !claimRewardOverlay.hidden) || (claimSuccessOverlay && !claimSuccessOverlay.hidden) || (catalogSlider && !catalogSlider.hidden) || (memberRewardSlider && !memberRewardSlider.hidden) || (allPrizesOverlay && !allPrizesOverlay.hidden) || (allWinnersOverlay && !allWinnersOverlay.hidden);
   }
 
   function showCredentialsModal(credentials, sentEmail = false) {
@@ -991,6 +1172,14 @@
     });
   }
 
+  function setAuthMessage(text, type = 'info') {
+    if (!authModalMessage) return;
+    authModalMessage.textContent = text;
+    authModalMessage.classList.remove('auth-modal__message--error', 'auth-modal__message--success');
+    if (type === 'error') authModalMessage.classList.add('auth-modal__message--error');
+    else if (type === 'success') authModalMessage.classList.add('auth-modal__message--success');
+  }
+
   function setAuthModalMode(mode = 'register') {
     const isLogin = mode === 'login';
 
@@ -1008,11 +1197,12 @@
     if (authModalLabel) {
       authModalLabel.textContent = isLogin ? 'เข้าสู่ระบบ' : 'ลงทะเบียนก่อนหมุน';
     }
-    if (authModalMessage) {
-      authModalMessage.textContent = isLogin
+    setAuthMessage(
+      isLogin
         ? 'เข้าสู่ระบบด้วยไอดีและรหัสผ่านที่ตั้งไว้ตอนลงทะเบียน'
-        : 'กรุณากรอกข้อมูลให้ครบถ้วนเพื่อสมัครสมาชิกและหมุนวงล้อ';
-    }
+        : 'กรุณากรอกข้อมูลให้ครบถ้วนเพื่อสมัครสมาชิกและหมุนวงล้อ',
+      'info'
+    );
     if (registerSubmitBtn) {
       registerSubmitBtn.textContent = pendingSpinAfterRegister
         ? 'ลงทะเบียนและหมุนวงล้อ'
@@ -1044,13 +1234,53 @@
     }
   }
 
+  const THAI_MONTHS = [
+    'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+    'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม',
+  ];
+
+  function populateBirthDateSelects() {
+    const daySel = document.getElementById('registerBirthDay');
+    const monthSel = document.getElementById('registerBirthMonth');
+    const yearSel = document.getElementById('registerBirthYear');
+    if (!daySel || !monthSel || !yearSel) return;
+
+    for (let d = 1; d <= 31; d += 1) {
+      const opt = document.createElement('option');
+      opt.value = String(d);
+      opt.textContent = String(d);
+      daySel.appendChild(opt);
+    }
+    THAI_MONTHS.forEach((name, i) => {
+      const opt = document.createElement('option');
+      opt.value = String(i + 1);
+      opt.textContent = name;
+      monthSel.appendChild(opt);
+    });
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear - 15; y >= currentYear - 120; y -= 1) {
+      const opt = document.createElement('option');
+      opt.value = String(y);
+      opt.textContent = String(y + 543);
+      yearSel.appendChild(opt);
+    }
+  }
+
+  function getBirthDateValue() {
+    const day = document.getElementById('registerBirthDay')?.value;
+    const month = document.getElementById('registerBirthMonth')?.value;
+    const year = document.getElementById('registerBirthYear')?.value;
+    if (!day || !month || !year) return '';
+    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  }
+
   function collectRegisterPayload() {
     return {
       first_name: document.getElementById('registerFirstName')?.value?.trim(),
       last_name: document.getElementById('registerLastName')?.value?.trim(),
       phone: document.getElementById('registerPhone')?.value?.trim(),
       national_id: document.getElementById('registerNationalId')?.value?.trim(),
-      birth_date: document.getElementById('registerBirthDate')?.value,
+      birth_date: getBirthDateValue(),
       email: document.getElementById('registerEmail')?.value?.trim(),
       login_id: document.getElementById('registerLoginId')?.value?.trim(),
       password: document.getElementById('registerPassword')?.value ?? '',
@@ -1061,7 +1291,7 @@
 
   async function submitRegistration(shouldSpinAfter = false) {
     if (!window.BoyInsureAPI) {
-      alert('ระบบไม่พร้อมใช้งาน กรุณาลองใหม่ภายหลัง');
+      setAuthMessage('ระบบไม่พร้อมใช้งาน กรุณาลองใหม่ภายหลัง', 'error');
       return false;
     }
 
@@ -1069,38 +1299,45 @@
     const hasPasswordInput = payload.password !== '' || payload.password_confirm !== '' || payload.login_id !== '';
     if (hasPasswordInput) {
       if (!payload.login_id) {
-        alert('กรุณากรอกไอดีสำหรับเข้าสู่ระบบ');
+        setAuthMessage('กรุณากรอกไอดีสำหรับเข้าสู่ระบบ', 'error');
         return false;
       }
       if (payload.password.length < 6) {
-        alert('กรุณาตั้งรหัสผ่านอย่างน้อย 6 ตัวอักษร');
+        setAuthMessage('กรุณาตั้งรหัสผ่านอย่างน้อย 6 ตัวอักษร', 'error');
         return false;
       }
       if (payload.password !== payload.password_confirm) {
-        alert('รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน');
+        setAuthMessage('รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน', 'error');
         return false;
       }
     }
 
     const submitBtn = document.getElementById('registerSubmitBtn');
     if (submitBtn) submitBtn.disabled = true;
+    setAuthMessage('กำลังลงทะเบียน...', 'info');
 
     try {
       const data = await BoyInsureAPI.registerMember(payload);
       applyMemberSession(data.member);
       spinsLeft = data.member.spins_remaining ?? 0;
-      closeLoginModal();
+      await BoyInsureAuth.refresh();
+      syncFromAuth();
+      spinsLeft = BoyInsureAuth.getSpinsRemaining();
       if (data.credentials) {
+        closeLoginModal();
         await showCredentialsModal(data.credentials, Boolean(data.credentials_sent_email));
-      } else if (!shouldSpinAfter) {
-        alert('ลงทะเบียนสำเร็จ');
+      } else if (shouldSpinAfter) {
+        closeLoginModal();
+      } else {
+        setAuthMessage('ลงทะเบียนสำเร็จ', 'success');
+        window.setTimeout(() => closeLoginModal(), 1200);
       }
       if (shouldSpinAfter) {
         await executeSpin();
       }
       return true;
     } catch (err) {
-      alert(err.message || 'ลงทะเบียนไม่สำเร็จ');
+      setAuthMessage(err.message || 'ลงทะเบียนไม่สำเร็จ', 'error');
       return false;
     } finally {
       if (submitBtn) submitBtn.disabled = false;
@@ -1184,11 +1421,13 @@
     let winSegment = Math.floor(Math.random() * WHEEL_SEGMENTS);
     let prizeIndex = prizeIndexFromSegment(winSegment);
     let apiPrize = null;
+    let apiClaimId = null;
 
     try {
       spinBtn.disabled = true;
       const result = await BoyInsureAPI.spin();
       apiPrize = result.prize;
+      apiClaimId = result.claim_id ?? null;
       prizeIndex = prizeIndexFromApiPrize(apiPrize);
       winSegment = segmentFromPrizeIndex(prizeIndex);
       spinsLeft = result.spins_remaining ?? 0;
@@ -1235,7 +1474,7 @@
         updateSpinsDisplay();
         wheelPin.classList.add('bounce');
         if (apiPrize) {
-          showResultFromApi(apiPrize, prizeIndex);
+          showResultFromApi(apiPrize, prizeIndex, apiClaimId);
         } else {
           showResult(prizeIndex);
         }
@@ -1277,9 +1516,10 @@
     }
   }
 
-  function showResultFromApi(apiPrize, fallbackIndex) {
+  function showResultFromApi(apiPrize, fallbackIndex, claimId) {
+    const logoUrl = apiPrize.logo ? asset(String(apiPrize.logo).replace(/^assets\//, '')) : '';
     if (resultPrizeLogo && apiPrize.logo) {
-      resultPrizeLogo.src = asset(String(apiPrize.logo).replace(/^assets\//, ''));
+      resultPrizeLogo.src = logoUrl;
       resultPrizeLogo.alt = apiPrize.short_name;
     }
     resultPrize.textContent = String(apiPrize.name).replace('\n', ' ');
@@ -1287,16 +1527,27 @@
       resultPrizeDetail.textContent = apiPrize.detail || '';
       resultPrizeDetail.hidden = !apiPrize.detail;
     }
-    closeResult.textContent = 'ตกลง';
+    closeResult.textContent = spinsLeft > 0 ? `หมุนต่อ (เหลือ ${spinsLeft} สิทธิ์)` : 'ดูรางวัลที่ได้';
     resultOverlay.hidden = false;
     document.body.style.overflow = 'hidden';
     sessionWins.push(fallbackIndex);
     wonPrizes.push({
       name: apiPrize.name,
       detail: apiPrize.detail || '',
-      logo: apiPrize.logo ? asset(String(apiPrize.logo).replace(/^assets\//, '')) : '',
+      logo: logoUrl,
       color: apiPrize.color || '#fff',
     });
+    if (claimId) {
+      roundPrizes.push({
+        claimId,
+        name: String(apiPrize.name).replace('\n', ' '),
+        short: apiPrize.short_name || String(apiPrize.name).replace('\n', ' '),
+        detail: apiPrize.detail || '',
+        logo: logoUrl,
+        color: apiPrize.color || '#fff',
+        prizeType: apiPrize.prize_type || 'voucher',
+      });
+    }
     updateDashboard();
   }
 
@@ -1323,10 +1574,6 @@
 
     wonPrizes.push({ index, name: prize.name, short: prize.short });
     updateDashboard();
-
-    if (spinsLeft === 0) {
-      renderPrizeCompare();
-    }
   }
 
   let confettiParticles = [];
@@ -1393,6 +1640,17 @@
       document.body.style.overflow = '';
     }
 
+    // หมุนครบแล้ว (ไม่เหลือสิทธิ์) → เข้าสู่ขั้นตอนเลือก/รับรางวัล
+    if (spinsLeft <= 0) {
+      if (roundPrizes.length >= 2) {
+        renderPrizeCompare();
+      } else if (roundPrizes.length === 1) {
+        const only = roundPrizes[0];
+        chooseReward(only.claimId, only);
+        return;
+      }
+    }
+
     if (sessionWins.length > 0 && prizeCompare && !prizeCompare.hidden) {
       prizeCompare.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
@@ -1433,6 +1691,28 @@
   });
   resultOverlay.querySelector('.result-modal--win')?.addEventListener('click', e => e.stopPropagation());
 
+  claimRewardForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await submitClaimForm();
+  });
+  claimRewardCancel?.addEventListener('click', (e) => {
+    e.preventDefault();
+    closeClaimForm();
+    if (prizeCompare && !prizeCompare.hidden) {
+      prizeCompare.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+  claimRewardOverlay?.addEventListener('click', (e) => {
+    if (e.target === claimRewardOverlay) closeClaimForm();
+  });
+  claimSuccessClose?.addEventListener('click', (e) => {
+    e.preventDefault();
+    closeClaimSuccess();
+  });
+  claimSuccessOverlay?.addEventListener('click', (e) => {
+    if (e.target === claimSuccessOverlay) closeClaimSuccess();
+  });
+
   document.querySelectorAll('.js-header-signin').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -1470,12 +1750,13 @@
   memberLoginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!window.BoyInsureAPI) {
-      alert('ระบบไม่พร้อมใช้งาน กรุณาลองใหม่ภายหลัง');
+      setAuthMessage('ระบบไม่พร้อมใช้งาน กรุณาลองใหม่ภายหลัง', 'error');
       return;
     }
 
     const submitBtn = document.getElementById('loginSubmitBtn');
     if (submitBtn) submitBtn.disabled = true;
+    setAuthMessage('กำลังเข้าสู่ระบบ...', 'info');
 
     try {
       const data = await BoyInsureAPI.loginMember({
@@ -1484,9 +1765,11 @@
       });
       applyMemberSession(data.member);
       spinsLeft = data.member.spins_remaining ?? 0;
+      await BoyInsureAuth.refresh();
+      syncFromAuth();
       closeLoginModal();
     } catch (err) {
-      alert(err.message || 'เข้าสู่ระบบไม่สำเร็จ');
+      setAuthMessage(err.message || 'เข้าสู่ระบบไม่สำเร็จ', 'error');
     } finally {
       if (submitBtn) submitBtn.disabled = false;
     }
@@ -1529,6 +1812,7 @@
 
   resizeConfetti();
   buildHeroConfetti();
+  populateBirthDateSelects();
   buildPrizeGrid();
   buildAllPrizesList();
   buildAllWinnersList();
