@@ -4217,6 +4217,12 @@ body.has-plan-sticky {
   .site-footer__brand {
     grid-column: 1 / -1;
   }
+
+  .site-footer__col--contact {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
   .site-footer__bottom {
     flex-direction: column;
     align-items: flex-start;

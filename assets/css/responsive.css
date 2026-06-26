@@ -488,6 +488,11 @@ body.nav-open {
     grid-column: 1 / -1;
   }
 
+  .site-footer__col--contact {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
   .activity-promo {
     padding: 32px;
     gap: 28px;

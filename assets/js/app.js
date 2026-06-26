@@ -77,7 +77,7 @@
     {
       name: 'Voucher โอ้กะจู๋',
       short: 'โอ้กะจู๋',
-      detail: 'Voucher อาหารออร์แกนิกมูลค่า 500 บาท ใช้ได้ที่ร้านโอ้กะจู๋',
+      detail: 'Voucher อาหารออร์แกนิกมูลค่า 1,000 บาท ใช้ได้ที่ร้านโอ้กะจู๋',
       color: '#f0ffe8',
       logo: 'img/prizes/ohkajhu.png',
     },
@@ -122,7 +122,7 @@
   const PRIZE_CATALOG_DISPLAY = [
     { prizeIndex: 0, label: "บัตร Lotus's มูลค่า 500 บาท", qty: 100 },
     { prizeIndex: 1, label: 'บัตร PTT Station มูลค่า 500 บาท', qty: 100 },
-    { prizeIndex: 8, label: 'Voucher โอ้กะจู๋ มูลค่า 500 บาท', qty: 40 },
+    { prizeIndex: 8, label: 'Voucher โอ้กะจู๋ มูลค่า 1,000 บาท', qty: 40 },
     { prizeIndex: 9, label: 'ประกันรถยนต์ ชั้น 1', qty: 10 },
     { prizeIndex: 3, label: 'Voucher Supersports มูลค่า 500 บาท', qty: 50 },
   ];

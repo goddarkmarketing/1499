@@ -2714,7 +2714,7 @@ const HOME_NEWS_PRIZES = [
   { logo: 'assets/img/icon/Group 5.png', short: 'ทันตกรรม', label: 'Voucher ทันตกรรม', qty: 25 },
   { logo: 'assets/img/icon/Group 6.png', short: 'โบท็อกซ์', label: 'Voucher โบท็อกซ์ฟิลเลอร์', qty: 20 },
   { logo: 'assets/img/icon/Group 7.png', short: 'Jett Fitness', label: 'Voucher Jett Fitness', qty: 30 },
-  { logo: 'assets/img/prizes/ohkajhu.png', short: 'โอ้กะจู๋', label: 'Voucher โอ้กะจู๋ มูลค่า 500 บาท', qty: 40 },
+  { logo: 'assets/img/prizes/ohkajhu.png', short: 'โอ้กะจู๋', label: 'Voucher โอ้กะจู๋ มูลค่า 1,000 บาท', qty: 40 },
   { logo: 'assets/img/icon/Group 13.png', short: 'ประกันรถ', label: 'ประกันรถยนต์ ชั้น 1', qty: 10 },
 ];
 

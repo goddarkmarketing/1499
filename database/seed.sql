@@ -30,7 +30,7 @@ INSERT INTO prizes (game_id, campaign_id, name, short_name, detail, logo_path, c
 (1, 1, 'Voucher โบท็อกซ์ฟิลเลอร์', 'Botox', 'Voucher โบท็อกซ์/ฟิลเลอร์', 'assets/img/prizes/beauty.svg', '#fde8f8', 'voucher', 8, 1, 'active', 6),
 (1, 1, 'Voucher Jett Fitness', 'Jett', 'Voucher Jett Fitness', 'assets/img/prizes/jetts.svg', '#e8fff0', 'voucher', 8, 1, 'active', 7),
 (1, 1, 'Voucher Big C', 'Big C', 'Voucher Big C', 'assets/img/prizes/bigc.svg', '#fff5e6', 'voucher', 10, 1, 'active', 8),
-(1, 1, 'Voucher โอ้กะจู๋', 'โอ้กะจู๋', 'Voucher โอ้กะจู๋', 'assets/img/prizes/ohkajhu.png', '#f0ffe8', 'voucher', 8, 1, 'active', 9),
+(1, 1, 'Voucher โอ้กะจู๋', 'โอ้กะจู๋', 'Voucher โอ้กะจู๋ มูลค่า 1,000 บาท', 'assets/img/prizes/ohkajhu.png', '#f0ffe8', 'voucher', 8, 1, 'active', 9),
 (1, 1, 'ประกันรถยนต์ ชั้น 1', 'ประกันรถ', 'ประกันรถยนต์ชั้น 1', 'assets/img/prizes/car.svg', '#e8f0ff', 'insurance', 5, 1, 'active', 10),
 (1, 1, 'ประกันอุบัติเหตุ 400,000', 'อุบัติเหตุ', 'ทุนประกันอุบัติเหตุ 400,000 บาท', 'assets/img/prizes/accident.svg', '#fff8e8', 'insurance', 5, 1, 'active', 11),
 (1, 1, 'ประกันอัคคีภัย ที่อยู่อาศัย', 'อัคคีภัย', 'ประกันอัคคีภัยที่อยู่อาศัย', 'assets/img/prizes/fire.svg', '#ffe8e8', 'insurance', 5, 1, 'active', 12),
