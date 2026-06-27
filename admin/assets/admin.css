@@ -1265,6 +1265,18 @@ body.admin-body {
 
 .admin-login__error svg { width: 18px; height: 18px; flex-shrink: 0; }
 
+.admin-login__hint {
+  margin: -8px 0 var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.admin-login__hint a {
+  color: var(--blue);
+  font-weight: 600;
+}
+
 .admin-table code {
   font-size: var(--text-xs);
   background: var(--gray-100);
@@ -1272,6 +1284,22 @@ body.admin-body {
   border-radius: 4px;
   color: var(--black);
 }
+
+.admin-backup-list {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.admin-backup-steps {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.7;
+  color: var(--gray-700);
+}
+
 @media (max-width: 1024px) {
   .admin-split { grid-template-columns: 1fr; }
   .admin-content { padding: var(--space-5) var(--space-5) var(--space-6); }

@@ -4,6 +4,8 @@ _site/
 .env
 .env.*
 !.env.example
+config.local.php
+storage/backups/*.zip
 *.log
 .DS_Store
 Thumbs.db

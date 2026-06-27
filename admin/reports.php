@@ -77,6 +77,9 @@ ob_start();
       <?php foreach (['leads' => 'Lead', 'members' => 'สมาชิก', 'plays' => 'ประวัติการเล่น', 'rewards' => 'รางวัล'] as $t => $label): ?>
         <a href="export.php?type=<?= $t ?>&from=<?= urlencode($from) ?>&to=<?= urlencode($to) ?>" class="admin-btn admin-btn--ghost admin-btn--sm">Export <?= h($label) ?></a>
       <?php endforeach; ?>
+      <?php if (admin_can($admin, ['super_admin'])): ?>
+        <a href="backups.php" class="admin-btn admin-btn--primary admin-btn--sm">สำรองข้อมูลเต็มระบบ (ZIP)</a>
+      <?php endif; ?>
     </div>
   </div>
 </div>

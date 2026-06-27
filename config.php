@@ -1,7 +1,8 @@
 <?php
 /**
  * BOYINSURE — การตั้งค่าระบบ
- * ปรับค่า DB ให้ตรงกับ XAMPP ของคุณ
+ * Local (XAMPP): ใช้ค่าด้านล่างได้เลย
+ * Hosting: คัดลอก config.example.php เป็น config.local.php แล้วใส่ค่า DB จาก cPanel
  */
 return [
     'db' => [

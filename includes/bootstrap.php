@@ -2,13 +2,40 @@
 
 declare(strict_types=1);
 
-$config = require dirname(__DIR__) . '/config.php';
+function load_app_config(): array {
+    static $cfg;
+    if ($cfg) {
+        return $cfg;
+    }
+    $cfg = require dirname(__DIR__) . '/config.php';
+    $local = dirname(__DIR__) . '/config.local.php';
+    if (is_file($local)) {
+        $cfg = array_replace_recursive($cfg, require $local);
+    }
+    $envMap = [
+        'DB_HOST' => ['db', 'host'],
+        'DB_PORT' => ['db', 'port'],
+        'DB_NAME' => ['db', 'name'],
+        'DB_USER' => ['db', 'user'],
+        'DB_PASS' => ['db', 'pass'],
+    ];
+    foreach ($envMap as $envKey => $path) {
+        $value = getenv($envKey);
+        if ($value === false || $value === '') {
+            continue;
+        }
+        $cfg[$path[0]][$path[1]] = $value;
+    }
+    return $cfg;
+}
+
+$config = load_app_config();
 date_default_timezone_set($config['app']['timezone']);
 
 function app_config(string $key = null) {
     static $cfg;
     if (!$cfg) {
-        $cfg = require dirname(__DIR__) . '/config.php';
+        $cfg = load_app_config();
     }
     if ($key === null) {
         return $cfg;
@@ -102,6 +129,10 @@ function validate_member_password(string $password): bool {
 
 function start_session(string $key): void {
     if (session_status() === PHP_SESSION_NONE) {
+        $savePath = app_config('session.save_path');
+        if ($savePath && is_dir($savePath) && is_writable($savePath)) {
+            session_save_path($savePath);
+        }
         session_name($key);
         session_start();
     }

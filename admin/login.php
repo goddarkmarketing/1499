@@ -11,21 +11,26 @@ if (admin_user()) {
 }
 
 $error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $stmt = db()->prepare('SELECT * FROM admin_users WHERE email = ? AND status = "active" LIMIT 1');
-    $stmt->execute([$email]);
-    $user = $stmt->fetch();
-    if ($user && password_verify($password, $user['password_hash'])) {
-        unset($user['password_hash']);
-        $_SESSION['admin'] = $user;
-        db()->prepare('UPDATE admin_users SET last_login_at = NOW() WHERE id = ?')->execute([$user['id']]);
-        log_activity((int) $user['id'], 'login');
-        header('Location: index.php');
-        exit;
+$dbError = '';
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+        $stmt = db()->prepare('SELECT * FROM admin_users WHERE email = ? AND status = "active" LIMIT 1');
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+        if ($user && password_verify($password, $user['password_hash'])) {
+            unset($user['password_hash']);
+            $_SESSION['admin'] = $user;
+            db()->prepare('UPDATE admin_users SET last_login_at = NOW() WHERE id = ?')->execute([$user['id']]);
+            log_activity((int) $user['id'], 'login');
+            header('Location: index.php');
+            exit;
+        }
+        $error = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
     }
-    $error = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+} catch (Throwable $e) {
+    $dbError = 'เชื่อมต่อฐานข้อมูลไม่ได้ — ตรวจสอบ config.local.php และรัน install.php';
 }
 ?>
 <!DOCTYPE html>
@@ -47,6 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <h1>BOYINSURE Admin</h1>
           <p class="admin-login__card-desc">เข้าสู่ระบบหลังบ้าน</p>
         </div>
+        <?php if ($dbError): ?>
+          <div class="admin-login__error">
+            <i data-lucide="alert-circle" aria-hidden="true"></i>
+            <?= h($dbError) ?>
+          </div>
+          <p class="admin-login__hint"><a href="../check-host.php">ตรวจสอบระบบ</a> · <a href="../install.php">ติดตั้งฐานข้อมูล</a></p>
+        <?php endif; ?>
         <?php if ($error): ?>
           <div class="admin-login__error">
             <i data-lucide="alert-circle" aria-hidden="true"></i>

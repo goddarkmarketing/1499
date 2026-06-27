@@ -101,6 +101,7 @@ function admin_menu_groups(): array {
             ['articles', 'articles.php', 'บทความ', 'book-open', ['super_admin', 'ops']],
             ['site-pages', 'site-pages.php', 'เนื้อหาหน้าเว็บ', 'layout-template', ['super_admin', 'ops']],
             ['logs', 'logs.php', 'ประวัติระบบ', 'scroll-text', ['super_admin', 'ops']],
+            ['backups', 'backups.php', 'สำรองข้อมูล', 'archive', ['super_admin']],
             ['settings', 'settings.php', 'ตั้งค่า', 'settings', ['super_admin']],
             ['admins', 'admins.php', 'ผู้ดูแลระบบ', 'shield', ['super_admin']],
             ['profile', 'profile.php', 'โปรไฟล์ / รหัสผ่าน', 'user', null],
