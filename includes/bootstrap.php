@@ -264,12 +264,38 @@ function mail_from_address(): string {
     return setting_get('contact_email', 'noreply@localhost') ?: 'noreply@localhost';
 }
 
-function send_plain_mail(string $to, string $subject, string $body): bool {
+function send_plain_mail(string $to, string $subject, string $body, ?string $replyTo = null): bool {
     if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
         return false;
     }
     $headers = 'From: ' . mail_from_address() . "\r\n" . 'Content-Type: text/plain; charset=UTF-8';
+    if ($replyTo !== null && $replyTo !== '' && filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+        $headers .= "\r\n" . 'Reply-To: ' . $replyTo;
+    }
     return @mail($to, '=?UTF-8?B?' . base64_encode($subject) . '?=', $body, $headers);
+}
+
+function notify_admin_email(): string {
+    $email = trim(setting_get('notify_email', 'boyinsure8@gmail.com'));
+    if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return $email;
+    }
+    return 'boyinsure8@gmail.com';
+}
+
+/** @param array<string, scalar|null> $fields */
+function notify_admin_submission(string $subjectPrefix, array $fields, ?string $replyTo = null): bool {
+    $lines = [];
+    foreach ($fields as $label => $value) {
+        if ($value === null || $value === '') {
+            continue;
+        }
+        $lines[] = $label . ': ' . $value;
+    }
+    $lines[] = '';
+    $lines[] = 'เวลา: ' . date('Y-m-d H:i:s');
+    $lines[] = 'ดูรายละเอียดใน Admin > Lead / สอบถาม';
+    return send_plain_mail(notify_admin_email(), '[BOYINSURE] ' . $subjectPrefix, implode("\n", $lines), $replyTo);
 }
 
 function send_member_credentials_email(string $email, string $name, string $loginId, string $password): bool {
@@ -286,21 +312,23 @@ function send_member_credentials_email(string $email, string $name, string $logi
 }
 
 function notify_admin_new_member(array $member, string $loginId, ?string $plainPassword = null): bool {
-    $notify = setting_get('notify_email', '');
-    if ($notify === '' || !filter_var($notify, FILTER_VALIDATE_EMAIL)) {
-        return false;
-    }
-    $subject = '[BOYINSURE] สมาชิกใหม่: ' . ($member['name'] ?? '');
-    $body = "มีการสมัครสมาชิกใหม่\n\n"
-        . 'ชื่อ: ' . ($member['name'] ?? '-') . "\n"
-        . 'เบอร์: ' . ($member['phone'] ?? '-') . "\n"
-        . 'อีเมล: ' . ($member['email'] ?? '-') . "\n"
-        . 'ไอดี: ' . $loginId . "\n";
+    $fields = [
+        'ชื่อ' => $member['name'] ?? '-',
+        'เบอร์' => $member['phone'] ?? '-',
+        'อีเมล' => $member['email'] ?? '-',
+        'ไอดี' => $loginId,
+        'แหล่ง' => 'สมัครสมาชิก / หมุนวงล้อ',
+    ];
     if ($plainPassword !== null && $plainPassword !== '') {
-        $body .= 'รหัสผ่าน: ' . $plainPassword . "\n";
+        $fields['รหัสผ่าน'] = $plainPassword;
     }
-    $body .= "\nดูรายละเอียดใน Admin > สมาชิก (ID: " . (int) ($member['id'] ?? 0) . ')';
-    return send_plain_mail($notify, $subject, $body);
+    if (!empty($member['id'])) {
+        $fields['Member ID'] = (int) $member['id'];
+    }
+    $replyTo = !empty($member['email']) && filter_var($member['email'], FILTER_VALIDATE_EMAIL)
+        ? (string) $member['email']
+        : null;
+    return notify_admin_submission('สมาชิกใหม่: ' . ($member['name'] ?? ''), $fields, $replyTo);
 }
 
 function member_game_plays(int $memberId, int $gameId): int {

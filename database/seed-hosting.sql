@@ -53,5 +53,5 @@ INSERT INTO settings (setting_key, setting_value) VALUES
 ('business_hours', 'จันทร์–ศุกร์ 09:00–18:00 น.'),
 ('address', 'ให้บริการทั่วประเทศ'),
 ('footer_note', 'พันธมิตรด้านประกันภัย'),
-('notify_email', ''),
+('notify_email', 'boyinsure8@gmail.com'),
 ('low_stock_threshold', '5');

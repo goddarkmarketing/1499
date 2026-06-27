@@ -151,6 +151,12 @@ try {
         }
     }
 
+    $notifyEmail = trim(setting_get('notify_email', ''));
+    if ($notifyEmail === '') {
+        setting_set('notify_email', 'boyinsure8@gmail.com');
+        $steps[] = 'ตั้งค่าอีเมลแจ้งเตือนเป็น boyinsure8@gmail.com';
+    }
+
     $ok = true;
 } catch (Throwable $e) {
     $ok = false;

@@ -2314,6 +2314,50 @@ function initContactFormPrefill() {
   }
 }
 
+function initHomePlanFormSubmit() {
+  const form = document.getElementById('homePlanForm');
+  if (!form || !window.BoyInsureAPI) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('[type="submit"]');
+    const firstname = form.querySelector('#plan-firstname')?.value?.trim() || '';
+    const lastname = form.querySelector('#plan-lastname')?.value?.trim() || '';
+    const birthdate = form.querySelector('#plan-birthdate')?.value?.trim() || '';
+    const phone = form.querySelector('#plan-phone')?.value?.trim() || '';
+    const email = form.querySelector('#plan-email')?.value?.trim() || '';
+    const province = form.querySelector('#plan-province')?.value?.trim() || '';
+    const callbackDate = form.querySelector('#plan-callback-date')?.value?.trim() || '';
+    const callbackTime = form.querySelector('#plan-callback-time')?.value?.trim() || '';
+    const interest = form.querySelector('[name="interest"]')?.value?.trim() || 'ประกันรถยนต์ชั้น 1';
+
+    const messageParts = [
+      birthdate && `วันเกิด: ${birthdate}`,
+      email && `อีเมล: ${email}`,
+      province && `จังหวัด: ${province}`,
+      callbackDate && `วันที่สะดวกให้ติดต่อกลับ: ${callbackDate}`,
+      callbackTime && `ช่วงเวลาที่สะดวก: ${callbackTime}`,
+    ].filter(Boolean);
+
+    btn.disabled = true;
+    try {
+      await BoyInsureAPI.submitContact({
+        name: `${firstname} ${lastname}`.trim(),
+        phone,
+        interest,
+        plan: interest,
+        message: messageParts.join('\n'),
+      });
+      alert('ขอบคุณครับ ทีมงานจะติดต่อกลับเรื่องประกันรถยนต์ชั้น 1 โดยเร็วที่สุด');
+      form.reset();
+    } catch (err) {
+      alert(err.message || 'ส่งไม่สำเร็จ กรุณาลองใหม่');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+}
+
 function initContactFormSubmit() {
   const form = document.getElementById('contactForm');
   if (!form || !window.BoyInsureAPI) return;
@@ -2402,6 +2446,7 @@ function initContactFormSubmit() {
     initInsurancePlanDetail();
     initContactFormPrefill();
     initContactFormSubmit();
+    initHomePlanFormSubmit();
   })();
 })();
 

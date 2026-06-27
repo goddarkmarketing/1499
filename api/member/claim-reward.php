@@ -114,7 +114,22 @@ try {
         'new',
     ]);
 
+    $leadId = (int) $pdo->lastInsertId();
+
     $pdo->commit();
+
+    notify_admin_submission('ลูกค้ากรอกฟอร์มรับรางวัล: ' . $contactName, [
+        'ชื่อ' => $contactName,
+        'เบอร์' => $contactPhone,
+        'LINE' => $contactLine,
+        'ช่วงเวลาที่สะดวก' => $contactNote,
+        'ประเภทประกันที่สนใจ' => $insuranceInterest,
+        'รางวัล' => $claim['prize_name'] ?? '',
+        'รายละเอียดเพิ่มเติม' => $message,
+        'Claim ID' => $claimId,
+        'Lead ID' => $leadId,
+        'แหล่ง' => 'ฟอร์มรับรางวัลหลังหมุน',
+    ]);
 } catch (RuntimeException $e) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();

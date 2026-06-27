@@ -90,7 +90,7 @@ ob_start();
       <label>LINE URL</label>
       <input name="line_url" value="<?= h(setting_get('line_url', '')) ?>" placeholder="https://line.me/R/ti/p/@..." />
       <label>อีเมลแจ้งเตือน Lead ใหม่</label>
-      <input type="email" name="notify_email" value="<?= h(setting_get('notify_email', '')) ?>" />
+      <input type="email" name="notify_email" value="<?= h(setting_get('notify_email', 'boyinsure8@gmail.com')) ?>" placeholder="boyinsure8@gmail.com" />
       <label>แจ้งเตือนสต็อกต่ำกว่า (ชิ้น)</label>
       <input type="number" name="low_stock_threshold" min="0" value="<?= h(setting_get('low_stock_threshold', '5')) ?>" />
       <button type="submit" class="admin-btn admin-btn--primary">บันทึก</button>
